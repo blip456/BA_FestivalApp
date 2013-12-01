@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,7 @@ namespace Ypsilon2.viewmodel
         {
             _bands = Band.GetBands();
             _gefilterdeBands = Bands;
+            _selectedImagePad = "../content/images/blank.jpg";
         }
 
         private ObservableCollection<Band> _bands;
@@ -50,6 +52,15 @@ namespace Ypsilon2.viewmodel
             set { _selectedBand = value; OnPropertyChanged("SelectedBand"); }
         }
 
+        private string _selectedImagePad;
+
+        public string SelectedImagePad
+        {
+            get { return _selectedImagePad; }
+            set { _selectedImagePad = value; OnPropertyChanged("SelectedImagePad"); }
+        }
+        
+
         private string _searchString;
 
         public string SearchString
@@ -70,6 +81,24 @@ namespace Ypsilon2.viewmodel
         {
             Console.WriteLine(str);
             GefilterdeBands = model.Band.GetBandsByString(Bands, str);
+        }
+
+        public ICommand SelectImageCommand
+        {
+            get { return new RelayCommand(SelectImage); }
+        }
+
+        private void SelectImage()
+        {
+            Console.WriteLine("FILE DIALOG");
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "JPG(*.jpg)|*.jpg|PNG(*.png)|*.png";
+            ofd.Title = "Selecteer een afbeelding";
+            bool? result = ofd.ShowDialog();
+            if (result == true)
+            {
+                SelectedImagePad = ofd.FileName.ToString();                
+            }
         }
 
 

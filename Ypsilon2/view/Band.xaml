@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Ypsilon2.view.Band"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"   
       xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF45"
@@ -79,12 +79,11 @@
                 <TextBlock Text="Genres:" Style="{StaticResource TextBlock}"/>
                 <xctk:WatermarkTextBox Watermark="Genre1;Genre2;Genre3" Style="{StaticResource BaseStyle}" SelectAllOnGotFocus="True"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">
-
-                <Image Source="../content/images/blank.jpg" Height="183" Margin="0,21,0,0">
+            <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">            
+                <Image Source="{Binding SelectedImagePad}" Height="183" Margin="0,21,0,0" Name="imgPicture">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
-                            <cmd:EventToCommand Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
+                            <cmd:EventToCommand Command="{Binding SelectImageCommand}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Image>

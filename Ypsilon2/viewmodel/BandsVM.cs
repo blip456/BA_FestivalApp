@@ -13,7 +13,7 @@ using System.IO;
 
 namespace Ypsilon2.viewmodel
 {
-    class BandsVM:ObservableObject, IPage
+    class BandsVM : ObservableObject, IPage
     {
         #region fields en props
 
@@ -26,8 +26,7 @@ namespace Ypsilon2.viewmodel
         {
             _bands = Band.GetBands();
             _gefilterdeBands = Bands;
-            _selectedImagePad = "../content/images/blank.jpg";
-           
+            _imageSource = convertStringToByte("../../content/images/blank.jpg");
         }
 
         private ObservableCollection<Band> _bands;
@@ -51,7 +50,30 @@ namespace Ypsilon2.viewmodel
         public Band SelectedBand
         {
             get { return _selectedBand; }
-            set { _selectedBand = value; OnPropertyChanged("SelectedBand"); }
+            set
+            {
+                _selectedBand = value; OnPropertyChanged("SelectedBand");
+                if (SelectedBand != null)
+                {
+                    if (SelectedBand.Picture != null && SelectedBand.Picture.Length > 6)
+                    {
+                        ImageSource = SelectedBand.Picture;
+                    }
+                    else
+                    {
+                        ImageSource = convertStringToByte("../../content/images/blank.jpg");
+                    }
+                }
+
+            }
+        }
+
+        private byte[] _imageSource;
+
+        public byte[] ImageSource
+        {
+            get { return _imageSource; }
+            set { _imageSource = value; OnPropertyChanged("ImageSource"); }
         }
 
         private string _selectedImagePad;
@@ -59,9 +81,10 @@ namespace Ypsilon2.viewmodel
         public string SelectedImagePad
         {
             get { return _selectedImagePad; }
-            set { _selectedImagePad = value; OnPropertyChanged("SelectedImagePad"); }
+            set { _selectedImagePad = value; }
         }
-        
+
+
 
         private string _searchString;
 
@@ -70,8 +93,18 @@ namespace Ypsilon2.viewmodel
             get { return _searchString; }
             set { _searchString = value; OnPropertyChanged("SearchString"); }
         }
-        
-        #endregion 
+
+        #endregion
+
+        private static byte[] convertStringToByte(string sPad)
+        {
+            //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
+            byte[] btImage = null;
+            FileStream fstStream = new FileStream(sPad, FileMode.Open, FileAccess.Read);
+            BinaryReader brReader = new BinaryReader(fstStream);
+            btImage = brReader.ReadBytes((int)fstStream.Length);
+            return btImage;
+        }
 
         #region commands
         public ICommand SearchCommand
@@ -99,7 +132,8 @@ namespace Ypsilon2.viewmodel
             bool? result = ofd.ShowDialog();
             if (result == true)
             {
-                SelectedImagePad = ofd.FileName.ToString();                
+                SelectedImagePad = ofd.FileName.ToString();
+                ImageSource = convertStringToByte(SelectedImagePad);
             }
         }
 
@@ -111,12 +145,7 @@ namespace Ypsilon2.viewmodel
 
         public void SaveBand(Band band)
         {
-            //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
-            byte[] btImage = null;
-            FileStream fstStream = new FileStream(SelectedImagePad, FileMode.Open, FileAccess.Read);
-            BinaryReader brReader = new BinaryReader(fstStream);
-            btImage = brReader.ReadBytes((int)fstStream.Length);
-            band.Picture = btImage;
+            band.Picture = ImageSource;
             Band.EditBand(band);
             GefilterdeBands = Band.GetBands();
         }
@@ -127,17 +156,24 @@ namespace Ypsilon2.viewmodel
         }
         public void AddBand(string strings)
         {
-            
+
             Band band = new Band();
             band.ID = "20";
             band.Twitter = "test";
             band.Facebook = "test";
             band.Descr = "test";
-           // band.Picture = "no pic";
+            if (SelectedImagePad != null)
+            {
+                band.Picture = convertStringToByte(SelectedImagePad);
+            }
+            else
+            {
+                band.Picture = ImageSource;
+            }            
             band.Name = strings;
             Band.AddBand(band);
-            GefilterdeBands =Band.GetBands();
-            
+            GefilterdeBands = Band.GetBands();
+
         }
 
         public ICommand DeleteBandCommand

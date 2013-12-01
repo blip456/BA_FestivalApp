@@ -79,6 +79,7 @@ namespace Ypsilon2.model
         #region SQL
         private static Band CreateBand(DbDataReader reader)
         {
+
             Band band = new Band();
             band.ID = Convert.ToString(reader["band_id"]);
             band.Name = Convert.ToString(reader["band_name"]);
@@ -87,6 +88,9 @@ namespace Ypsilon2.model
             band.Twitter = Convert.ToString(reader["band_twitter"]);
             band.Facebook = Convert.ToString(reader["band_facebook"]);
             return band;
+
+
+
         }
 
         public static ObservableCollection<Band> GetBands()
@@ -168,9 +172,9 @@ namespace Ypsilon2.model
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, parID);
             Console.WriteLine(i + " row(s) are affected");
-        } 
+        }
         #endregion
-       
+
 
     }
 }

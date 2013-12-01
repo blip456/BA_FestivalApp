@@ -27,6 +27,7 @@ namespace Ypsilon2.viewmodel
             _bands = Band.GetBands();
             _gefilterdeBands = Bands;
             _selectedImagePad = "../content/images/blank.jpg";
+           
         }
 
         private ObservableCollection<Band> _bands;
@@ -115,7 +116,7 @@ namespace Ypsilon2.viewmodel
             FileStream fstStream = new FileStream(SelectedImagePad, FileMode.Open, FileAccess.Read);
             BinaryReader brReader = new BinaryReader(fstStream);
             btImage = brReader.ReadBytes((int)fstStream.Length);
-
+            band.Picture = btImage;
             Band.EditBand(band);
             GefilterdeBands = Band.GetBands();
         }
@@ -132,7 +133,7 @@ namespace Ypsilon2.viewmodel
             band.Twitter = "test";
             band.Facebook = "test";
             band.Descr = "test";
-            band.Picture = "no pic";
+           // band.Picture = "no pic";
             band.Name = strings;
             Band.AddBand(band);
             GefilterdeBands =Band.GetBands();

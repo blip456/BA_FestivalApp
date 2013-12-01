@@ -25,19 +25,6 @@ namespace Ypsilon2
         public MainWindow()
         {
             InitializeComponent();
-
-            Band inputTest = new Band();
-            inputTest.Name = "Billy Talent";
-            inputTest.Picture = "no picture";
-            inputTest.Descr = "Dead Silence is one of the best albums they made";
-            inputTest.Twitter = "no twitter";
-            inputTest.Facebook = "no facebook";
-            inputTest.ID = "4";
-            
-
-            Band.EditBand(inputTest);
-            ObservableCollection<Band> lstTest = new ObservableCollection<Band>();
-            lstTest = Band.GetBands();
         }
     }
 }

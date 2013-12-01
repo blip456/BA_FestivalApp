@@ -80,7 +80,7 @@
                 <xctk:WatermarkTextBox Watermark="Genre1;Genre2;Genre3" Style="{StaticResource BaseStyle}" SelectAllOnGotFocus="True"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">            
-                <Image Source="{Binding SelectedImagePad}" Height="183" Margin="0,21,0,0" Name="imgPicture">
+                <Image Source="{Binding SelectedBand.Picture}" Height="183" Margin="0,21,0,0" Name="imgPicture">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <cmd:EventToCommand Command="{Binding SelectImageCommand}"/>

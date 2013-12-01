@@ -32,9 +32,9 @@ namespace Ypsilon2.model
             set { _name = value; }
         }
 
-        private string _picture;
+        private byte[] _picture;
 
-        public string Picture
+        public byte[] Picture
         {
             get { return _picture; }
             set { _picture = value; }
@@ -82,7 +82,7 @@ namespace Ypsilon2.model
             Band band = new Band();
             band.ID = Convert.ToString(reader["band_id"]);
             band.Name = Convert.ToString(reader["band_name"]);
-            band.Picture = Convert.ToString(reader["band_picture"]);
+            band.Picture = (byte[])reader["band_picture"];
             band.Descr = Convert.ToString(reader["band_description"]);
             band.Twitter = Convert.ToString(reader["band_twitter"]);
             band.Facebook = Convert.ToString(reader["band_facebook"]);

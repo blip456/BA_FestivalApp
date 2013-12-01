@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ypsilon2.model;
+using System.IO;
 
 namespace Ypsilon2.viewmodel
 {
@@ -109,6 +110,8 @@ namespace Ypsilon2.viewmodel
 
         public void SaveBand(Band band)
         {
+            byte[] btImage = null;
+
             Band.EditBand(band);
             GefilterdeBands = Band.GetBands();
         }

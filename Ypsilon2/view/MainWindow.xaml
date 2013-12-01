@@ -22,7 +22,9 @@
         <DataTemplate DataType="{x:Type vm:TicketingVM}">
             <v:Ticketing/>
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type vm:FestivalVM}">
+            <v:Festival/>
+        </DataTemplate>
 
     </Window.Resources>
     <Grid >

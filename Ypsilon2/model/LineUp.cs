@@ -125,7 +125,21 @@ namespace Ypsilon2.model
             }
 
             return lstGevondenLineUps;
-        }        
+        }
+
+        public static void AddLineUp(LineUp lineup)
+        {
+            string sql = "INSERT INTO lineup(lineup_date, lineup_from, lineup_until, lineup_stage, lineup_band) VALUES (@date, @from, @until, @stageid, @bandid);";
+
+            DbParameter par1 = Database.AddParameter("@date", lineup.Date);
+            DbParameter par2 = Database.AddParameter("@from", lineup.From);
+            DbParameter par3 = Database.AddParameter("@until", lineup.Until);
+            DbParameter par4 = Database.AddParameter("@stageid", lineup.Stage);
+            DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);            
+
+            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
+            Console.WriteLine(i + " row(s) are affected");
+        }
         #endregion
 
     }

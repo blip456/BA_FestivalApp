@@ -88,9 +88,6 @@ namespace Ypsilon2.model
             band.Twitter = Convert.ToString(reader["band_twitter"]);
             band.Facebook = Convert.ToString(reader["band_facebook"]);
             return band;
-
-
-
         }
 
         public static ObservableCollection<Band> GetBands()

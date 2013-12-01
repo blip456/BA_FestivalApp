@@ -15,7 +15,8 @@ namespace Ypsilon2.viewmodel
             Pages.Add(new ContactpersonVM());
             Pages.Add(new BandsVM());
             Pages.Add(new LineUpVM());
-            Pages.Add(new TicketingVM());            
+            Pages.Add(new TicketingVM());
+            Pages.Add(new FestivalVM());
 
             CurrentPage = Pages[0];
 

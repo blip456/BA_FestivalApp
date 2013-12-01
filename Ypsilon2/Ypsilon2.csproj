@@ -76,6 +76,7 @@
     <Compile Include="model\TicketType.cs" />
     <Compile Include="viewmodel\BandsVM.cs" />
     <Compile Include="viewmodel\ContactpersonVM.cs" />
+    <Compile Include="viewmodel\FestivalVM.cs" />
     <Compile Include="viewmodel\LineUpVM.cs" />
     <Compile Include="viewmodel\TicketingVM.cs" />
     <Compile Include="view\Band.xaml.cs">
@@ -83,6 +84,9 @@
     </Compile>
     <Compile Include="view\Contactperson.xaml.cs">
       <DependentUpon>Contactperson.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\Festival.xaml.cs">
+      <DependentUpon>Festival.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\LineUp.xaml.cs">
       <DependentUpon>LineUp.xaml</DependentUpon>
@@ -95,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\Contactperson.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\Festival.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

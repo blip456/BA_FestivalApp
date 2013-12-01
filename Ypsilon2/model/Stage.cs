@@ -35,7 +35,7 @@ namespace Ypsilon2.model
             get { return _bands; }
             set { _bands = value; }
         }
-        
+
 
 
         #endregion
@@ -45,7 +45,7 @@ namespace Ypsilon2.model
         {
             Stage stage = new Stage();
             stage.ID = Convert.ToString(reader["stage_id"]);
-            stage.Name = Convert.ToString(reader["stage_name"]);       
+            stage.Name = Convert.ToString(reader["stage_name"]);
             stage.Bands = LineUp.GetBandsByLineUpID(Convert.ToInt32(reader["stage_id"]));
             return stage;
         }
@@ -59,10 +59,23 @@ namespace Ypsilon2.model
                 lstStages.Add(CreateStage(reader));
             }
             return lstStages;
-        } 
+        }
 
-        
+        public static void AddStage(string NewPodiumName)
+        {
+
+            string sql = "INSERT INTO stage(stage_name) VALUES (@name);";
+
+            DbParameter par1 = Database.AddParameter("@name", NewPodiumName);
+
+            int i = Database.ModifyData(sql, par1);
+            Console.WriteLine(i + " row(s) are affected");
+
+        }
+
         #endregion
+
+
 
     }
 }

@@ -20,7 +20,7 @@ namespace Ypsilon2.viewmodel
             //_lineUps = Ypsilon2.model.LineUp.GetLineUp();          
             //_lineUps = model.LineUp.GetLineUpsVersie2();
             _bands = Ypsilon2.model.Band.GetBands();
-            _festivals = Festival.GetFestivals();
+            _festivals = Ypsilon2.model.Festival.GetFestivals();
             _stages = Stage.GetStages();
         }
 
@@ -30,9 +30,9 @@ namespace Ypsilon2.viewmodel
             get { return "Line Up"; }
         }
 
-        private Festival _festivals;
+        private Ypsilon2.model.Festival _festivals;
 
-        public Festival Festivals
+        public Ypsilon2.model.Festival Festivals
         {
             get { return _festivals; }
             set { _festivals = value; OnPropertyChanged("Festivals"); }
@@ -81,6 +81,7 @@ namespace Ypsilon2.viewmodel
         }
         
         #endregion
+        
 
         #region commands
 
@@ -91,7 +92,28 @@ namespace Ypsilon2.viewmodel
 
         public void SaveFestival()
         {
-            Festival.EditFestival(Festivals);
+            Ypsilon2.model.Festival.EditFestival(Festivals);
+        }
+
+        public ICommand SaveLineUpCommand
+        {
+            get { return new RelayCommand(SaveLineUp); }
+        }
+
+        public void SaveLineUp()
+        {
+           
+        }
+
+        public ICommand SaveStageCommand
+        {
+            get { return new RelayCommand<string>(SaveStage); }
+        }
+
+        public void SaveStage(string NewPodiumName)
+        {
+            Stage.AddStage(NewPodiumName);
+            Stages = Stage.GetStages();
         }
         #endregion
 

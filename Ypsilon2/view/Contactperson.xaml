@@ -40,18 +40,6 @@
             </WrapPanel>
         </Grid>
 
-
-
-        <!--<DataGrid AutoGenerateColumns="False" Grid.Row="0" ItemsSource="{Binding Contacts}" Margin="20" IsReadOnly="True" SelectedItem="{Binding SelectedContact}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Naam" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Bedrijf" Binding="{Binding Company}"/>
-                <DataGridTextColumn Header="Stad" Binding="{Binding City}"/>
-                <DataGridTextColumn Header="Emailadres" Binding="{Binding Email}"/>
-                <DataGridTextColumn Header="Telefoon" Binding="{Binding Phone}"/>
-                <DataGridTextColumn Header="Gsm" Binding="{Binding Cellphone}"/>
-            </DataGrid.Columns>
-        </DataGrid>-->
         <ListView x:Name="lsvContact" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
             <ListView.View>
                 <GridView>

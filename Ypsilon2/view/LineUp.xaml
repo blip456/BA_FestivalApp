@@ -23,55 +23,31 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
 
-                <UniformGrid Columns="2" Rows="10" Grid.Column="0"  Margin="0,0,20,0">
-                    <TextBlock Style="{StaticResource Subtitle}" Text="Festival"/>
-                    <TextBlock/>
-
-                    <TextBlock Style="{StaticResource Heading1}" Text="Algemeen"/>
-                    <TextBlock/>
-
-                    <TextBlock Text="Naam" Style="{StaticResource TextBlock}"/>
-                    <xctk:WatermarkTextBox Watermark="Festival naam" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Name}"/>
-
-                    <TextBlock Text="Begin datum" Style="{StaticResource TextBlock}"/>
-                    <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.StartDate}" />
-
-                    <TextBlock Text="Eind datum" Style="{StaticResource TextBlock}"/>
-                    <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.EndDate}"/>
-
-                    <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" />
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.StartDate}" Style="{StaticResource BaseStyle}"/>
-
-                    <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.EndDate}" Style="{StaticResource BaseStyle}"/>
-
-                    <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Command="{Binding SaveFestivalCommand}" IsDefault="True"/>
-                    <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>                   
-                </UniformGrid>
-
-                <UniformGrid Columns="2" Rows="10" Grid.Column="1"  Margin="20,0,0,0">
-                    <TextBlock/>
-                    <TextBlock/>
-
+                <UniformGrid Columns="2" Rows="7" Grid.Column="0"  Margin="0,0,20,0">
+                   
                     <TextBlock Style="{StaticResource Heading1}" Text="Podia - toevoegen"/>
                     <TextBlock/>
 
                     <TextBlock Text="Podium naam" Style="{StaticResource TextBlock}"/>
-                    <xctk:WatermarkTextBox Watermark="Podium naam" Style="{StaticResource BaseStyle}" />
+                    <xctk:WatermarkTextBox Watermark="Podium naam" Style="{StaticResource BaseStyle}" Name="txtNewStageName"/>
                     <TextBlock/>
-                    
-                    <Button Content="Toevoegen" Style="{StaticResource BaseStyle}"/>
-                    
 
+                    <Button Content="Toevoegen" Style="{StaticResource BaseStyle}" Command="{Binding SaveStageCommand}" CommandParameter="{Binding ElementName=txtNewStageName, Path=Text}"/>
+                </UniformGrid>
+
+                <UniformGrid Columns="2" Rows="7" Grid.Column="1"  Margin="20,0,0,0">                                   
                     <TextBlock Style="{StaticResource Heading1}" Text="Podia - aanpassen"/>
                     <TextBlock/>
 
-                    <TextBlock Text="Band" Style="{StaticResource TextBlock}" Grid.Row="6" Grid.Column="1"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" Grid.Row="6" Grid.Column="2" ItemsSource="{Binding Path=Bands}" DisplayMemberPath="Band.Name" SelectedIndex="0"/>
+                    <TextBlock Text="Band" Style="{StaticResource TextBlock}"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Bands}" DisplayMemberPath="Name" SelectedIndex="0"/>
 
 
-                    <TextBlock Text="Podium" Style="{StaticResource TextBlock}" Grid.Row="7" Grid.Column="1"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" Grid.Row="7" Grid.Column="2"  ItemsSource="{Binding Path=LineUps}" DisplayMemberPath="Key" SelectedIndex="0"/>
+                    <TextBlock Text="Podium" Style="{StaticResource TextBlock}" />
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Stages}" DisplayMemberPath="Name" SelectedIndex="0"/>
+
+                    <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Stages}" DisplayMemberPath="Name" SelectedIndex="0"/>
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" Grid.Row="6" Grid.Column="4"/>
                     <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="12:00" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>

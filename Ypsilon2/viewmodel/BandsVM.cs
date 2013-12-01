@@ -110,7 +110,11 @@ namespace Ypsilon2.viewmodel
 
         public void SaveBand(Band band)
         {
+            //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
             byte[] btImage = null;
+            FileStream fstStream = new FileStream(SelectedImagePad, FileMode.Open, FileAccess.Read);
+            BinaryReader brReader = new BinaryReader(fstStream);
+            btImage = brReader.ReadBytes((int)fstStream.Length);
 
             Band.EditBand(band);
             GefilterdeBands = Band.GetBands();

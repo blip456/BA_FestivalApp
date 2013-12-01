@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="Ypsilon2.view.Ticketing"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+   xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+   mc:Ignorable="d" 
+   d:DesignHeight="800" d:DesignWidth="800">
+
+    <Grid Style="{StaticResource MainGrid}" Width="760">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="200"/>
+
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="250"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0" Style="{StaticResource TwoPaneStackpanel}">
+            <TextBlock Style="{StaticResource Heading1}" Text="Totaal aantal verkochte normale tickets:"/>
+            <TextBlock  Style="{StaticResource Counter}">
+                <Run Text="{Binding SoldTicketNormal, UpdateSourceTrigger=PropertyChanged}"/>
+                <Run Text="/"/>
+                <Run Text="{Binding TotalTicketTypeNormal}"/>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="0" Style="{StaticResource TwoPaneStackpanel}">
+            <TextBlock Style="{StaticResource Heading1}" Text="Totaal aantal verkochte VIP tickets:"/>
+            <TextBlock Style="{StaticResource Counter}">
+                <Run Text="{Binding SoldTicketVip}"/>
+                <Run Text="/"/>
+                <Run Text="{Binding TotalTicketTypeVip}"/>
+            </TextBlock>
+        </StackPanel>
+        <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" Rows="4" Margin="0,0,20,0">
+            <TextBlock Text="Kies een dag:" Style="{StaticResource TextBlock}"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding TicketTypesNormaal}" DisplayMemberPath="Name" Name="cboDagenNormaal" SelectedItem="{Binding SelectedDagNormaal}" SelectedIndex="0"/>
+            <TextBlock Text="Totaal aantal tickets:" Style="{StaticResource TextBlock}"/>
+            <TextBox Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.AvailableTickets}" Style="{StaticResource BaseStyle}"/>
+            <TextBlock Text="Kostprijs per ticket:" Style="{StaticResource TextBlock}"/>
+            <xctk:DecimalUpDown Watermark="€ 35,00" Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.Price}" Increment="1" ToolTip="Geef een nummeriek of decimaal bedrag in bv: 35,00" Grid.Column="2" Grid.Row="5" Style="{StaticResource BaseStyle}"/>
+            <!--<TextBox Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.Price}" Style="{StaticResource BaseStyle}"/>-->
+            <Button Name="txtSave" Content="Opslaan" IsDefault="True" Style="{StaticResource Button}" Command="{Binding SaveTicketTypeNormaalCommand}" CommandParameter="{Binding ElementName=cboDagenNormaal, Path=SelectedItem}" />
+            <Button Content="Annuleer" Style="{StaticResource Button}" IsCancel="True"/>
+
+        </UniformGrid>
+
+        <UniformGrid Grid.Row="1" Grid.Column="1" Columns="2" Rows="4" Margin="20,0,0,0">
+            <TextBlock Text="Kies een dag:" Style="{StaticResource TextBlock}"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding TicketTypesVip}" DisplayMemberPath="Name" Name="cboDagenVip" SelectedItem="{Binding SelectedDagVip}" SelectedIndex="0"/>
+            <TextBlock Text="Totaal aantal tickets:" Style="{StaticResource TextBlock}"/>
+            <TextBox Text="{Binding ElementName=cboDagenVip, Path=SelectedItem.AvailableTickets}" Style="{StaticResource BaseStyle}"/>
+            <TextBlock Text="Kostprijs per ticket:" Style="{StaticResource TextBlock}"/>
+            <xctk:DecimalUpDown Watermark="€ 45,00" Text="{Binding ElementName=cboDagenVip, Path=SelectedItem.Price}" Style="{StaticResource BaseStyle}"/>
+            <Button Name="txtSaveVip" Content="Opslaan" IsDefault="True" Style="{StaticResource Button}" Command="{Binding SaveTicketTypeVipCommand}" CommandParameter="{Binding ElementName=cboDagenVip, Path=SelectedItem}" />
+            <Button Content="Annuleer" Style="{StaticResource Button}" IsCancel="True"/>
+        </UniformGrid>
+        
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Name="lsvReserveringen" ItemsSource="{Binding Reserveringen, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListView.View>
+                <GridView >
+                    <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Path=TicketHolder}" Width="150"/>
+                    <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Path=TicketHolderEmail}" Width="200"/>
+                    <GridViewColumn Header="Aantal" DisplayMemberBinding="{Binding Path=Amount}"/>
+                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Path=TicketType.Categorie}"/> 
+                    <GridViewColumn Header="Dag" DisplayMemberBinding="{Binding Path=TicketType.Name}"/>
+                    <!--Volgende 5 lijnen code komt van: http://stackoverflow.com/questions/13584643/wpf-delete-button-in-listview-mvvm Antwoord van 'ArsenMkrt'-->
+                    <GridViewColumn Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="X" Command="{Binding ElementName=lsvReserveringen, Path=DataContext.DeleteReserveringCommand}" CommandParameter="{Binding Path=ID}" Style="{StaticResource DeleteContact}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <UniformGrid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Rows="6" Width="370">
+            <TextBlock Text="Reservatie" Style="{StaticResource Subtitle}"/>
+            <TextBlock Text="Normaal ticket" Style="{StaticResource TextBlock}"/>
+            <StackPanel Orientation="Horizontal">
+                <ComboBox Style="{StaticResource BaseStyle}" SelectedIndex="0" Width="250" ItemsSource="{Binding TicketTypes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDagReservering}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Categorie}"/>
+                                <TextBlock Text=" - "/>
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text=" - €"/>
+                                <TextBlock Text="{Binding Price}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <xctk:IntegerUpDown Minimum="0" Watermark="Aantal" Maximum="20" Width="100" Style="{StaticResource BaseStyle}" Text="{Binding AantalTickets, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <TextBlock Text="Gegevens" Style="{StaticResource TextBlock}"/>
+            <StackPanel Orientation="Horizontal">
+                <xctk:WatermarkTextBox Watermark="Voornaam"  Width="150" Style="{StaticResource BaseStyle}" Text="{Binding Voornaam, UpdateSourceTrigger=PropertyChanged}"/>
+                <xctk:WatermarkTextBox Watermark="Achternaam" Width="200" Style="{StaticResource BaseStyle}" Text="{Binding Achternaam, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>            
+            <StackPanel Orientation="Horizontal">
+                <xctk:WatermarkTextBox Watermark="Emailadres" Width="250" Style="{StaticResource BaseStyle}" Text="{Binding Emailadres, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Style="{StaticResource Button}" Content=" Reserveer" Width="100" Margin="5,0,5,0" Command="{Binding ReserveerCommand}"/>
+            </StackPanel>
+        </UniformGrid>         
+    </Grid>
+
+</UserControl>

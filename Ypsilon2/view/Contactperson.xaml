@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="Ypsilon2.view.Contactperson"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"   
+      xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF45"
+      xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="800">
+
+    <Grid Style="{StaticResource MainGrid}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <WrapPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Style="{StaticResource TextBlock}" Text="Sorteer volgens: "/>
+                <ComboBox Style="{StaticResource BaseStyle}"/>
+                <!--Combo moet nog kunnen gebined worden aan alles header items uit de listview-->
+                <TextBlock Style="{StaticResource TextBlock}" Text="Filter volgens: "/>
+                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name"/>
+                <!--Bij het index changed moet er gefilterd worden > aanmaken van nieuwe methode in contactperson met de naam getContactsByType(string selectedType)--> 
+            </WrapPanel>
+            <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBox Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="KeyUp">
+                            <cmd:EventToCommand Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+                <Button Content="Zoek" Style="{StaticResource BaseStyle}"/>
+            </WrapPanel>
+        </Grid>
+
+
+
+        <!--<DataGrid AutoGenerateColumns="False" Grid.Row="0" ItemsSource="{Binding Contacts}" Margin="20" IsReadOnly="True" SelectedItem="{Binding SelectedContact}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Naam" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Bedrijf" Binding="{Binding Company}"/>
+                <DataGridTextColumn Header="Stad" Binding="{Binding City}"/>
+                <DataGridTextColumn Header="Emailadres" Binding="{Binding Email}"/>
+                <DataGridTextColumn Header="Telefoon" Binding="{Binding Phone}"/>
+                <DataGridTextColumn Header="Gsm" Binding="{Binding Cellphone}"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+        <ListView x:Name="lsvContact" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="gvcNaam" Header="Naam" DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="Bedrijf" DisplayMemberBinding="{Binding Path=Company}"/>
+                    <GridViewColumn Header="Stad" DisplayMemberBinding="{Binding Path=City}"/>
+                    <GridViewColumn Header="Emailadres" DisplayMemberBinding="{Binding Path=Email}"/>
+                    <GridViewColumn Header="Telefoon" DisplayMemberBinding="{Binding Path=Phone}"/>
+                    <GridViewColumn Header="Gsm" DisplayMemberBinding="{Binding Path=Cellphone}"/>
+                    <!--Volgende 5 lijnen code komt van: http://stackoverflow.com/questions/13584643/wpf-delete-button-in-listview-mvvm Antwoord van 'ArsenMkrt'-->
+                    <GridViewColumn Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="X" Command="{Binding ElementName=lsvContact, Path=DataContext.DeleteContactCommand}" CommandParameter="{Binding Path=ID}" Style="{StaticResource DeleteContact}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="2" Width="760">
+            <Grid.RowDefinitions>
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Style="{StaticResource TwoPaneStackpanel}">
+                <TextBlock Text="Naam:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Naam" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Name}" Name="txtName" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Bedrijf:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Company}" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Stad:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Stad" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.City}" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Emailadres:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Emailadres" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Email}" SelectAllOnGotFocus="True"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">
+                <TextBlock Text="Telefoon:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Telefoon" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Phone}" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Gsm:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Cellphone}" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Contacttype:" Style="{StaticResource TextBlock}"/>
+                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedIndex="0"/>
+                <!--Nog te binden aan contacttype tabel-->
+                <TextBlock Text="" Style="{StaticResource TextBlock}" Visibility="Hidden"/>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding SelectedContact}" Content="Opslaan" IsDefault="True" Grid.Column="0"/>
+                    <!--<Button Style="{StaticResource BaseStyle}"  Content="Annuleren" IsCancel="True" Grid.Column="1"/>-->
+                    <!--Deze hierboven moet nog de aanpassingen terug zetten naar origineel > Contacts in de viewmodel terug opvullen via functie GetContacts -->
+                    <Button Style="{StaticResource BaseStyle}" Command="{Binding AddContactCommand}" CommandParameter="{Binding ElementName=txtName, Path=Text}" Content="Toevoegen" IsCancel="True" Grid.Column="1"/>
+                        
+                    <!--Deze hierboven moet de ingevulde waarden als commandoparameter meegeven (als object? of als verschillende strings?)-->
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

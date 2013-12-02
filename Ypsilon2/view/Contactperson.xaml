@@ -24,9 +24,7 @@
                 <TextBlock Style="{StaticResource TextBlock}" Text="Sorteer volgens: "/>
                 <ComboBox Style="{StaticResource BaseStyle}"/>
                 <!--Combo moet nog kunnen gebined worden aan alles header items uit de listview-->
-                <TextBlock Style="{StaticResource TextBlock}" Text="Filter volgens: "/>
-                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name"/>
-                <!--Bij het index changed moet er gefilterd worden > aanmaken van nieuwe methode in contactperson met de naam getContactsByType(string selectedType)--> 
+               
             </WrapPanel>
             <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <TextBox Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
@@ -93,10 +91,10 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding SelectedContact}" Content="Opslaan" IsDefault="True" Grid.Column="0"/>
+                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding SelectedContact}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
                     <!--<Button Style="{StaticResource BaseStyle}"  Content="Annuleren" IsCancel="True" Grid.Column="1"/>-->
                     <!--Deze hierboven moet nog de aanpassingen terug zetten naar origineel > Contacts in de viewmodel terug opvullen via functie GetContacts -->
-                    <Button Style="{StaticResource BaseStyle}" Command="{Binding AddContactCommand}" CommandParameter="{Binding ElementName=txtName, Path=Text}" Content="Toevoegen" IsCancel="True" Grid.Column="1"/>
+                    <Button Style="{StaticResource BaseStyle}" Content="Toevoegen" Command="{Binding AddContactCommand}" CommandParameter="{Binding ElementName=txtName, Path=Text}" IsCancel="True" Grid.Column="1"/>
                         
                     <!--Deze hierboven moet de ingevulde waarden als commandoparameter meegeven (als object? of als verschillende strings?)-->
                 </Grid>

@@ -101,6 +101,8 @@ namespace Ypsilon2.model
             return dTimespan;
         }
 
+        private static ObservableCollection<Ypsilon2.model.LineUp> lstAlleLineUps = GetLineUps();      
+
         #region SQL
         private static LineUp CreateLineUp(DbDataReader reader)
         {
@@ -115,6 +117,23 @@ namespace Ypsilon2.model
             return lineup;
         }
 
+        public static ObservableCollection<LineUp> GetBandsByLineUpIDAndDate(int id, DateTime date)
+        {
+            string dag = Convert.ToString(date);
+            string[] arrDate = dag.Split(' ');
+            
+            ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
+            DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='" + date.ToString("yyyy-MM-dd HH:mm:ss") + "';");
+            //DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='2013-12-27';");
+
+            while (reader.Read())
+            {
+                lstGevondenLineUps.Add(CreateLineUp(reader));
+            }
+
+            return lstGevondenLineUps;
+        }
+
         public static ObservableCollection<LineUp> GetBandsByLineUpID(int id)
         {
             ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
@@ -125,6 +144,18 @@ namespace Ypsilon2.model
             }
 
             return lstGevondenLineUps;
+        }
+
+        public static ObservableCollection<LineUp> GetLineUps()
+        {
+            ObservableCollection<LineUp> lstLineUps = new ObservableCollection<LineUp>();
+            string sql = "SELECT * FROM lineup";
+            DbDataReader reader = Database.GetData(sql);
+            while (reader.Read())
+            {
+                lstLineUps.Add(CreateLineUp(reader));
+            }
+            return lstLineUps;
         }
 
         public static void AddLineUp(LineUp lineup)

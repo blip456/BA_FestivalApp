@@ -135,23 +135,6 @@ namespace Ypsilon2.model
             return lstGevondenContacts;
         }
 
-        public static string AddOrEdit(Contactperson contact)
-        {
-            string str = "";
-            ObservableCollection<Contactperson> lstContacts = GetContacts();
-            if (lstContacts.Any(item => item.ID == contact.ID))
-            {
-                EditContact(contact);
-                str = "edit";
-            }
-            else
-            {
-                AddContact(contact);
-                str = "add";
-            }
-            return str;
-        }
-
         public static void AddContact(Contactperson contact)
         {
             string sql = "INSERT INTO contactperson(contactperson_name, contactperson_company, contactperson_city, contactperson_email, contactperson_phone, contactperson_cell) VALUES (@name, @company, @city, @email, @phone, @cell);";

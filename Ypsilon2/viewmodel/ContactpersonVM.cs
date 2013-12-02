@@ -24,7 +24,6 @@ namespace Ypsilon2.viewmodel
             _contactTypes = ContactpersonType.GetContactTypes();
         }
 
-
         public string Name
         {
             get { return "Contactpersonen"; }
@@ -120,6 +119,7 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region Commands
+
         public ICommand SaveContactCommand
         {
             get { return new RelayCommand<Ypsilon2.model.Contactperson>(SaveContact); }
@@ -127,7 +127,7 @@ namespace Ypsilon2.viewmodel
 
         public void SaveContact(Ypsilon2.model.Contactperson contact)
         {
-            Ypsilon2.model.Contactperson.AddOrEdit(contact);
+            Ypsilon2.model.Contactperson.EditContact(contact);
             GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
         }
 
@@ -146,11 +146,10 @@ namespace Ypsilon2.viewmodel
             contact.Phone = "test";
             contact.Cellphone = "test";
             contact.Name = strings;
-            string result = Ypsilon2.model.Contactperson.AddOrEdit(contact);
-            if (result == "add")
-            {
-                GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
-            }
+
+            Ypsilon2.model.Contactperson.AddContact(contact);
+            GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
+            
         }       
 
         public ICommand DeleteContactCommand

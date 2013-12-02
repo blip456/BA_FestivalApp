@@ -12,10 +12,27 @@
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.25*"/>
-            <RowDefinition Height="410"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="350"/>
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="1">
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Style="{StaticResource TextBlock}" Text="Selecteer een dag"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
+        </StackPanel>
+        
+        <Grid  x:Name="LineUpskes" Grid.Row="1">
+            <StackPanel Orientation="Vertical" Grid.Row="0">
+                <ItemsControl ItemsSource="{Binding StagesPerDag}"  ItemTemplate="{StaticResource scStageTemplate}">
+                    <!-- in stage maak ik een observalble collection property van bands ofzo, en dan maak ik een observable collection van die stages
+                            je kan dan hier een eerste itemscontrol maken die gebined is aan stages in de ItemTemplate app.xaml maak je dan een nieuwe itemscontrol aan die gebined is op de stages.lstBands
+                        -->
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+        
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="2">
             <Grid Width="760">
 
                 <Grid.ColumnDefinitions>
@@ -24,7 +41,7 @@
                 </Grid.ColumnDefinitions>
 
                 <UniformGrid Columns="2" Rows="7" Grid.Column="0"  Margin="0,0,20,0">
-                   
+
                     <TextBlock Style="{StaticResource Heading1}" Text="Podia - toevoegen"/>
                     <TextBlock/>
 
@@ -35,19 +52,19 @@
                     <Button Content="Toevoegen" Style="{StaticResource BaseStyle}" Command="{Binding SaveStageCommand}" CommandParameter="{Binding ElementName=txtNewStageName, Path=Text}"/>
                 </UniformGrid>
 
-                <UniformGrid Columns="2" Rows="7" Grid.Column="1"  Margin="20,0,0,0">                                   
+                <UniformGrid Columns="2" Rows="7" Grid.Column="1"  Margin="20,0,0,0">
                     <TextBlock Style="{StaticResource Heading1}" Text="Podia - aanpassen"/>
                     <TextBlock/>
 
                     <TextBlock Text="Band" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Bands}" DisplayMemberPath="Name" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Bands}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDoorstuurBand}" SelectedIndex="0"/>
 
 
                     <TextBlock Text="Podium" Style="{StaticResource TextBlock}" />
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Stages}" DisplayMemberPath="Name" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDoorstuurStage}" SelectedIndex="0"/>
 
                     <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Path=Stages}" DisplayMemberPath="Name" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" Grid.Row="6" Grid.Column="4"/>
                     <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="12:00" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
@@ -58,120 +75,9 @@
                     <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>
                     <!-- HH = 24u formaat, hh = 12u formaat -->
                 </UniformGrid>
-
-
-
-
             </Grid>
         </ScrollViewer>
-        <!--<Rectangle Style="{StaticResource rectangle}"/>-->
 
-        <Grid  x:Name="LineUpskes">
-
-
-            <!--<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" Grid.RowSpan="4">-->
-            <!-- wat nu volgt is een tijdelijke oplossing, ik maak nu voor ieder podia een itemcontrol static aan, maar dit zou dynamisch moeten gebeuren -->
-            <!--<ItemsControl ItemsSource="{Binding Path=LineUps[Mainstage]}" ItemTemplate="{StaticResource scTemplateLineUp}" ItemsPanel="{StaticResource ItemSPanel}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseUp">
-                                <cmd:EventToCommand Command="{Binding ViewBandCommand}"/>                               
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ItemsControl>-->
-
-            <!--<Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <xctk:WatermarkTextBox Watermark="Podiumnaam" Text="Mainstage" Grid.Column="0" Style="{StaticResource BaseStyle}" VerticalAlignment="Center"/>
-                <ItemsControl VerticalAlignment="Center" Grid.Column="1" ItemsSource="{Binding Path=LineUps[Mainstage]}" ItemTemplate="{StaticResource scTemplateLineUp}" ItemsPanel="{StaticResource ItemSPanel}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseUp">
-                            <cmd:EventToCommand Command="{Binding ViewBandCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ItemsControl>
-            </Grid>
-
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                -->
-            <!-- gebruik maken van een items control die als source dictionary heeft met alle podia -->
-            <!-- in deze itemscontrol steek je nog een itemscontrol die dan als source de vorige heeft met het podium???-->
-            <!--
-                <xctk:WatermarkTextBox Grid.Column="0" Watermark="Podium" Text="Dubstep" Style="{StaticResource BaseStyle}" VerticalAlignment="Center"/>
-                <ItemsControl Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Path=LineUps[Dubstep]}" ItemTemplate="{StaticResource scTemplateLineUp}" ItemsPanel="{StaticResource ItemSPanel}" Grid.ColumnSpan="2">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseUp">
-                            <cmd:EventToCommand Command="{Binding ViewBandCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ItemsControl>
-            </Grid>
-
-
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <xctk:WatermarkTextBox Grid.Column="0" Watermark="Podium" Text="Underground" Style="{StaticResource BaseStyle}" VerticalAlignment="Center"/>
-                <ItemsControl Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Path=LineUps[Underground]}" ItemTemplate="{StaticResource scTemplateLineUp}" ItemsPanel="{StaticResource ItemSPanel}" Grid.ColumnSpan="2">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseUp">
-                            <cmd:EventToCommand Command="{Binding ViewBandCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ItemsControl>
-            </Grid>
-
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <xctk:WatermarkTextBox Grid.Column="0" Watermark="Podium" Text="Bacardi" Style="{StaticResource BaseStyle}" VerticalAlignment="Center" />
-                <ItemsControl Grid.Column="1" VerticalAlignment="Center" ItemsSource="{Binding Path=LineUps[Bacardi]}" ItemTemplate="{StaticResource scTemplateLineUp}" ItemsPanel="{StaticResource ItemSPanel}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseUp">
-                            <cmd:EventToCommand Command="{Binding ViewBandCommand}"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ItemsControl>
-            </Grid>-->
-
-
-
-            <StackPanel Orientation="Vertical" Grid.Row="0">
-
-                <ItemsControl ItemsSource="{Binding Stages}"  ItemTemplate="{StaticResource scStageTemplate}">
-                    <!-- in stage maak ik een observalble collection property van bands ofzo, en dan maak ik een observable collection van die stages
-                            je kan dan hier een eerste itemscontrol maken die gebined is aan stages in de ItemTemplate app.xaml maak je dan een nieuwe itemscontrol aan die gebined is op de stages.lstBands
-                        -->
-                </ItemsControl>
-
-            </StackPanel>
-
-
-
-
-            <!--<StackPanel Width="auto" Height="auto" Orientation="Horizontal" Grid.RowSpan="2" Grid.ColumnSpan="2">
-
-                                        <Button  Name="btn00">
-                                            <TextBlock Text="+"/>
-                                        </Button>
-                                        <Button  Name="btn05">
-                                            <TextBlock Text="+"/>
-                                        </Button>
-                                    </StackPanel>-->
-            <!--</ScrollViewer>-->
-
-        </Grid>
     </Grid>
 
 

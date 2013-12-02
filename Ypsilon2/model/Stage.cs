@@ -40,17 +40,30 @@ namespace Ypsilon2.model
 
         #endregion
 
+        private static ObservableCollection<Stage> lstAlleStages = GetAlleStages();
+
+        private static ObservableCollection<LineUp> lstAlleLineUps = LineUp.GetLineUps();
+
         #region SQL
         private static Stage CreateStage(DbDataReader reader)
         {
             Stage stage = new Stage();
             stage.ID = Convert.ToString(reader["stage_id"]);
             stage.Name = Convert.ToString(reader["stage_name"]);
-            stage.Bands = LineUp.GetBandsByLineUpID(Convert.ToInt32(reader["stage_id"]));
+            stage.Bands = LineUp.GetBandsByLineUpID(Convert.ToInt32(reader["stage_id"]) );
             return stage;
         }
 
-        public static ObservableCollection<Stage> GetStages()
+        private static Stage CreateStageWithDate(DbDataReader reader, DateTime date)
+        {
+            Stage stage = new Stage();
+            stage.ID = Convert.ToString(reader["stage_id"]);
+            stage.Name = Convert.ToString(reader["stage_name"]);
+            stage.Bands = LineUp.GetBandsByLineUpIDAndDate(Convert.ToInt32(reader["stage_id"]), date);
+            return stage;
+        }
+
+        public static ObservableCollection<Stage> GetAlleStages()
         {
             ObservableCollection<Stage> lstStages = new ObservableCollection<Stage>();
             DbDataReader reader = Database.GetData("SELECT * FROM stage");
@@ -60,6 +73,18 @@ namespace Ypsilon2.model
             }
             return lstStages;
         }
+
+        public static ObservableCollection<Stage> GetStagesByDay(DateTime date)
+        {
+            ObservableCollection<Stage> lstStages = new ObservableCollection<Stage>();
+            DbDataReader reader = Database.GetData("SELECT * FROM stage");
+            while (reader.Read())
+            {
+                lstStages.Add(CreateStageWithDate(reader, date));
+            }
+            return lstStages;
+        }
+
 
         public static void AddStage(string NewPodiumName)
         {

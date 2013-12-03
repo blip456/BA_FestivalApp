@@ -69,19 +69,19 @@
 
             <StackPanel Grid.Column="0" Style="{StaticResource TwoPaneStackpanel}">
                 <TextBlock Text="Naam:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Naam" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Name}" Name="txtName" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Naam" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Name}" Name="txtName" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Bedrijf:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Company}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding Contact.Company}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Stad:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Stad" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.City}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Stad" Style="{StaticResource BaseStyle}" Text="{Binding Contact.City}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Emailadres:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Emailadres" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Email}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Emailadres" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Email}" SelectAllOnGotFocus="True"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">
                 <TextBlock Text="Telefoon:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Telefoon" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Phone}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Telefoon" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Phone}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Gsm:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding SelectedContact.Cellphone}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Cellphone}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Contacttype:" Style="{StaticResource TextBlock}"/>
                 <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedIndex="0"/>
                 <!--Nog te binden aan contacttype tabel-->
@@ -91,10 +91,10 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding SelectedContact}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
+                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding Contact}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
                     <!--<Button Style="{StaticResource BaseStyle}"  Content="Annuleren" IsCancel="True" Grid.Column="1"/>-->
                     <!--Deze hierboven moet nog de aanpassingen terug zetten naar origineel > Contacts in de viewmodel terug opvullen via functie GetContacts -->
-                    <Button Style="{StaticResource BaseStyle}" Content="Toevoegen" Command="{Binding AddContactCommand}" CommandParameter="{Binding ElementName=txtName, Path=Text}" IsCancel="True" Grid.Column="1"/>
+                    <Button Style="{StaticResource BaseStyle}" Content="Toevoegen" Command="{Binding AddContactCommand}" Grid.Column="1"/>
                         
                     <!--Deze hierboven moet de ingevulde waarden als commandoparameter meegeven (als object? of als verschillende strings?)-->
                 </Grid>

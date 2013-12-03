@@ -10,21 +10,24 @@
       d:DesignHeight="800" d:DesignWidth="800">
 
     <Grid>
-        <UniformGrid Rows="10" Width="760" Height="400">
+        <UniformGrid Rows="11" Width="760" Height="550">
             <TextBlock Style="{StaticResource Heading1}" Text="Algemeen"/>
             <TextBlock/>
 
             <TextBlock Text="Naam" Style="{StaticResource TextBlock}"/>
             <xctk:WatermarkTextBox Watermark="Festival naam" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Name}"/>
+            
+            <TextBlock Text="Omschrijving" Style="{StaticResource TextBlock}"/>
+            <xctk:WatermarkTextBox Watermark="Omschrijving" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Omschrijving}"/>
 
             <TextBlock Text="Begin datum" Style="{StaticResource TextBlock}"/>
             <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.StartDate}" />
 
-            <TextBlock Text="Eind datum" Style="{StaticResource TextBlock}"/>
-            <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.EndDate}"/>
-
             <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" />
             <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.StartDate}" Style="{StaticResource BaseStyle}"/>
+
+            <TextBlock Text="Eind datum" Style="{StaticResource TextBlock}"/>
+            <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.EndDate}"/>           
 
             <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
             <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.EndDate}" Style="{StaticResource BaseStyle}"/>

@@ -48,19 +48,19 @@ namespace Ypsilon2.model
             set { _endDatde = value; }
         }
 
+        private string _omschrijving;
+
+        public string Omschrijving
+        {
+            get { return _omschrijving; }
+            set { _omschrijving = value; }
+        }
+        
+
         #endregion 
 
 
         #region SQL
-        private static Festival CreateFestival(DbDataReader reader)
-        {
-            Festival festival = new Festival();
-            
-            festival.StartDate = Convert.ToDateTime(reader["start_date"]);
-            festival.EndDate = Convert.ToDateTime(reader["enddate"]);
-           
-            return festival;
-        }
 
         public static Festival GetFestivals()
         {
@@ -68,25 +68,27 @@ namespace Ypsilon2.model
             DbDataReader reader = Database.GetData("SELECT * FROM festival");
             while (reader.Read())
             {
-                festival.StartDate = Convert.ToDateTime(reader["start_date"]);
-                festival.EndDate = Convert.ToDateTime(reader["enddate"]);
-                festival.Name = Convert.ToString(reader["festivalname"]);
+                festival.StartDate = Convert.ToDateTime(reader["festival_start"]);
+                festival.EndDate = Convert.ToDateTime(reader["festival_end"]);
+                festival.Name = Convert.ToString(reader["festival_name"]);
                 festival.ID = Convert.ToInt32(reader["festival_id"]);
+                festival.Omschrijving = (string)reader["festival_omschrijving"];
             }
             return festival;
         }       
 
         public static void EditFestival(Festival festival)
         {
-            string sql = "UPDATE festival SET  start_date=@begin, enddate=@end, festivalname=@name WHERE festival_id=@ID;";
+            string sql = "UPDATE festival SET festival_start=@begin, festival_end=@end, festival_name=@name, festival_omschrijving=@omschrijving WHERE festival_id=@ID;";
 
             DbParameter par1 = Database.AddParameter("@begin", festival.StartDate);
             DbParameter par2 = Database.AddParameter("@end", festival.EndDate);
             DbParameter par3 = Database.AddParameter("@name", festival.Name);
+            DbParameter par4 = Database.AddParameter("@omschrijving", festival.Omschrijving);
 
             DbParameter parID = Database.AddParameter("@ID", festival.ID);
 
-            int i = Database.ModifyData(sql, par1, par2, par3, parID);
+            int i = Database.ModifyData(sql, par1, par2, par3, par4, parID);
             Console.WriteLine(i + " row(s) are affected");
         }
         #endregion

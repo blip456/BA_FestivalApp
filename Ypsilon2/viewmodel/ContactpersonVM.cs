@@ -22,6 +22,7 @@ namespace Ypsilon2.viewmodel
             _contacts = Ypsilon2.model.Contactperson.GetContacts();
             _gefilterdeContacts = Contacts;
             _contactTypes = ContactpersonType.GetContactTypes();
+            _contact = new Ypsilon2.model.Contactperson();
         }
 
         public string Name
@@ -59,8 +60,23 @@ namespace Ypsilon2.viewmodel
         public Ypsilon2.model.Contactperson SelectedContact
         {
             get { return _selectedContact; }
-            set { _selectedContact = value; OnPropertyChanged("SelectedContact"); }
+            set 
+            { 
+                _selectedContact = value;
+                Contact = SelectedContact;
+                OnPropertyChanged("SelectedContact");
+                
+            }
         }
+
+        private Ypsilon2.model.Contactperson _contact;
+
+        public Ypsilon2.model.Contactperson Contact
+        {
+            get { return _contact; }
+            set { _contact = value; OnPropertyChanged("Contact"); Contact = new Ypsilon2.model.Contactperson(); }
+        }
+        
 
         private string _searchtext;
         public string SearchText
@@ -68,54 +84,7 @@ namespace Ypsilon2.viewmodel
             get { return _searchtext; }
             set { _searchtext = value; OnPropertyChanged("SearchText"); }
         }
-
-        private string _fullName;
-
-        public string FullName
-        {
-            get { return _fullName; }
-            set { _fullName = value; OnPropertyChanged("FullName"); }
-        }
-
-        private string _company;
-
-        public string Company
-        {
-            get { return _company; }
-            set { _company = value; OnPropertyChanged("Company"); }
-        }
-
-        private string _city;
-
-        public string City
-        {
-            get { return _city; }
-            set { _city = value; OnPropertyChanged("City"); }
-        }
-
-        private string _phone;
-
-        public string Phone
-        {
-            get { return _phone; }
-            set { _phone = value; OnPropertyChanged("Phone"); }
-        }
-
-        private string _cell;
-
-        public string Cell
-        {
-            get { return _cell; }
-            set { _cell = value; OnPropertyChanged("Cell"); }
-        }
-
-        private string _email;
-
-        public string Email
-        {
-            get { return _email; }
-            set { _email = value; OnPropertyChanged("Email"); }
-        }                       
+      
         #endregion
 
         #region Commands
@@ -133,19 +102,18 @@ namespace Ypsilon2.viewmodel
 
         public ICommand AddContactCommand
         {
-            get { return new RelayCommand<string>(AddContact); }
+            get { return new RelayCommand(AddContact); }
         }
-        public void AddContact(string strings)
-        {
-            Console.WriteLine("je wilt " + strings + " oplsaan");
-            Ypsilon2.model.Contactperson contact = new Ypsilon2.model.Contactperson();
-            contact.ID = "20";
-            contact.Company = "test";
-            contact.Email = "test";
-            contact.City = "test";
-            contact.Phone = "test";
-            contact.Cellphone = "test";
-            contact.Name = strings;
+        public void AddContact()
+        {           
+            Ypsilon2.model.Contactperson contact = new Ypsilon2.model.Contactperson();           
+            contact.Company = Contact.Company;
+            contact.Email = Contact.Email;
+            contact.City = Contact.City;
+            contact.Phone = Contact.Phone;
+            contact.Cellphone = Contact.Cellphone;
+            contact.Name = Contact.Name;
+            //JOBROLE NOG AAN CONTACT TOEVOEGEN
 
             Ypsilon2.model.Contactperson.AddContact(contact);
             GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();

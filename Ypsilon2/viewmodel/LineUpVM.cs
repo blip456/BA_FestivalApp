@@ -144,6 +144,17 @@ namespace Ypsilon2.viewmodel
             Stage.AddStage(NewPodiumName);
             StagesPerDag = Stage.GetStagesByDay(SelectedDag);
         }
+
+        public ICommand DeleteStageCommand
+        {
+            get { return new RelayCommand<int>(DeleteStage); }
+        }
+
+        public void DeleteStage(int id)
+        {
+            Console.WriteLine("er is iets verwijderd");
+            Stage.DeleteStage(id);
+        }
         #endregion
 
     }

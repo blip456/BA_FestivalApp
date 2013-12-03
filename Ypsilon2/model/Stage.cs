@@ -98,7 +98,17 @@ namespace Ypsilon2.model
 
         }
 
+        public static void DeleteStage(int id)
+        {
+            string sql = "DELETE FROM stage WHERE stage_id = @id;";
+
+            DbParameter par1 = Database.AddParameter("@id", id);
+
+            int i = Database.ModifyData(sql, par1);
+            Console.WriteLine(i + " row(s) are affected");
+        }
         #endregion
+
 
 
 

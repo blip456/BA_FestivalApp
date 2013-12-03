@@ -66,12 +66,12 @@
                     <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
                     <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
 
-                    <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" Grid.Row="6" Grid.Column="4"/>
+                    <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}"/>
                     <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding StartTime, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
 
-                    <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}" Grid.Row="7" Grid.Column="4"/>
+                    <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
                     <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding EndTime, UpdateSourceTrigger=LostFocus}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
-                    <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Grid.Column="5" Grid.Row="8" Command="{Binding SaveLineUpCommand}"/>
+                    <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Command="{Binding SaveLineUpCommand}"/>
                     <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>
                     <!-- HH = 24u formaat, hh = 12u formaat -->
                 </UniformGrid>

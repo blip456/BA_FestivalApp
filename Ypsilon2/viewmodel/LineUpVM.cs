@@ -91,6 +91,23 @@ namespace Ypsilon2.viewmodel
             get { return _selectedDoorstuurDate; }
             set { _selectedDoorstuurDate = value; OnPropertyChanged("SelectedDoorstuurDate"); }
         }
+
+        private DateTime _startTime;
+
+        public DateTime StartTime
+        {
+            get { return _startTime; }
+            set { _startTime = value; OnPropertyChanged("StartTime"); }
+        }
+
+        private DateTime _endTime;
+
+        public DateTime EndTime
+        {
+            get { return _endTime; }
+            set { _endTime = value; OnPropertyChanged("EndTime"); }
+        }
+        
         
         
         
@@ -109,9 +126,8 @@ namespace Ypsilon2.viewmodel
             lineup.Band = SelectedDoorstuurBand;
             lineup.Date = SelectedDoorstuurDate;
             lineup.Stage = SelectedDoorstuurStage.ID;
-
-            lineup.From = SelectedDoorstuurDate;    //deze moet nog het geselecteerde uur worden
-            lineup.Until = SelectedDoorstuurDate;   //deze moet nog het geselecteerde uur worden
+            lineup.From = StartTime;  
+            lineup.Until = EndTime;   
 
             Ypsilon2.model.LineUp.AddLineUp(lineup);
 

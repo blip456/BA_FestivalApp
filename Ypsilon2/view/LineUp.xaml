@@ -67,10 +67,10 @@
                     <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" Grid.Row="6" Grid.Column="4"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="12:00" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding StartTime, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
 
                     <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}" Grid.Row="7" Grid.Column="4"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="18:00" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding EndTime, UpdateSourceTrigger=LostFocus}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
                     <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Grid.Column="5" Grid.Row="8" Command="{Binding SaveLineUpCommand}"/>
                     <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>
                     <!-- HH = 24u formaat, hh = 12u formaat -->

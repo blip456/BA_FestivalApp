@@ -27,14 +27,14 @@
                
             </WrapPanel>
             <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <TextBox Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
+                <xctk:WatermarkTextBox Watermark="Zoek..." Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="KeyUp">
                             <cmd:EventToCommand Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </TextBox>
-                <Button Content="Zoek" Style="{StaticResource BaseStyle}"/>
+                </xctk:WatermarkTextBox>
+                <Button Content="Zoek" Style="{StaticResource BaseStyle}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
             </WrapPanel>
         </Grid>
 

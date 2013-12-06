@@ -44,8 +44,7 @@ namespace Ypsilon2.viewmodel
         {
             get { return _gefilterdeContacts; }
             set { _gefilterdeContacts = value; OnPropertyChanged("GefilterdeContacts"); }
-        }
-        
+        }        
 
         private ObservableCollection<ContactpersonType> _contactTypes;
 
@@ -63,7 +62,12 @@ namespace Ypsilon2.viewmodel
             set 
             { 
                 _selectedContact = value;
-                Contact = SelectedContact;
+                //als er een contact geselecteerd is moet je dat contact persoon nemen en binden anders niet
+                if (_selectedContact != null)
+                {
+                    Contact = SelectedContact;
+                }
+                
                 OnPropertyChanged("SelectedContact");
                 
             }
@@ -77,8 +81,8 @@ namespace Ypsilon2.viewmodel
             set { _contact = value; OnPropertyChanged("Contact"); }
         }
         
-
         private string _searchtext;
+
         public string SearchText
         {
             get { return _searchtext; }
@@ -93,11 +97,19 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand(SaveContact); }
         }
-
         public void SaveContact()
         {
-            Ypsilon2.model.Contactperson.EditContact(Contact);
-            GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
+            if (Contact.Name != "")
+            {
+                  //reeds bestaand contact aanpassen in DB
+                Ypsilon2.model.Contactperson.EditContact(Contact);
+                //lijst met contacten opnieuw ophalen om als nieuw toegevoegd contact meteen te tonen in listview
+                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                GefilterdeContacts = Contacts;
+
+                //leegmaken van textboxen moet hier nog komen
+                // ...
+            }              
         }
 
         public ICommand AddContactCommand
@@ -105,54 +117,59 @@ namespace Ypsilon2.viewmodel
             get { return new RelayCommand(AddContact); }
         }
         public void AddContact()
-        {           
-            Ypsilon2.model.Contactperson contact = new Ypsilon2.model.Contactperson();           
-            contact.Company = Contact.Company;
-            contact.Email = Contact.Email;
-            contact.City = Contact.City;
-            contact.Phone = Contact.Phone;
-            contact.Cellphone = Contact.Cellphone;
-            contact.Name = Contact.Name;
-            //JOBROLE NOG AAN CONTACT TOEVOEGEN
+        {
+            //enkel als contactpersoon zijn naam is ingevuld mag hij/zij toegevoegd worden aan DB
+            //normaal zou de gegevens validatie deze 'fout' moeten opvangen > deze if structuur is slechts een vangnet
+            if (Contact.Name != "")
+            {
+                //contact toevoegen aan DB
+                Ypsilon2.model.Contactperson.AddContact(Contact);
 
-            Ypsilon2.model.Contactperson.AddContact(contact);
-            GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
-            
+                //lijst met contacten opnieuw ophalen om nieuw toegevoegd contact meteen te tonen in listview
+                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                GefilterdeContacts = Contacts;
+
+                //leegmaken van textboxen - werkt niet
+                
+            }   
+            else
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("Gelieve op zijn minst een naam in te geven");
+            }               
         }       
 
         public ICommand DeleteContactCommand
         {
             get { return new RelayCommand<int>(DeleteContact); }
         }
-
         public void DeleteContact(int id)
         {
             //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ypsilon2.model.Contactperson.GetContactByID(Contacts,id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
+            // je zou ook Contact.Name kunnen gebruiken > deze kent enkel de Name als je eerst het contact selecteerd en dan verwijdered > GetContactByID kent .Name zonder een contact te selecteren
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ypsilon2.model.Contactperson.GetContactByID(Contacts, id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
             if (result == MessageBoxResult.OK)
             {
                 Ypsilon2.model.Contactperson.DeleteContact(id);
-                GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
+                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                GefilterdeContacts = Contacts;                
             }
             else
             {
                 return;
             }            
         }
-        
-        //Een gebruiker heeft de mogelijkheid om adhv een zoekvenster te zoeken naar contactpersonen.
-        //Bij ieder karakter dat ingedrukt wordt zal er gezocht worden en de gevonden contactpersonen terug geven
+           
         public ICommand SearchCommand  
         {
+            //Een gebruiker heeft de mogelijkheid om adhv een zoekbox te zoeken naar contactpersonen.
+            //Bij ieder karakter dat ingedrukt wordt zal er gezocht op alle informatie worden en de gevonden contactpersonen terug geven
             get { return new RelayCommand<string>(Search); }
         }
-
         private void Search(string str)
         {                      
             Console.WriteLine(str);
             GefilterdeContacts = model.Contactperson.GetContactsByString(Contacts, str);            
         }
         #endregion
-
     }
 }

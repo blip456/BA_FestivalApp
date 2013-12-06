@@ -5,7 +5,6 @@
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF45"
              xmlns:viewmodel="clr-namespace:Ypsilon2.viewmodel"             
              StartupUri="view/MainWindow.xaml">
-    <!-- xmlns:i = namespace voor eventtocommand - zou stackpanel command probleem moeten fixen -->
 
     <Application.Resources>
         <SolidColorBrush x:Key="Yellow">#FFE408</SolidColorBrush>
@@ -66,9 +65,39 @@
         <Style x:Key="DeleteContact" TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="Foreground" Value="#ff4444"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="{StaticResource BaseFont}"/>
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />          
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Name="Border" CornerRadius="0" BorderThickness="0" Background="Transparent" BorderBrush="Transparent">
+                            <ContentPresenter Margin="2" 
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center" 
+                                 RecognizesAccessKey="True"/>
+                        </Border>
+                        <ControlTemplate.Triggers>                            
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                            </Trigger>                          
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#cc0000"></Setter>
+                    <Setter Property="Background" Value="Transparent"></Setter>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Trigger>
+            </Style.Triggers>
+
         </Style>
 
         <Style x:Key="TwoPaneStackpanel" TargetType="StackPanel">
@@ -131,7 +160,7 @@
         <DataTemplate x:Key="scBandTemplate">
             <WrapPanel>
 
-                <Button Width="{Binding TimeSpan}" Height="auto">
+                <!--<Button Width="{Binding TimeSpan}" Height="auto">
                     <Button.Content>
                         <StackPanel>
                             <TextBlock Text="{Binding Band.Name}"/>
@@ -143,7 +172,17 @@
                             <TextBlock Text="{Binding Stage}"/>                            
                         </StackPanel>
                     </Button.Content>
-                </Button>
+                </Button>-->
+                <StackPanel Background="#FF0D8CFF" Margin="2">
+                    <TextBlock Text="{Binding Band.Name}"/>
+                    <TextBlock>
+                        <Run Text="{Binding From}"/>
+                        <Run Text="-"/>
+                        <Run Text="{Binding Until}"/>
+                    </TextBlock>
+                    <TextBlock Text="{Binding Stage}"/>
+                    <Button Style="{DynamicResource DeleteContact}" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>
+                </StackPanel>
             </WrapPanel>
         </DataTemplate>
 
@@ -151,9 +190,9 @@
         <!-- nieuwe line up datatemplate -->
         <DataTemplate x:Key="scStageTemplate">
             <WrapPanel Margin="10">
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                <Button Content="X" Command="" CommandParameter="{Binding ID}" Style="{StaticResource DeleteContact}"/>
-                <ItemsControl ItemTemplate="{DynamicResource scBandTemplate}" ItemsSource="{Binding Bands}" ItemsPanel="{DynamicResource ItemSPanel}">
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <Button Content="X" Command="{Binding DataContext.DeleteStageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}" Style="{StaticResource DeleteContact}"/>
+                <ItemsControl Margin="20,0,0,0" ItemTemplate="{DynamicResource scBandTemplate}" ItemsSource="{Binding Bands}" ItemsPanel="{DynamicResource ItemSPanel}">
                 </ItemsControl>
             </WrapPanel>
         </DataTemplate>

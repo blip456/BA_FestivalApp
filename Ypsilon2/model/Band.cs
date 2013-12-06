@@ -126,6 +126,14 @@ namespace Ypsilon2.model
             Console.WriteLine(i + " row(s) are deleted");
         }
 
+        public static void DeleteBandFromLineUp(int lineupID)
+        {
+            string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
+            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);           
+            int i = Database.ModifyData(sql, parLineUpID);
+            Console.WriteLine(i + "row deleted");
+        }
+
         public static Band GetBandByID(ObservableCollection<Band> lst, int id)
         {
             Band gevondenBand = new Band();

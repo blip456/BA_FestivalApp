@@ -6,9 +6,12 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"   
       xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WPF45"
       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:viewmodel ="clr-namespace:Ypsilon2.viewmodel"           
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="800">
-
+    <UserControl.DataContext>
+        <viewmodel:LineUpVM/>
+    </UserControl.DataContext>
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -25,9 +28,6 @@
         <Grid  x:Name="LineUpskes" Grid.Row="1">
             <StackPanel Orientation="Vertical" Grid.Row="0">
                 <ItemsControl ItemsSource="{Binding StagesPerDag}"  ItemTemplate="{StaticResource scStageTemplate}">
-                    <!-- in stage maak ik een observalble collection property van bands ofzo, en dan maak ik een observable collection van die stages
-                            je kan dan hier een eerste itemscontrol maken die gebined is aan stages in de ItemTemplate app.xaml maak je dan een nieuwe itemscontrol aan die gebined is op de stages.lstBands
-                        -->
                 </ItemsControl>
             </StackPanel>
         </Grid>

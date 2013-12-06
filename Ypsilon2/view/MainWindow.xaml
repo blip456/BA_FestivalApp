@@ -41,7 +41,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    
+
 
         <ContentControl Content="{Binding CurrentPage}" Grid.Row="1"/>
 

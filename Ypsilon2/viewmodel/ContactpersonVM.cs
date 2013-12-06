@@ -74,7 +74,7 @@ namespace Ypsilon2.viewmodel
         public Ypsilon2.model.Contactperson Contact
         {
             get { return _contact; }
-            set { _contact = value; OnPropertyChanged("Contact"); Contact = new Ypsilon2.model.Contactperson(); }
+            set { _contact = value; OnPropertyChanged("Contact"); }
         }
         
 
@@ -91,12 +91,12 @@ namespace Ypsilon2.viewmodel
 
         public ICommand SaveContactCommand
         {
-            get { return new RelayCommand<Ypsilon2.model.Contactperson>(SaveContact); }
+            get { return new RelayCommand(SaveContact); }
         }
 
-        public void SaveContact(Ypsilon2.model.Contactperson contact)
+        public void SaveContact()
         {
-            Ypsilon2.model.Contactperson.EditContact(contact);
+            Ypsilon2.model.Contactperson.EditContact(Contact);
             GefilterdeContacts = Ypsilon2.model.Contactperson.GetContacts();
         }
 

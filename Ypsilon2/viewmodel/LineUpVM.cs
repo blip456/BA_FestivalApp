@@ -14,7 +14,7 @@ namespace Ypsilon2.viewmodel
     class LineUpVM : ObservableObject, IPage
     {
         private ObservableCollection<Stage> lstAlleStages = Stage.GetAlleStages();
-
+        
         #region fields en props
         public LineUpVM()
         {
@@ -56,7 +56,6 @@ namespace Ypsilon2.viewmodel
             get { return _stagesPerDag; }
             set { _stagesPerDag = value; OnPropertyChanged("StagesPerDag"); }
         }
-
 
         private ObservableCollection<Ypsilon2.model.Band> _bands;
 
@@ -106,11 +105,7 @@ namespace Ypsilon2.viewmodel
         {
             get { return _endTime; }
             set { _endTime = value; OnPropertyChanged("EndTime"); }
-        }
-        
-        
-        
-        
+        }   
         #endregion
 
         #region commands
@@ -154,6 +149,20 @@ namespace Ypsilon2.viewmodel
         {
             Console.WriteLine("er is iets verwijderd");
             Stage.DeleteStage(id);
+            StagesPerDag = Stage.GetStagesByDay(SelectedDag); 
+        }
+
+        public ICommand DeleteBandFromLineUpCommand
+        {
+            get { return new RelayCommand<int>(DeleteBandFromLineUp); }
+        }
+
+        public void DeleteBandFromLineUp(int id)
+        {
+            Console.WriteLine("je hebt een band verwijderd");
+            Ypsilon2.model.Band.DeleteBandFromLineUp(id);
+            Bands = Ypsilon2.model.Band.GetBands();
+            StagesPerDag = Stage.GetStagesByDay(SelectedDag); 
         }
         #endregion
 

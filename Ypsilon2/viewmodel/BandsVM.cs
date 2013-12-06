@@ -17,17 +17,18 @@ namespace Ypsilon2.viewmodel
     {
         #region fields en props
 
-        public string Name
-        {
-            get { return "Bands"; }
-        }
-
         public BandsVM()
         {
             _bands = Band.GetBands();
             _gefilterdeBands = Bands;
             _imageSource = convertStringToByte("../../content/images/blank.jpg");
+            _band = new Band();
         }
+
+        public string Name
+        {
+            get { return "Bands"; }
+        }       
 
         private ObservableCollection<Band> _bands;
 
@@ -52,9 +53,14 @@ namespace Ypsilon2.viewmodel
             get { return _selectedBand; }
             set
             {
-                _selectedBand = value; OnPropertyChanged("SelectedBand");
+                _selectedBand = value; 
+                OnPropertyChanged("SelectedBand");
+
+                //als er een band geselecteerd is zal de foto van die band getoond worden, indien er geen foto in de DB zit zal een 'blank' foto getoond worden
+                //als er een band geselecteerd is zal het huidige contact die contactpersoon zijn
                 if (SelectedBand != null)
                 {
+                    Band = SelectedBand;
                     if (SelectedBand.Picture != null && SelectedBand.Picture.Length > 6)
                     {
                         ImageSource = SelectedBand.Picture;
@@ -68,6 +74,14 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        private Band _band;
+
+        public Band Band
+        {
+            get { return _band; }
+            set { _band = value; OnPropertyChanged("Band"); }
+        }
+        
         private byte[] _imageSource;
 
         public byte[] ImageSource
@@ -84,8 +98,6 @@ namespace Ypsilon2.viewmodel
             set { _selectedImagePad = value; }
         }
 
-
-
         private string _searchString;
 
         public string SearchString
@@ -95,23 +107,13 @@ namespace Ypsilon2.viewmodel
         }
 
         #endregion
-
-        private static byte[] convertStringToByte(string sPad)
-        {
-            //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
-            byte[] btImage = null;
-            FileStream fstStream = new FileStream(sPad, FileMode.Open, FileAccess.Read);
-            BinaryReader brReader = new BinaryReader(fstStream);
-            btImage = brReader.ReadBytes((int)fstStream.Length);
-            return btImage;
-        }
-
+       
         #region commands
+
         public ICommand SearchCommand
         {
             get { return new RelayCommand<string>(Search); }
         }
-
         private void Search(string str)
         {
             Console.WriteLine(str);
@@ -122,10 +124,8 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand(SelectImage); }
         }
-
         private void SelectImage()
-        {
-            Console.WriteLine("FILE DIALOG");
+        {            
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "JPG(*.jpg)|*.jpg|PNG(*.png)|*.png";
             ofd.Title = "Selecteer een afbeelding";
@@ -137,50 +137,45 @@ namespace Ypsilon2.viewmodel
             }
         }
 
-
         public ICommand SaveBandCommand
         {
-            get { return new RelayCommand<Band>(SaveBand); }
+            get { return new RelayCommand(SaveBand); }
         }
-
-        public void SaveBand(Band band)
+        public void SaveBand()
         {
-            band.Picture = ImageSource;
-            Band.EditBand(band);
-            GefilterdeBands = Band.GetBands();
+            Band.Picture = ImageSource;            
+            Band.EditBand(Band);
+            Bands = Ypsilon2.model.Band.GetBands();
+            GefilterdeBands = Bands;
         }
 
         public ICommand AddBandCommand
         {
-            get { return new RelayCommand<string>(AddBand); }
+            get { return new RelayCommand(AddBand); }
         }
-        public void AddBand(string strings)
-        {
-
-            Band band = new Band();
-            band.ID = "20";
-            band.Twitter = "test";
-            band.Facebook = "test";
-            band.Descr = "test";
+        public void AddBand()
+        {            
             if (SelectedImagePad != null)
             {
-                band.Picture = convertStringToByte(SelectedImagePad);
+                Band.Picture = convertStringToByte(SelectedImagePad);
             }
             else
             {
-                band.Picture = ImageSource;
-            }            
-            band.Name = strings;
-            Band.AddBand(band);
-            GefilterdeBands = Band.GetBands();
+                Band.Picture = ImageSource;
+            }    
+                  
+            Band.AddBand(Band);
+            Bands = Band.GetBands();
+            GefilterdeBands = Bands;
 
+            //leegmaken van de txtboxen + imagesource op blank zetten lukt nog niet
+            //...
         }
 
         public ICommand DeleteBandCommand
         {
             get { return new RelayCommand<int>(DeleteBand); }
         }
-
         public void DeleteBand(int id)
         {
             //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
@@ -194,6 +189,20 @@ namespace Ypsilon2.viewmodel
             {
                 return;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static byte[] convertStringToByte(string sPad)
+        {
+            //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
+            byte[] btImage = null;
+            FileStream fstStream = new FileStream(sPad, FileMode.Open, FileAccess.Read);
+            BinaryReader brReader = new BinaryReader(fstStream);
+            btImage = brReader.ReadBytes((int)fstStream.Length);
+            return btImage;
         }
 
         #endregion

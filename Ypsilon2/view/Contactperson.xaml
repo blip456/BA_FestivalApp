@@ -91,7 +91,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" CommandParameter="{Binding Contact}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
+                    <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
                     <!--<Button Style="{StaticResource BaseStyle}"  Content="Annuleren" IsCancel="True" Grid.Column="1"/>-->
                     <!--Deze hierboven moet nog de aanpassingen terug zetten naar origineel > Contacts in de viewmodel terug opvullen via functie GetContacts -->
                     <Button Style="{StaticResource BaseStyle}" Content="Toevoegen" Command="{Binding AddContactCommand}" Grid.Column="1"/>

@@ -173,12 +173,12 @@
                         </StackPanel>
                     </Button.Content>
                 </Button>-->
-                <StackPanel Background="#FF0D8CFF" Margin="2">
+                <StackPanel Background="#FF59B0FF" Margin="2" Width="{Binding TimeSpan}">
                     <TextBlock Text="{Binding Band.Name}"/>
                     <TextBlock>
-                        <Run Text="{Binding From}"/>
+                        <Run Text="{Binding From, StringFormat=HH:mm}"/>
                         <Run Text="-"/>
-                        <Run Text="{Binding Until}"/>
+                        <Run Text="{Binding Until, StringFormat=HH:mm}"/>
                     </TextBlock>
                     <TextBlock Text="{Binding Stage}"/>
                     <Button Style="{DynamicResource DeleteContact}" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>

@@ -85,17 +85,23 @@ namespace Ypsilon2.model
             return lstStages;
         }
 
+        public static Stage GetStageByID(int id)
+        {
+            Stage gevondenStage = new Stage();
+            DbDataReader reader = Database.GetData("SELECT * FROM  stage WHERE stage_id = "+id+";");          
+            while (reader.Read())
+            {
+                gevondenStage.Name = (string)reader["stage_name"];                
+            }
+            return gevondenStage;
+        }
 
         public static void AddStage(string NewPodiumName)
         {
-
             string sql = "INSERT INTO stage(stage_name) VALUES (@name);";
-
             DbParameter par1 = Database.AddParameter("@name", NewPodiumName);
-
             int i = Database.ModifyData(sql, par1);
             Console.WriteLine(i + " row(s) are affected");
-
         }
 
         public static void DeleteStage(int id)

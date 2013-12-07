@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ypsilon2.model;
 using Ypsilon2.view;
@@ -16,6 +17,7 @@ namespace Ypsilon2.viewmodel
         private ObservableCollection<Stage> lstAlleStages = Stage.GetAlleStages();
         
         #region fields en props
+
         public LineUpVM()
         {
             _bands = Ypsilon2.model.Band.GetBands();
@@ -64,6 +66,7 @@ namespace Ypsilon2.viewmodel
             get { return _bands; }
             set { _bands = value; OnPropertyChanged("Bands"); }
         }
+
         #endregion
 
         #region new lineup doorstuur waarden
@@ -113,7 +116,6 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand(SaveLineUp); }
         }
-
         public void SaveLineUp()
         {
             Ypsilon2.model.LineUp lineup = new Ypsilon2.model.LineUp();
@@ -133,7 +135,6 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand<string>(SaveStage); }
         }
-
         public void SaveStage(string NewPodiumName)
         {
             Stage.AddStage(NewPodiumName);
@@ -144,12 +145,18 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand<int>(DeleteStage); }
         }
-
         public void DeleteStage(int id)
         {
-            Console.WriteLine("er is iets verwijderd");
-            Stage.DeleteStage(id);
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag); 
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.OK)
+            {   
+                Stage.DeleteStage(id);
+                StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            }
+            else
+            {
+                return;
+            }
         }
 
         public ICommand DeleteBandFromLineUpCommand

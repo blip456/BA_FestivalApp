@@ -22,7 +22,7 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBlock Style="{StaticResource TextBlock}" Text="Selecteer een dag"/>
-            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen, StringFormat=dd-MM-yyyy}" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
         </StackPanel>
         
         <Grid  x:Name="LineUpskes" Grid.Row="1">
@@ -64,7 +64,8 @@
                     <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDoorstuurStage}" SelectedIndex="0"/>
 
                     <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen, StringFormat=dd-MM-yyyy}" DisplayMemberPath="Date"  SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
+                    
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}"/>
                     <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding StartTime, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>

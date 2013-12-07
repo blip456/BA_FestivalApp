@@ -13,21 +13,19 @@
 
         <FontFamily x:Key="BaseFont">Segoe UI</FontFamily>
 
-            
-        
         <Style x:Key="NavigatieButton" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="20"/>
         </Style>
-        
+
         <Style x:Key="ImageBox" TargetType="{x:Type Image}">
             <Setter Property="MinWidth" Value="50"/>
             <Setter Property="MinHeight" Value="150"/>
             <!--<Setter Property="Source" Value="content/images/blank.jpg"/>-->
         </Style>
-        
+
         <Style x:Key="StackPanel" TargetType="{x:Type StackPanel}">
             <Setter Property="Opacity" Value="0.7"/>
             <Setter Property="Background" Value="{StaticResource Yellow}"/>
@@ -69,7 +67,7 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontFamily" Value="{StaticResource BaseFont}"/>
             <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />          
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -79,13 +77,13 @@
                                  VerticalAlignment="Center" 
                                  RecognizesAccessKey="True"/>
                         </Border>
-                        <ControlTemplate.Triggers>                            
+                        <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="Transparent" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="Transparent" />
-                            </Trigger>                          
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -127,8 +125,14 @@
         <Style x:Key="Heading1" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlock}">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="Bold"/>
-        </Style> 
-           
+        </Style>
+
+        <Style x:Key="LineUpTxb" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
 
 
         <!-- templates voor in mijn Windows/Usercontrols te gebruiken -->
@@ -139,51 +143,19 @@
         </ItemsPanelTemplate>
 
 
-        <DataTemplate x:Key="scTemplateTiles">
-            <StackPanel Width="175" Height="75" Margin="8" Style="{StaticResource StackPanel}">
-                <TextBlock Text="{Binding Name}"/>
-                <TextBlock>
-                    <Run Text="Stad: "/>
-                    <Run Text="{Binding City}"/>
-                </TextBlock>
-                <TextBlock>
-                    <Run Text="Bedrijf: "/>
-                    <Run Text="{Binding Company}"/>
-                </TextBlock>
-                <StackPanel.ToolTip>
-                    <TextBlock Text="Klik voor meer informatie"/>
-                </StackPanel.ToolTip>
-            </StackPanel>
-        </DataTemplate>
-
-
         <DataTemplate x:Key="scBandTemplate">
-            <WrapPanel>
-
-                <!--<Button Width="{Binding TimeSpan}" Height="auto">
-                    <Button.Content>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Band.Name}"/>
-                            <TextBlock>             
-                                <Run Text="{Binding From}"/>
-                                <Run Text="-"/>
-                                <Run Text="{Binding Until}"/>
-                            </TextBlock>
-                            <TextBlock Text="{Binding Stage}"/>                            
-                        </StackPanel>
-                    </Button.Content>
-                </Button>-->
-                <StackPanel Background="#FF59B0FF" Margin="2" Width="{Binding TimeSpan}">
-                    <TextBlock Text="{Binding Band.Name}"/>
-                    <TextBlock>
+            <Border BorderBrush="#FF007BB2" BorderThickness="3" Margin="2">
+                <StackPanel Background="#FF19B8FF" Width="{Binding TimeSpan}">
+                    <Button Style="{DynamicResource DeleteContact}" HorizontalAlignment="Right" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>
+                    <TextBlock Text="{Binding Band.Name}" Style="{DynamicResource LineUpTxb}"/>
+                    <TextBlock Style="{DynamicResource LineUpTxb}">
                         <Run Text="{Binding From, StringFormat=HH:mm}"/>
                         <Run Text="-"/>
                         <Run Text="{Binding Until, StringFormat=HH:mm}"/>
                     </TextBlock>
                     <TextBlock Text="{Binding Stage}"/>
-                    <Button Style="{DynamicResource DeleteContact}" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>
                 </StackPanel>
-            </WrapPanel>
+            </Border>
         </DataTemplate>
 
 

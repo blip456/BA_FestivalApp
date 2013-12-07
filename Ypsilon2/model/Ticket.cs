@@ -82,6 +82,7 @@ namespace Ypsilon2.model
         }
 
         #region SQL
+
         private static Ticket CreateTicket(DbDataReader reader)
         {
             Ticket ticket = new Ticket();
@@ -107,20 +108,6 @@ namespace Ypsilon2.model
             return lstTickets;
         }
 
-        //public static Ticket GetTicketByID(int id)
-        //{
-        //    Ticket gevondenTicket = new Ticket();
-        //    DbParameter par = Database.AddParameter("@ID", id);
-        //    DbDataReader reader = Database.GetData("SELECT * FROM ticket WHERE ticket_id=@ID", par);
-        //    while (reader.Read())
-        //    {
-        //        gevondenTicket = CreateTicket(reader);
-        //        return gevondenTicket;
-        //    }
-
-        //    return gevondenTicket;
-        //}
-
         public static Ticket GetTicketByID(ObservableCollection<Ticket> lst, int id)
         {
             Ticket gevondenTicket = new Ticket();
@@ -132,8 +119,7 @@ namespace Ypsilon2.model
                 }
             }
             return gevondenTicket;
-        }
-       
+        }       
 
         public static string AddOrEdit(Ticket ticket)
         {
@@ -188,6 +174,7 @@ namespace Ypsilon2.model
             int i = Database.ModifyData(sql, parID);
             Console.WriteLine(i + " row(s) are deleted");
         }
+
         #endregion
     }
 }

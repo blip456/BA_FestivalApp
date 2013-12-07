@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
 
 
-        <ItemsControl ItemsSource="{Binding Pages}" ItemsPanel="{StaticResource ItemSPanel}" Background="#FF0D8CFF">
+        <ItemsControl ItemsSource="{Binding Pages}" ItemsPanel="{StaticResource ItemSPanel}" Background="#FFFF9619">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Margin="8" Style="{StaticResource NavigatieButton}" Content="{Binding Name}" Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
@@ -43,7 +43,7 @@
         </ItemsControl>
 
 
-        <ContentControl Content="{Binding CurrentPage}" Grid.Row="1"/>
+        <ContentControl Content="{Binding CurrentPage}" Grid.Row="1" Background="Black"/>
 
 
 

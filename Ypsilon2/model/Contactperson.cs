@@ -177,8 +177,5 @@ namespace Ypsilon2.model
             Console.WriteLine(i + " row(s) are deleted");
         }
         #endregion
-
-
-
     }
 }

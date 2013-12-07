@@ -12,7 +12,7 @@ namespace Ypsilon2.model
 {
     public class LineUp
     {
-        #region prop en field
+        #region Prop en field
 
         private string _id;
 
@@ -62,7 +62,6 @@ namespace Ypsilon2.model
             set { _band = value; }
         }
 
-
         private double _timespan;
 
         public double TimeSpan
@@ -75,10 +74,10 @@ namespace Ypsilon2.model
             set { _timespan = value; }
         }
 
-
         #endregion
 
         #region SQL
+
         private static LineUp CreateLineUp(DbDataReader reader)
         {
             LineUp lineup = new LineUp();
@@ -87,27 +86,19 @@ namespace Ypsilon2.model
             lineup.From = Convert.ToDateTime(reader["lineup_from"]);
             lineup.Until = Convert.ToDateTime(reader["lineup_until"]);
             //lineup.Stage = //een methode die de stage name ophaalt -> enkel name (string) is genoeg
-            //lineup.Band = //een methode die get bands by id oproept
             lineup.Band = Band.GetBandByID(lstBands, Convert.ToInt32(reader["lineup_band"]));
             return lineup;
         }
 
         public static ObservableCollection<LineUp> GetBandsByLineUpIDAndDate(int id, DateTime date)
         {
-            string dag = Convert.ToString(date);
-            string[] arrDate = dag.Split(' ');
-
             ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
-            DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='" + date.ToString("yyyy-MM-dd HH:mm:ss") + "';");
-            //DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='2013-12-27';");
+            DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='" + date.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY lineup_from ASC;");
 
             while (reader.Read())
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
-            //lstGevondenLineUps.OrderBy(i => i.From);
-
-            lstGevondenLineUps.OrderByDescending(i => i.From);
             return lstGevondenLineUps;
         }
 
@@ -119,7 +110,6 @@ namespace Ypsilon2.model
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
-
             return lstGevondenLineUps;
         }
 
@@ -161,6 +151,7 @@ namespace Ypsilon2.model
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
             Console.WriteLine(i + " row(s) are affected");
         }
+
         #endregion
 
         #region Methods
@@ -185,7 +176,7 @@ namespace Ypsilon2.model
             double dUntilMinute = Convert.ToDouble(arrsSplitUntil[1]);
             double dUntil = dUntilHour + (dUntilMinute / 60);
 
-            double dTimespan = (dUntil - dFrom) * 150;
+            double dTimespan = (dUntil - dFrom) * 100;
 
             return dTimespan;
         }

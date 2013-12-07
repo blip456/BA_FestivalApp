@@ -145,7 +145,6 @@ namespace Ypsilon2.model
                 }
             }
             return gevondenBand;
-
         }
 
         public static void AddBand(Band band)

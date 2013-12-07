@@ -46,9 +46,9 @@ namespace Ypsilon2.model
             set { _until = value; }
         }
 
-        private string _stage;
+        private Stage _stage;
 
-        public string Stage
+        public Stage Stage
         {
             get { return _stage; }
             set { _stage = value; }
@@ -82,7 +82,7 @@ namespace Ypsilon2.model
 
         public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
         {
-          
+
             string sFrom = dtFrom.ToString("HH:mm");
             string sUntil = dtUntil.ToString("HH:mm");
 
@@ -101,7 +101,7 @@ namespace Ypsilon2.model
             return dTimespan;
         }
 
-        private static ObservableCollection<Ypsilon2.model.LineUp> lstAlleLineUps = GetLineUps();      
+        private static ObservableCollection<Ypsilon2.model.LineUp> lstAlleLineUps = GetLineUps();
 
         #region SQL
         private static LineUp CreateLineUp(DbDataReader reader)
@@ -121,7 +121,7 @@ namespace Ypsilon2.model
         {
             string dag = Convert.ToString(date);
             string[] arrDate = dag.Split(' ');
-            
+
             ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
             DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='" + date.ToString("yyyy-MM-dd HH:mm:ss") + "';");
             //DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='2013-12-27';");
@@ -130,7 +130,9 @@ namespace Ypsilon2.model
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
+            //lstGevondenLineUps.OrderBy(i => i.From);
 
+            lstGevondenLineUps.OrderByDescending(i => i.From);
             return lstGevondenLineUps;
         }
 
@@ -158,6 +160,19 @@ namespace Ypsilon2.model
             return lstLineUps;
         }
 
+        public static LineUp GetLineUpByID(int id)
+        {
+            LineUp gevondenLineUp = new LineUp();
+            string sql = "SELECT * FROM lineup WHERE lineup_id = " + id + "";
+            DbDataReader reader = Database.GetData(sql);
+            while (reader.Read())
+            {
+                gevondenLineUp = CreateLineUp(reader);
+            }
+
+            return gevondenLineUp;
+        }
+
         public static void AddLineUp(LineUp lineup)
         {
             string sql = "INSERT INTO lineup(lineup_date, lineup_from, lineup_until, lineup_stage, lineup_band) VALUES (@date, @from, @until, @stageid, @bandid);";
@@ -165,8 +180,8 @@ namespace Ypsilon2.model
             DbParameter par1 = Database.AddParameter("@date", lineup.Date);
             DbParameter par2 = Database.AddParameter("@from", lineup.From);
             DbParameter par3 = Database.AddParameter("@until", lineup.Until);
-            DbParameter par4 = Database.AddParameter("@stageid", lineup.Stage);
-            DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);            
+            DbParameter par4 = Database.AddParameter("@stageid", lineup.Stage.ID);
+            DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
             Console.WriteLine(i + " row(s) are affected");

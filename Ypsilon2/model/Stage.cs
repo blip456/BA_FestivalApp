@@ -82,6 +82,7 @@ namespace Ypsilon2.model
             {
                 lstStages.Add(CreateStageWithDate(reader, date));
             }
+            
             return lstStages;
         }
 

@@ -15,14 +15,15 @@ namespace Ypsilon2.viewmodel
     class LineUpVM : ObservableObject, IPage
     {
         private ObservableCollection<Stage> lstAlleStages = Stage.GetAlleStages();
-        
+
         #region fields en props
 
         public LineUpVM()
         {
             _bands = Ypsilon2.model.Band.GetBands();
             _uniekeDagen = Ypsilon2.model.Festival.aantalDagen();
-            _stagesPerDag = Stage.GetStagesByDay(SelectedDag);           
+            _stagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            _lineUp = new Ypsilon2.model.LineUp();
         }
 
         public string Name
@@ -67,48 +68,14 @@ namespace Ypsilon2.viewmodel
             set { _bands = value; OnPropertyChanged("Bands"); }
         }
 
-        #endregion
+        private Ypsilon2.model.LineUp _lineUp;
 
-        #region new lineup doorstuur waarden
-        private Ypsilon2.model.Band _selectedDoorstuurBand;
-
-        public Ypsilon2.model.Band SelectedDoorstuurBand
+        public Ypsilon2.model.LineUp LineUp
         {
-            get { return _selectedDoorstuurBand; }
-            set { _selectedDoorstuurBand = value; OnPropertyChanged("SelectedDoorstuurband"); }
+            get { return _lineUp; }
+            set { _lineUp = value; OnPropertyChanged("LineUp"); }
         }
 
-        private Stage _selectedDoorstuurStage;
-
-        public Stage SelectedDoorstuurStage
-        {
-            get { return _selectedDoorstuurStage; }
-            set { _selectedDoorstuurStage = value; OnPropertyChanged("SelectedDoorstuurStage"); }
-        }
-
-        private DateTime _selectedDoorstuurDate;
-
-        public DateTime SelectedDoorstuurDate
-        {
-            get { return _selectedDoorstuurDate; }
-            set { _selectedDoorstuurDate = value; OnPropertyChanged("SelectedDoorstuurDate"); }
-        }
-
-        private DateTime _startTime;
-
-        public DateTime StartTime
-        {
-            get { return _startTime; }
-            set { _startTime = value; OnPropertyChanged("StartTime"); }
-        }
-
-        private DateTime _endTime;
-
-        public DateTime EndTime
-        {
-            get { return _endTime; }
-            set { _endTime = value; OnPropertyChanged("EndTime"); }
-        }   
         #endregion
 
         #region commands
@@ -118,17 +85,9 @@ namespace Ypsilon2.viewmodel
         }
         public void SaveLineUp()
         {
-            Ypsilon2.model.LineUp lineup = new Ypsilon2.model.LineUp();
+            Ypsilon2.model.LineUp.AddLineUp(LineUp);
 
-            lineup.Band = SelectedDoorstuurBand;
-            lineup.Date = SelectedDoorstuurDate;
-            lineup.Stage = SelectedDoorstuurStage.ID;
-            lineup.From = StartTime;  
-            lineup.Until = EndTime;   
-
-            Ypsilon2.model.LineUp.AddLineUp(lineup);
-
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag); 
+            StagesPerDag = Stage.GetStagesByDay(SelectedDag);
         }
 
         public ICommand SaveStageCommand
@@ -149,7 +108,7 @@ namespace Ypsilon2.viewmodel
         {
             var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
-            {   
+            {
                 Stage.DeleteStage(id);
                 StagesPerDag = Stage.GetStagesByDay(SelectedDag);
             }
@@ -163,13 +122,20 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand<int>(DeleteBandFromLineUp); }
         }
-
         public void DeleteBandFromLineUp(int id)
         {
-            Console.WriteLine("je hebt een band verwijderd");
-            Ypsilon2.model.Band.DeleteBandFromLineUp(id);
-            Bands = Ypsilon2.model.Band.GetBands();
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag); 
+            int bandID = Convert.ToInt32(model.LineUp.GetLineUpByID(id).Band.ID);
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ypsilon2.model.Band.GetBandByID(Bands, bandID).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.OK)
+            {                
+                Ypsilon2.model.Band.DeleteBandFromLineUp(id);
+                Bands = Ypsilon2.model.Band.GetBands();
+                StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            }
+            else
+            {
+                return;
+            }
         }
         #endregion
 

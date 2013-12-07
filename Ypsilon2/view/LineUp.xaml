@@ -22,16 +22,18 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBlock Style="{StaticResource TextBlock}" Text="Selecteer een dag"/>
-            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen, StringFormat=dd-MM-yyyy}" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" ItemStringFormat="dd/MM/yyyy" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
         </StackPanel>
-        
+
         <Grid  x:Name="LineUpskes" Grid.Row="1">
-            <StackPanel Orientation="Vertical" Grid.Row="0">
-                <ItemsControl ItemsSource="{Binding StagesPerDag}"  ItemTemplate="{StaticResource scStageTemplate}">
-                </ItemsControl>
-            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" Grid.Row="0">
+                    <ItemsControl ItemsSource="{Binding StagesPerDag}" ItemTemplate="{StaticResource scStageTemplate}"/>
+                </StackPanel>
+            </ScrollViewer>
+
         </Grid>
-        
+
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="0" Grid.Row="2">
             <Grid Width="760">
 
@@ -57,21 +59,21 @@
                     <TextBlock/>
 
                     <TextBlock Text="Band" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Bands}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDoorstuurBand}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Bands}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Band}" SelectedIndex="0"/>
 
 
                     <TextBlock Text="Podium" Style="{StaticResource TextBlock}" />
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedDoorstuurStage}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Stage}" SelectedIndex="0"/>
 
                     <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen, StringFormat=dd-MM-yyyy}" DisplayMemberPath="Date"  SelectedItem="{Binding SelectedDoorstuurDate}" SelectedIndex="0"/>
-                    
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" ItemStringFormat="dd/MM/yyyy" SelectedItem="{Binding LineUp.Date}" SelectedIndex="0"/>
+
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding StartTime, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.From, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
 
                     <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding EndTime, UpdateSourceTrigger=LostFocus}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.Until, UpdateSourceTrigger=LostFocus}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
                     <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Command="{Binding SaveLineUpCommand}"/>
                     <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>
                     <!-- HH = 24u formaat, hh = 12u formaat -->

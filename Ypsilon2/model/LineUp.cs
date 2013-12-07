@@ -78,31 +78,6 @@ namespace Ypsilon2.model
 
         #endregion
 
-        private static ObservableCollection<Band> lstBands = Band.GetBands();
-
-        public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
-        {
-
-            string sFrom = dtFrom.ToString("HH:mm");
-            string sUntil = dtUntil.ToString("HH:mm");
-
-            string[] arrsSplitFrom = sFrom.Split(':');
-            double dFromHour = Convert.ToDouble(arrsSplitFrom[0]);
-            double dFromMinute = Convert.ToDouble(arrsSplitFrom[1]);
-            double dFrom = dFromHour + (dFromMinute / 60);
-
-            string[] arrsSplitUntil = sUntil.Split(':');
-            double dUntilHour = Convert.ToDouble(arrsSplitUntil[0]);
-            double dUntilMinute = Convert.ToDouble(arrsSplitUntil[1]);
-            double dUntil = dUntilHour + (dUntilMinute / 60);
-
-            double dTimespan = (dUntil - dFrom) * 150;
-
-            return dTimespan;
-        }
-
-        private static ObservableCollection<Ypsilon2.model.LineUp> lstAlleLineUps = GetLineUps();
-
         #region SQL
         private static LineUp CreateLineUp(DbDataReader reader)
         {
@@ -188,5 +163,33 @@ namespace Ypsilon2.model
         }
         #endregion
 
+        #region Methods
+
+        private static ObservableCollection<Band> lstBands = Band.GetBands();
+
+        private static ObservableCollection<Ypsilon2.model.LineUp> lstAlleLineUps = GetLineUps();
+
+        //berekend hoeveel tijd er tussen het begin en einde van een optreden zit, dit wordt oa gebruikt voor de breedte van de stackpanel te bepalen
+        public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
+        {
+            string sFrom = dtFrom.ToString("HH:mm");
+            string sUntil = dtUntil.ToString("HH:mm");
+
+            string[] arrsSplitFrom = sFrom.Split(':');
+            double dFromHour = Convert.ToDouble(arrsSplitFrom[0]);
+            double dFromMinute = Convert.ToDouble(arrsSplitFrom[1]);
+            double dFrom = dFromHour + (dFromMinute / 60);
+
+            string[] arrsSplitUntil = sUntil.Split(':');
+            double dUntilHour = Convert.ToDouble(arrsSplitUntil[0]);
+            double dUntilMinute = Convert.ToDouble(arrsSplitUntil[1]);
+            double dUntil = dUntilHour + (dUntilMinute / 60);
+
+            double dTimespan = (dUntil - dFrom) * 150;
+
+            return dTimespan;
+        }
+
+        #endregion
     }
 }

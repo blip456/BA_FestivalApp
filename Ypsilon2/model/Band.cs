@@ -137,13 +137,6 @@ namespace Ypsilon2.model
         public static Band GetBandByID(ObservableCollection<Band> lst, int id)
         {
             Band gevondenBand = new Band();
-            //foreach (Band band in lst)
-            //{
-            //    if (band.ID == Convert.ToString(id))
-            //    {
-            //        gevondenBand = band;
-            //    }
-            //}
             gevondenBand = lst.Single(i => i.ID == Convert.ToString(id));
 
             return gevondenBand;

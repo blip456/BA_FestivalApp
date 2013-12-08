@@ -7,13 +7,13 @@
    mc:Ignorable="d" 
    d:DesignHeight="800" d:DesignWidth="800">
 
-    <Grid Style="{StaticResource MainGrid}" Width="760">
+    <Grid Style="{StaticResource MainGrid}" MaxWidth="1000">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="160"/>
 
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="240"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -22,7 +22,7 @@
         <StackPanel Grid.Column="0" Grid.Row="0" Style="{StaticResource TwoPaneStackpanel}">
             <TextBlock Style="{StaticResource Heading1}" Text="Totaal aantal verkochte normale tickets:"/>
             <TextBlock  Style="{StaticResource Counter}">
-                <Run Text="{Binding SoldTicketNormal, UpdateSourceTrigger=PropertyChanged}"/>
+                <Run Text="{Binding SoldTicketNormal}"/>
                 <Run Text="/"/>
                 <Run Text="{Binding TotalTicketTypeNormal}"/>
             </TextBlock>
@@ -60,7 +60,7 @@
             <Button Content="Annuleer" Style="{StaticResource BaseStyle}" IsCancel="True"/>
         </UniformGrid>
         
-        <ListView Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Name="lsvReserveringen" ItemsSource="{Binding Reserveringen, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ListView Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,20" Name="lsvReserveringen" ItemsSource="{Binding Reserveringen, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListView.View>
                 <GridView >
                     <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Path=TicketHolder}" Width="150"/>
@@ -80,9 +80,9 @@
             </ListView.View>
         </ListView>
 
-        <UniformGrid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Rows="6" Width="370">
-            <TextBlock Text="Reservatie" Style="{StaticResource Subtitle}"/>
-            <TextBlock Text="Normaal ticket" Style="{StaticResource TextBlock}"/>
+        <UniformGrid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Rows="5" Width="370">
+            <TextBlock Text="Reservatie" Style="{StaticResource Heading1}"/>
+
             <StackPanel Orientation="Horizontal">
                 <ComboBox Style="{StaticResource BaseStyle}" SelectedIndex="0" Width="250" ItemsSource="{Binding TicketTypes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedDagReservering}">
                     <ComboBox.ItemTemplate>

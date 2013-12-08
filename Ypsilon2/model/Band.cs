@@ -129,7 +129,7 @@ namespace Ypsilon2.model
         public static void DeleteBandFromLineUp(int lineupID)
         {
             string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
-            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);           
+            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);
             int i = Database.ModifyData(sql, parLineUpID);
             Console.WriteLine(i + "row deleted");
         }
@@ -137,13 +137,15 @@ namespace Ypsilon2.model
         public static Band GetBandByID(ObservableCollection<Band> lst, int id)
         {
             Band gevondenBand = new Band();
-            foreach (Band band in lst)
-            {
-                if (band.ID == Convert.ToString(id))
-                {
-                    gevondenBand = band;
-                }
-            }
+            //foreach (Band band in lst)
+            //{
+            //    if (band.ID == Convert.ToString(id))
+            //    {
+            //        gevondenBand = band;
+            //    }
+            //}
+            gevondenBand = lst.Single(i => i.ID == Convert.ToString(id));
+
             return gevondenBand;
         }
 

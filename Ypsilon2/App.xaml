@@ -144,7 +144,7 @@
 
 
         <DataTemplate x:Key="scBandTemplate">
-            <Border BorderBrush="#FF007BB2" BorderThickness="3" Margin="2">
+            <Border BorderBrush="#FF007BB2" BorderThickness="1" Margin="2">
                 <StackPanel Background="#FF19B8FF" Width="{Binding TimeSpan}">
                     <Button Style="{DynamicResource DeleteContact}" HorizontalAlignment="Right" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>
                     <TextBlock Text="{Binding Band.Name}" Style="{DynamicResource LineUpTxb}"/>

@@ -9,11 +9,11 @@
       mc:Ignorable="d" 
       d:DesignHeight="800" d:DesignWidth="800">
 
-    <Grid Style="{StaticResource MainGrid}">
+    <Grid Style="{StaticResource MainGrid}" MaxWidth="1000">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="1.5*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="240"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -38,7 +38,7 @@
             </WrapPanel>
         </Grid>
 
-        <ListView x:Name="lsvContact" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
+        <ListView x:Name="lsvContact" Margin="0,20,0,20" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="gvcNaam" Header="Naam" DisplayMemberBinding="{Binding Path=Name}"/>

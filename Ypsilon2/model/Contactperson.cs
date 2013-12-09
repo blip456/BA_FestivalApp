@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ypsilon2.Model;
+using Xceed.Wpf.Toolkit;
 
 namespace Ypsilon2.model
 {
@@ -87,9 +88,7 @@ namespace Ypsilon2.model
             contact.ID = Convert.ToString(reader["contactperson_id"]);
             contact.Name = Convert.ToString(reader["contactperson_name"]);
             contact.Company = Convert.ToString(reader["contactperson_company"]);
-            ContactpersonType jobrole = new ContactpersonType(); // volgende 3 lijnen moeten nog beter, ik snap nog niet hoe die linking tussen tabellen gaat werken
-            jobrole.Name = "blanco"; //dummy data
-            contact.JobRole = jobrole; //dummy data
+            contact.JobRole = ContactpersonType.GetContactTypeByID((int)reader["contactpersontype_idJobrole"]);
             contact.City = Convert.ToString(reader["contactperson_city"]);
             contact.Email = Convert.ToString(reader["contactperson_email"]);
             contact.Phone = Convert.ToString(reader["contactperson_phone"]);
@@ -137,7 +136,7 @@ namespace Ypsilon2.model
 
         public static void AddContact(Contactperson contact)
         {
-            string sql = "INSERT INTO contactperson(contactperson_name, contactperson_company, contactperson_city, contactperson_email, contactperson_phone, contactperson_cell) VALUES (@name, @company, @city, @email, @phone, @cell);";
+            string sql = "INSERT INTO contactperson(contactperson_name, contactperson_company, contactperson_city, contactperson_email, contactperson_phone, contactperson_cell, contactpersontype_idJobrole) VALUES (@name, @company, @city, @email, @phone, @cell, @idjobrole);";
 
             DbParameter par1 = Database.AddParameter("@name", contact.Name);
             DbParameter par2 = Database.AddParameter("@company", contact.Company);
@@ -145,14 +144,19 @@ namespace Ypsilon2.model
             DbParameter par4 = Database.AddParameter("@email", contact.Email);
             DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
             DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
+            DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
 
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6);
+            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7);
+            if (i == 0)
+            {
+                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
 
         public static void EditContact(Contactperson contact)
         {
-            string sql = "UPDATE contactperson SET contactperson_name=@name, contactperson_company=@company, contactperson_city=@city, contactperson_email=@email, contactperson_phone=@phone, contactperson_cell=@cell WHERE contactperson_id=@ID;";
+            string sql = "UPDATE contactperson SET contactperson_name=@name, contactperson_company=@company, contactperson_city=@city, contactperson_email=@email, contactperson_phone=@phone, contactperson_cell=@cell, contactpersontype_idJobrole=@idjobrole WHERE contactperson_id=@ID;";
 
             DbParameter par1 = Database.AddParameter("@name", contact.Name);
             DbParameter par2 = Database.AddParameter("@company", contact.Company);
@@ -160,10 +164,15 @@ namespace Ypsilon2.model
             DbParameter par4 = Database.AddParameter("@email", contact.Email);
             DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
             DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
+            DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
 
             DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(contact.ID));
 
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, parID);
+            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
 
@@ -174,6 +183,10 @@ namespace Ypsilon2.model
             DbParameter parID = Database.AddParameter("@ID", id);
 
             int i = Database.ModifyData(sql, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are deleted");
         }
         #endregion

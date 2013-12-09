@@ -24,7 +24,7 @@
                 <TextBlock Style="{StaticResource TextBlock}" Text="Sorteer volgens: "/>
                 <ComboBox Style="{StaticResource BaseStyle}"/>
                 <!--Combo moet nog kunnen gebined worden aan alles header items uit de listview-->
-               
+
             </WrapPanel>
             <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <xctk:WatermarkTextBox Watermark="Zoek..." Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
@@ -38,11 +38,12 @@
             </WrapPanel>
         </Grid>
 
-        <ListView x:Name="lsvContact" Margin="0,20,0,20" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
+        <ListView x:Name="lsvContact" Margin="0,30,0,10" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding GefilterdeContacts}" SelectedItem="{Binding SelectedContact}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn x:Name="gvcNaam" Header="Naam" DisplayMemberBinding="{Binding Path=Name}"/>
                     <GridViewColumn Header="Bedrijf" DisplayMemberBinding="{Binding Path=Company}"/>
+                    <GridViewColumn Header="Functie" DisplayMemberBinding="{Binding Path=JobRole.Name}"/>
                     <GridViewColumn Header="Stad" DisplayMemberBinding="{Binding Path=City}"/>
                     <GridViewColumn Header="Emailadres" DisplayMemberBinding="{Binding Path=Email}"/>
                     <GridViewColumn Header="Telefoon" DisplayMemberBinding="{Binding Path=Phone}"/>
@@ -83,8 +84,7 @@
                 <TextBlock Text="Gsm:" Style="{StaticResource TextBlock}"/>
                 <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Cellphone}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Contacttype:" Style="{StaticResource TextBlock}"/>
-                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedIndex="0"/>
-                <!--Nog te binden aan contacttype tabel-->
+                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedContactType}"/>
                 <TextBlock Text="" Style="{StaticResource TextBlock}" Visibility="Hidden"/>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -92,11 +92,7 @@
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Button Style="{StaticResource BaseStyle}" Command="{Binding SaveContactCommand}" Content="Aanpassen" IsDefault="True" Grid.Column="0"/>
-                    <!--<Button Style="{StaticResource BaseStyle}"  Content="Annuleren" IsCancel="True" Grid.Column="1"/>-->
-                    <!--Deze hierboven moet nog de aanpassingen terug zetten naar origineel > Contacts in de viewmodel terug opvullen via functie GetContacts -->
                     <Button Style="{StaticResource BaseStyle}" Content="Toevoegen" Command="{Binding AddContactCommand}" Grid.Column="1"/>
-                        
-                    <!--Deze hierboven moet de ingevulde waarden als commandoparameter meegeven (als object? of als verschillende strings?)-->
                 </Grid>
             </StackPanel>
         </Grid>

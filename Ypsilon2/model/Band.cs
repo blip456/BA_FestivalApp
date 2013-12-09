@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Ypsilon2.Model;
 using Microsoft.Win32;
 using System.IO;
+using Xceed.Wpf.Toolkit;
 
 namespace Ypsilon2.model
 {
@@ -116,24 +117,6 @@ namespace Ypsilon2.model
             return lstGevondenBands;
         }
 
-        public static void DeleteBand(int id)
-        {
-            string sql = "DELETE FROM band WHERE band_id = @ID;";
-
-            DbParameter parID = Database.AddParameter("@ID", id);
-
-            int i = Database.ModifyData(sql, parID);
-            Console.WriteLine(i + " row(s) are deleted");
-        }
-
-        public static void DeleteBandFromLineUp(int lineupID)
-        {
-            string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
-            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);
-            int i = Database.ModifyData(sql, parLineUpID);
-            Console.WriteLine(i + "row deleted");
-        }
-
         public static Band GetBandByID(ObservableCollection<Band> lst, int id)
         {
             Band gevondenBand = new Band();
@@ -144,7 +127,6 @@ namespace Ypsilon2.model
 
         public static void AddBand(Band band)
         {
-            //string sql = "INSERT INTO band(band_name, band_picture, band_description, band_twitter, band_facebook) VALUES (@name,@picture, @description, @twitter, @twitter, @facebook);";
             string sql = "INSERT INTO band(band_name, band_picture, band_description, band_twitter, band_facebook) VALUES (@name, @picture, @description, @twitter, @facebook);";
 
             DbParameter par1 = Database.AddParameter("@name", band.Name);
@@ -154,6 +136,10 @@ namespace Ypsilon2.model
             DbParameter par5 = Database.AddParameter("@facebook", band.Facebook);
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
+            if (i == 0)
+            {
+                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
 
@@ -170,8 +156,39 @@ namespace Ypsilon2.model
             DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(band.ID));
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
+
+        public static void DeleteBand(int id)
+        {
+            string sql = "DELETE FROM band WHERE band_id = @ID;";
+
+            DbParameter parID = Database.AddParameter("@ID", id);
+
+            int i = Database.ModifyData(sql, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
+            Console.WriteLine(i + " row(s) are deleted");
+        }
+
+        public static void DeleteBandFromLineUp(int lineupID)
+        {
+            string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
+            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);
+            int i = Database.ModifyData(sql, parLineUpID);
+            if (i == 0)
+            {
+                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
+            Console.WriteLine(i + "row deleted");
+        }
+
         #endregion
 
 

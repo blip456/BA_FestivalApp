@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ypsilon2.Model;
+using Xceed.Wpf.Toolkit;
 
 namespace Ypsilon2.model
 {
@@ -31,6 +32,9 @@ namespace Ypsilon2.model
 
         #endregion
 
+        public static ObservableCollection<ContactpersonType> lstContactTypes = GetContactTypes();
+       
+
         #region SQL
         private static ContactpersonType CreateContactType(DbDataReader reader)
         {
@@ -51,30 +55,11 @@ namespace Ypsilon2.model
             return lstContactTypes;
         }
 
-        //public static ContactpersonType GetContactTypeByID(int id)
-        //{
-        //    ContactpersonType gevondenContactType = new ContactpersonType();
-        //    DbParameter par = Database.AddParameter("@ID", id);
-        //    DbDataReader reader = Database.GetData("SELECT * FROM contactpersontype WHERE id=@ID", par);
-        //    while (reader.Read())
-        //    {
-        //        gevondenContactType = CreateContactType(reader);
-        //        return gevondenContactType;
-        //    }
-
-        //    return gevondenContactType;
-        //}
-
-        public static ContactpersonType GetContactTypeByID(ObservableCollection<ContactpersonType> lst, int id)
+        public static ContactpersonType GetContactTypeByID(int id)
         {
             ContactpersonType gevondenContactType = new ContactpersonType();
-            foreach (ContactpersonType contactType in lst)
-            {
-                if (contactType.ID == Convert.ToString(id))
-                {
-                    gevondenContactType = contactType;
-                }
-            }
+
+            gevondenContactType = lstContactTypes.Single(i => i.ID == Convert.ToString(id));
             return gevondenContactType;
         }
 
@@ -102,6 +87,10 @@ namespace Ypsilon2.model
             DbParameter par1 = Database.AddParameter("@name", contactType.Name);            
 
             int i = Database.ModifyData(sql, par1);
+            if (i == 0)
+            {
+                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected in contactpersontype");
         }
 
@@ -114,6 +103,10 @@ namespace Ypsilon2.model
             DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(contactType.ID));
 
             int i = Database.ModifyData(sql, par1, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected in contactpersontype");
         }
         #endregion

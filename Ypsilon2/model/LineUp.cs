@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit;
 using Ypsilon2.Model;
 
 namespace Ypsilon2.model
@@ -149,6 +150,10 @@ namespace Ypsilon2.model
             DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
+            if (i == 0)
+            {
+                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
 

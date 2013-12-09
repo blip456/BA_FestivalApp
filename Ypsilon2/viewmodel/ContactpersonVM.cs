@@ -54,6 +54,15 @@ namespace Ypsilon2.viewmodel
             set { _contactTypes = value; OnPropertyChanged("ContactTypes"); }
         }
 
+        private ContactpersonType _selectedContactType;
+
+        public ContactpersonType SelectedContactType
+        {
+            get { return _selectedContactType; }
+            set { _selectedContactType = value; OnPropertyChanged("SelectedContactType"); }
+        }
+        
+
         private Ypsilon2.model.Contactperson _selectedContact;
 
         public Ypsilon2.model.Contactperson SelectedContact
@@ -66,10 +75,11 @@ namespace Ypsilon2.viewmodel
                 if (_selectedContact != null)
                 {
                     Contact = SelectedContact;
+                    //selected contact type moet nog aangepast worden zodat het type van de selected contact getoond wordt
+                    SelectedContactType = SelectedContact.JobRole;
                 }
                 
-                OnPropertyChanged("SelectedContact");
-                
+                OnPropertyChanged("SelectedContact");               
             }
         }
 
@@ -101,7 +111,8 @@ namespace Ypsilon2.viewmodel
         {
             if (Contact.Name != "")
             {
-                  //reeds bestaand contact aanpassen in DB
+                Contact.JobRole = SelectedContactType;
+                //reeds bestaand contact aanpassen in DB
                 Ypsilon2.model.Contactperson.EditContact(Contact);
                 //lijst met contacten opnieuw ophalen om als nieuw toegevoegd contact meteen te tonen in listview
                 Contacts = Ypsilon2.model.Contactperson.GetContacts();
@@ -118,6 +129,7 @@ namespace Ypsilon2.viewmodel
         }
         public void AddContact()
         {
+            Contact.JobRole = SelectedContactType;
             //enkel als contactpersoon zijn naam is ingevuld mag hij/zij toegevoegd worden aan DB
             //normaal zou de gegevens validatie deze 'fout' moeten opvangen > deze if structuur is slechts een vangnet
             if (Contact.Name != "")

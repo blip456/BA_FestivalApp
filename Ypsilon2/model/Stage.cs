@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xceed.Wpf.Toolkit;
 using Ypsilon2.Model;
 
 namespace Ypsilon2.model
@@ -102,6 +103,10 @@ namespace Ypsilon2.model
             string sql = "INSERT INTO stage(stage_name) VALUES (@name);";
             DbParameter par1 = Database.AddParameter("@name", NewPodiumName);
             int i = Database.ModifyData(sql, par1);
+            if (i == 0)
+            {
+                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
 
@@ -112,6 +117,10 @@ namespace Ypsilon2.model
             DbParameter par1 = Database.AddParameter("@id", id);
 
             int i = Database.ModifyData(sql, par1);
+            if (i == 0)
+            {
+                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
         #endregion

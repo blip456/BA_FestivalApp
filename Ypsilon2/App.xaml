@@ -197,6 +197,10 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="bandGenres">
+            <TextBlock Text="{Binding Path=Genres.Name}"/>
+        </DataTemplate>
+        
 
         <!-- nieuwe line up datatemplate -->
         <DataTemplate x:Key="scStageTemplate">

@@ -65,13 +65,13 @@ namespace Ypsilon2.model
             set { _facebook = value; }
         }
 
-        //private Observable<Genre> _genres;
+        private ObservableCollection<Genre> _genres;
 
-        //public Observable<Genre> Genres
-        //{
-        //    get { return _genres; }
-        //    set { _genres = value; }
-        //}
+        public ObservableCollection<Genre> Genres
+        {
+            get { return _genres; }
+            set { _genres = value; }
+        }
 
 
 
@@ -88,6 +88,7 @@ namespace Ypsilon2.model
             band.Descr = Convert.ToString(reader["band_description"]);
             band.Twitter = Convert.ToString(reader["band_twitter"]);
             band.Facebook = Convert.ToString(reader["band_facebook"]);
+            band.Genres = Genre.GetGenresByBandID(Convert.ToInt32(reader["band_id"]));
             return band;
         }
 

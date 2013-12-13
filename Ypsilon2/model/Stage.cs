@@ -46,6 +46,7 @@ namespace Ypsilon2.model
         private static ObservableCollection<LineUp> lstAlleLineUps = LineUp.GetLineUps();
 
         #region SQL
+
         private static Stage CreateStage(DbDataReader reader)
         {
             Stage stage = new Stage();
@@ -123,6 +124,7 @@ namespace Ypsilon2.model
             }
             Console.WriteLine(i + " row(s) are affected");
         }
+
         #endregion
 
 

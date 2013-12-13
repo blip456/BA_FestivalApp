@@ -45,6 +45,19 @@
                     <GridViewColumn Header="Omschrijving" DisplayMemberBinding="{Binding Path=Descr}"/>
                     <GridViewColumn Header="Facebook" DisplayMemberBinding="{Binding Path=Facebook}"/>
                     <GridViewColumn Header="Twitter" DisplayMemberBinding="{Binding Path=Twitter}"/>
+                    <GridViewColumn Header="Genres">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ListView ItemsSource="{Binding Path=Genres}" DisplayMemberPath="Name">
+                                    <ListView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"></StackPanel>
+                                        </ItemsPanelTemplate>
+                                    </ListView.ItemsPanel>
+                                </ListView>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <!--Volgende 5 lijnen code komt van: http://stackoverflow.com/questions/13584643/wpf-delete-button-in-listview-mvvm Antwoord van 'ArsenMkrt'-->
                     <GridViewColumn Width="auto">
                         <GridViewColumn.CellTemplate>

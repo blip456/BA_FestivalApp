@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ypsilon2.Model;
+using Xceed.Wpf.Toolkit;
 
 namespace Ypsilon2.model
 {
@@ -89,6 +90,10 @@ namespace Ypsilon2.model
             DbParameter parID = Database.AddParameter("@ID", festival.ID);
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4, parID);
+            if (i == 0)
+            {
+                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+            }
             Console.WriteLine(i + " row(s) are affected");
         }
         #endregion

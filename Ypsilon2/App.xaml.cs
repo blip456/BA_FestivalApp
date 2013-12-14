@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ypsilon2.model;
+using FestivalLib.model;
 
 namespace Ypsilon2
 {

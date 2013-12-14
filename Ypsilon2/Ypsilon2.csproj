@@ -80,16 +80,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="model\Band.cs" />
-    <Compile Include="model\Contactperson.cs" />
-    <Compile Include="model\ContactpersonType.cs" />
-    <Compile Include="model\Database.cs" />
-    <Compile Include="model\Festival.cs" />
-    <Compile Include="model\Genre.cs" />
-    <Compile Include="model\LineUp.cs" />
-    <Compile Include="model\Stage.cs" />
-    <Compile Include="model\Ticket.cs" />
-    <Compile Include="model\TicketType.cs" />
     <Compile Include="viewmodel\BandsVM.cs" />
     <Compile Include="viewmodel\ContactpersonVM.cs" />
     <Compile Include="viewmodel\FestivalVM.cs" />
@@ -178,6 +168,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="content\images\blank.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FestivalLib\FestivalLib.csproj">
+      <Project>{32b96c09-99ff-4184-b08d-86327bda4d9b}</Project>
+      <Name>FestivalLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

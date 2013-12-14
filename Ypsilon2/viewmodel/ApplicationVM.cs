@@ -19,7 +19,6 @@ namespace Ypsilon2.viewmodel
             Pages.Add(new FestivalVM());
 
             CurrentPage = Pages[0];
-
         }
 
         private IPage _currentpage;

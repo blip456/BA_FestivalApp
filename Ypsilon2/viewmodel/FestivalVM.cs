@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ypsilon2.model;
-using Ypsilon2.Model;
+using FestivalLib.model;
+//using FestivalLib.Model;
 
 namespace Ypsilon2.viewmodel
 {

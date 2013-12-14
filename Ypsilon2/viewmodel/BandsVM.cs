@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ypsilon2.model;
+using FestivalLib;
 using System.IO;
+using FestivalLib.model;
 
 namespace Ypsilon2.viewmodel
 {
@@ -117,7 +118,7 @@ namespace Ypsilon2.viewmodel
         private void Search(string str)
         {
             Console.WriteLine(str);
-            GefilterdeBands = model.Band.GetBandsByString(Bands, str);
+            GefilterdeBands = FestivalLib.model.Band.GetBandsByString(Bands, str);
         }
 
         public ICommand SelectImageCommand
@@ -143,9 +144,10 @@ namespace Ypsilon2.viewmodel
         }
         public void SaveBand()
         {
-            Band.Picture = ImageSource;            
+            Band.Picture = ImageSource;  
+            //add genre to band oproepen
             Band.EditBand(Band);
-            Bands = Ypsilon2.model.Band.GetBands();
+            Bands = FestivalLib.model.Band.GetBands();
             GefilterdeBands = Bands;
         }
 

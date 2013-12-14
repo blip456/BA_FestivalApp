@@ -172,7 +172,15 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
-
+        <!-- Error Template -->
+        <ControlTemplate x:Key="ErrorTemplate" TargetType="{x:Type Control}">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder/>
+                </Border>
+                <TextBlock Foreground="Red" Text="{Binding [0].ErrorContent}"/>
+            </StackPanel>
+        </ControlTemplate>
 
         <!-- templates voor in mijn Windows/Usercontrols te gebruiken -->
         <ItemsPanelTemplate x:Key="ItemSPanel">
@@ -200,7 +208,7 @@
         <DataTemplate x:Key="bandGenres">
             <TextBlock Text="{Binding Path=Genres.Name}"/>
         </DataTemplate>
-        
+
 
         <!-- nieuwe line up datatemplate -->
         <DataTemplate x:Key="scStageTemplate">

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ypsilon2.view;
-using Ypsilon2.model;
+using FestivalLib.model;
 using System.Windows;
 using Xceed.Wpf.Toolkit;
 
@@ -19,10 +19,10 @@ namespace Ypsilon2.viewmodel
 
         public ContactpersonVM()
         {
-            _contacts = Ypsilon2.model.Contactperson.GetContacts();
+            _contacts = FestivalLib.model.Contactperson.GetContacts();
             _gefilterdeContacts = Contacts;
             _contactTypes = ContactpersonType.GetContactTypes();
-            _contact = new Ypsilon2.model.Contactperson();
+            _contact = new FestivalLib.model.Contactperson();            
         }
 
         public string Name
@@ -30,17 +30,17 @@ namespace Ypsilon2.viewmodel
             get { return "Contactpersonen"; }
         }
 
-        private ObservableCollection<Ypsilon2.model.Contactperson> _contacts;
+        private ObservableCollection<FestivalLib.model.Contactperson> _contacts;
 
-        public ObservableCollection<Ypsilon2.model.Contactperson> Contacts
+        public ObservableCollection<FestivalLib.model.Contactperson> Contacts
         {
             get { return _contacts; }
             set { _contacts = value; OnPropertyChanged("Contacts"); }
         }
 
-        private ObservableCollection<Ypsilon2.model.Contactperson> _gefilterdeContacts;
+        private ObservableCollection<FestivalLib.model.Contactperson> _gefilterdeContacts;
 
-        public ObservableCollection<Ypsilon2.model.Contactperson> GefilterdeContacts
+        public ObservableCollection<FestivalLib.model.Contactperson> GefilterdeContacts
         {
             get { return _gefilterdeContacts; }
             set { _gefilterdeContacts = value; OnPropertyChanged("GefilterdeContacts"); }
@@ -61,11 +61,11 @@ namespace Ypsilon2.viewmodel
             get { return _selectedContactType; }
             set { _selectedContactType = value; OnPropertyChanged("SelectedContactType"); }
         }
-        
 
-        private Ypsilon2.model.Contactperson _selectedContact;
 
-        public Ypsilon2.model.Contactperson SelectedContact
+        private FestivalLib.model.Contactperson _selectedContact;
+
+        public FestivalLib.model.Contactperson SelectedContact
         {
             get { return _selectedContact; }
             set 
@@ -83,9 +83,9 @@ namespace Ypsilon2.viewmodel
             }
         }
 
-        private Ypsilon2.model.Contactperson _contact;
+        private FestivalLib.model.Contactperson _contact;
 
-        public Ypsilon2.model.Contactperson Contact
+        public FestivalLib.model.Contactperson Contact
         {
             get { return _contact; }
             set { _contact = value; OnPropertyChanged("Contact"); }
@@ -113,9 +113,9 @@ namespace Ypsilon2.viewmodel
             {
                 Contact.JobRole = SelectedContactType;
                 //reeds bestaand contact aanpassen in DB
-                Ypsilon2.model.Contactperson.EditContact(Contact);
+                FestivalLib.model.Contactperson.EditContact(Contact);
                 //lijst met contacten opnieuw ophalen om als nieuw toegevoegd contact meteen te tonen in listview
-                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                Contacts = FestivalLib.model.Contactperson.GetContacts();
                 GefilterdeContacts = Contacts;
 
                 //leegmaken van textboxen moet hier nog komen
@@ -135,10 +135,10 @@ namespace Ypsilon2.viewmodel
             if (Contact.Name != "")
             {
                 //contact toevoegen aan DB
-                Ypsilon2.model.Contactperson.AddContact(Contact);
+                FestivalLib.model.Contactperson.AddContact(Contact);
 
                 //lijst met contacten opnieuw ophalen om nieuw toegevoegd contact meteen te tonen in listview
-                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                Contacts = FestivalLib.model.Contactperson.GetContacts();
                 GefilterdeContacts = Contacts;
 
                 //leegmaken van textboxen - werkt niet
@@ -158,11 +158,11 @@ namespace Ypsilon2.viewmodel
         {
             //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
             // je zou ook Contact.Name kunnen gebruiken > deze kent enkel de Name als je eerst het contact selecteerd en dan verwijdered > GetContactByID kent .Name zonder een contact te selecteren
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ypsilon2.model.Contactperson.GetContactByID(Contacts, id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Contactperson.GetContactByID(Contacts, id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
             if (result == MessageBoxResult.OK)
             {
-                Ypsilon2.model.Contactperson.DeleteContact(id);
-                Contacts = Ypsilon2.model.Contactperson.GetContacts();
+                FestivalLib.model.Contactperson.DeleteContact(id);
+                Contacts = FestivalLib.model.Contactperson.GetContacts();
                 GefilterdeContacts = Contacts;                
             }
             else
@@ -180,7 +180,7 @@ namespace Ypsilon2.viewmodel
         private void Search(string str)
         {                      
             Console.WriteLine(str);
-            GefilterdeContacts = model.Contactperson.GetContactsByString(Contacts, str);            
+            GefilterdeContacts = FestivalLib.model.Contactperson.GetContactsByString(Contacts, str);            
         }
         #endregion
     }

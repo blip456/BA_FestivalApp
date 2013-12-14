@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Ypsilon2.model;
+using FestivalLib.model;
 using Ypsilon2.view;
 
 namespace Ypsilon2.viewmodel
@@ -20,10 +20,10 @@ namespace Ypsilon2.viewmodel
 
         public LineUpVM()
         {
-            _bands = Ypsilon2.model.Band.GetBands();
-            _uniekeDagen = Ypsilon2.model.Festival.aantalDagen();
+            _bands = FestivalLib.model.Band.GetBands();
+            _uniekeDagen = FestivalLib.model.Festival.aantalDagen();
             _stagesPerDag = Stage.GetStagesByDay(SelectedDag);
-            _lineUp = new Ypsilon2.model.LineUp();
+            _lineUp = new FestivalLib.model.LineUp();
         }
 
         public string Name
@@ -60,17 +60,17 @@ namespace Ypsilon2.viewmodel
             set { _stagesPerDag = value; OnPropertyChanged("StagesPerDag"); }
         }
 
-        private ObservableCollection<Ypsilon2.model.Band> _bands;
+        private ObservableCollection<FestivalLib.model.Band> _bands;
 
-        public ObservableCollection<Ypsilon2.model.Band> Bands
+        public ObservableCollection<FestivalLib.model.Band> Bands
         {
             get { return _bands; }
             set { _bands = value; OnPropertyChanged("Bands"); }
         }
 
-        private Ypsilon2.model.LineUp _lineUp;
+        private FestivalLib.model.LineUp _lineUp;
 
-        public Ypsilon2.model.LineUp LineUp
+        public FestivalLib.model.LineUp LineUp
         {
             get { return _lineUp; }
             set { _lineUp = value; OnPropertyChanged("LineUp"); }
@@ -85,7 +85,7 @@ namespace Ypsilon2.viewmodel
         }
         public void SaveLineUp()
         {
-            Ypsilon2.model.LineUp.AddLineUp(LineUp);
+            FestivalLib.model.LineUp.AddLineUp(LineUp);
 
             StagesPerDag = Stage.GetStagesByDay(SelectedDag);
         }
@@ -124,12 +124,12 @@ namespace Ypsilon2.viewmodel
         }
         public void DeleteBandFromLineUp(int id)
         {
-            int bandID = Convert.ToInt32(model.LineUp.GetLineUpByID(id).Band.ID);
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ypsilon2.model.Band.GetBandByID(Bands, bandID).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            int bandID = Convert.ToInt32(FestivalLib.model.LineUp.GetLineUpByID(id).Band.ID);
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Band.GetBandByID(Bands, bandID).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
-            {                
-                Ypsilon2.model.Band.DeleteBandFromLineUp(id);
-                Bands = Ypsilon2.model.Band.GetBands();
+            {
+                FestivalLib.model.Band.DeleteBandFromLineUp(id);
+                Bands = FestivalLib.model.Band.GetBands();
                 StagesPerDag = Stage.GetStagesByDay(SelectedDag);
             }
             else

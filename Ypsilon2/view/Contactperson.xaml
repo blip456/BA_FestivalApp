@@ -70,7 +70,7 @@
 
             <StackPanel Grid.Column="0" Style="{StaticResource TwoPaneStackpanel}">
                 <TextBlock Text="Naam:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Naam" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Name}" Name="txtName" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Margin="0,5,0,5" Watermark="Naam" Style="{StaticResource BaseStyle}" Validation.ErrorTemplate="{StaticResource ErrorTemplate }" Text="{Binding Contact.Name, ValidatesOnDataErrors=True}" Name="txtName" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Bedrijf:" Style="{StaticResource TextBlock}"/>
                 <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding Contact.Company}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Stad:" Style="{StaticResource TextBlock}"/>

@@ -1,23 +1,20 @@
 ﻿@model IEnumerable<FestivalLib.model.LineUp>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<h1>Line Up</h1>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            Dag
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.From)
+            Beginuur
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Until)
+            Einduur
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TimeSpan)
+            Bandnaam
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -32,12 +29,11 @@
             @Html.DisplayFor(modelItem => item.Until)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TimeSpan)
+            @Html.DisplayFor(modelItem => item.Band.Name)
         </td>
+
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Details", "BandDetails", new { bandID=item.ID })
         </td>
     </tr>
 }

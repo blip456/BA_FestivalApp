@@ -77,6 +77,8 @@ namespace FestivalLib.model
 
         #endregion
 
+        public static ObservableCollection<Band> lstAlleBands = GetBands();
+
         #region SQL
         private static Band CreateBand(DbDataReader reader)
         {
@@ -104,10 +106,10 @@ namespace FestivalLib.model
             return lstBands;
         }
 
-        public static ObservableCollection<Band> GetBandsByString(ObservableCollection<Band> lst, string search)
+        public static ObservableCollection<Band> GetBandsByString(string search)
         {
             ObservableCollection<Band> lstGevondenBands = new ObservableCollection<Band>();
-            foreach (Band band in lst)
+            foreach (Band band in lstAlleBands)
             {
                 if (band.Name.ToUpper().Contains(search.ToUpper()) || band.Descr.ToUpper().Contains(search.ToUpper()) || band.Facebook.ToUpper().Contains(search.ToUpper()) || band.Twitter.ToUpper().Contains(search.ToUpper()))
                 {
@@ -118,10 +120,10 @@ namespace FestivalLib.model
             return lstGevondenBands;
         }
 
-        public static Band GetBandByID(ObservableCollection<Band> lst, int id)
+        public static Band GetBandByID(int id)
         {
             Band gevondenBand = new Band();
-            gevondenBand = lst.Single(i => i.ID == Convert.ToString(id));
+            gevondenBand = lstAlleBands.Single(i => i.ID == Convert.ToString(id));
 
             return gevondenBand;
         }

@@ -118,7 +118,7 @@ namespace Ypsilon2.viewmodel
         private void Search(string str)
         {
             Console.WriteLine(str);
-            GefilterdeBands = FestivalLib.model.Band.GetBandsByString(Bands, str);
+            GefilterdeBands = FestivalLib.model.Band.GetBandsByString(str);
         }
 
         public ICommand SelectImageCommand
@@ -181,7 +181,7 @@ namespace Ypsilon2.viewmodel
         public void DeleteBand(int id)
         {
             //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Band.GetBandByID(Bands, id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Band.GetBandByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
             {
                 Band.DeleteBand(id);

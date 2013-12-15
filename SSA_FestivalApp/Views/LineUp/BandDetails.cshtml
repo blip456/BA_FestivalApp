@@ -1,0 +1,36 @@
+﻿@model FestivalLib.model.Band
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>BandDetails</h2>
+
+<fieldset>
+    <legend>Band</legend>
+
+    <div class="display-label">
+        Naam:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">
+        Beschrijving:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descr)
+    </div>
+
+    <div class="display-field">
+        <a href="http://www.twitter.com/@Model.Twitter">Twitter</a>
+    </div>
+
+    <div class="display-field">        
+        <a href="http://www.facebook.com/@Model.Facebook">Facebook</a>
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Terug naar line up", "Index")
+</p>

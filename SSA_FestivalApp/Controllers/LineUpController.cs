@@ -13,11 +13,18 @@ namespace SSA_FestivalApp.Controllers
     {
         //
         // GET: /LineUp/
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             ObservableCollection<LineUp> lstLineUps = LineUpRepository.GetLineUps();
-            return View(lstLineUps);
+            return View("Index",lstLineUps);
+        }
+
+        [AllowAnonymous]
+        public ActionResult BandDetails(int bandID)
+        {
+            Band band = BandRepository.GetBandByID(bandID);
+            return View("BandDetails",band);
         }
 
     }

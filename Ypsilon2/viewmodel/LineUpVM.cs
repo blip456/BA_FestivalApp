@@ -125,7 +125,7 @@ namespace Ypsilon2.viewmodel
         public void DeleteBandFromLineUp(int id)
         {
             int bandID = Convert.ToInt32(FestivalLib.model.LineUp.GetLineUpByID(id).Band.ID);
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Band.GetBandByID(Bands, bandID).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Band.GetBandByID(bandID).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
             {
                 FestivalLib.model.Band.DeleteBandFromLineUp(id);

@@ -87,7 +87,7 @@ namespace FestivalLib.model
             lineup.From = Convert.ToDateTime(reader["lineup_from"]);
             lineup.Until = Convert.ToDateTime(reader["lineup_until"]);
             //lineup.Stage = //een methode die de stage name ophaalt -> enkel name (string) is genoeg
-            lineup.Band = Band.GetBandByID(lstBands, Convert.ToInt32(reader["lineup_band"]));
+            lineup.Band = Band.GetBandByID(Convert.ToInt32(reader["lineup_band"]));
             return lineup;
         }
 

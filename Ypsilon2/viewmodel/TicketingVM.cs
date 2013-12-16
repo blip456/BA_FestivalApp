@@ -19,8 +19,8 @@ namespace Ypsilon2.viewmodel
             _reserveringen = Ticket.GetTickets();
             _ticketTypes = TicketType.GetTicketTypes();
 
-            _ticketTypesNormaal = TicketType.GetTicketTypeByString(TicketTypes, "Normaal");
-            _ticketTypesVip = TicketType.GetTicketTypeByString(TicketTypes, "VIP");
+            _ticketTypesNormaal = TicketType.GetTicketTypeByString("Normaal");
+            _ticketTypesVip = TicketType.GetTicketTypeByString("VIP");
 
             _soldTicketsNormal = Ticket.SoldTickets(Reserveringen)[1];
             _soldTicketsVip = Ticket.SoldTickets(Reserveringen)[0];

@@ -59,6 +59,8 @@ namespace FestivalLib.model
 
         #endregion
 
+        public static ObservableCollection<TicketType> lstAlleTypes = GetTicketTypes();
+
         #region SQL
         private static TicketType CreateTicket(DbDataReader reader)
         {
@@ -95,10 +97,10 @@ namespace FestivalLib.model
         //    return lstGevondenTicketTypes;
         //}
 
-        public static ObservableCollection<TicketType> GetTicketTypeByString(ObservableCollection<TicketType> lst, string search)
+        public static ObservableCollection<TicketType> GetTicketTypeByString(string search)
         {
             ObservableCollection<TicketType> lstGevondenTickets = new ObservableCollection<TicketType>();
-            foreach (TicketType ticket in lst)
+            foreach (TicketType ticket in lstAlleTypes)
             {
                 if (ticket.Categorie.ToUpper().Contains(search.ToUpper()))
                 {
@@ -122,10 +124,10 @@ namespace FestivalLib.model
         //    return gevondenTicket;
         //}
 
-        public static TicketType GetTicketTypeByID(ObservableCollection<TicketType> lst, int id)
+        public static TicketType GetTicketTypeByID( int id)
         {
             TicketType gevondenTicketType = new TicketType();
-            foreach (TicketType ticketType in lst)
+            foreach (TicketType ticketType in lstAlleTypes)
             {
                 if (ticketType.ID == Convert.ToString(id))
                 {
@@ -139,7 +141,7 @@ namespace FestivalLib.model
         public static int CountTotalNormal(ObservableCollection<TicketType> lst)
         {
             int iTotal = 0;
-            foreach (var item in GetTicketTypeByString(lst, "Normaal"))
+            foreach (var item in GetTicketTypeByString("Normaal"))
             {
                 iTotal += item.AvailableTickets;
             }
@@ -149,7 +151,7 @@ namespace FestivalLib.model
         public static int CountTotalVip(ObservableCollection<TicketType> lst)
         {
             int iTotal = 0;
-            foreach (var item in GetTicketTypeByString(lst, "VIP"))
+            foreach (var item in GetTicketTypeByString("VIP"))
             {
                 iTotal += item.AvailableTickets;
             }

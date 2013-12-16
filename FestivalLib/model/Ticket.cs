@@ -25,7 +25,6 @@ namespace FestivalLib.model
             set { _id = value; }
         }
 
-
         private string _ticketHolder;
 
         public string TicketHolder
@@ -91,7 +90,7 @@ namespace FestivalLib.model
             ticket.TicketHolder = Convert.ToString(reader["ticket_name"]);
             ticket.TicketHolderEmail = Convert.ToString(reader["ticket_email"]);
             TicketType ticketType = new TicketType();
-            ticketType = TicketType.GetTicketTypeByID(lstTicketTypes ,Convert.ToInt16(reader["tickettype_id"]));
+            ticketType = TicketType.GetTicketTypeByID(Convert.ToInt16(reader["tickettype_id"]));
             ticket.TicketType = ticketType;
             ticket.Amount = Convert.ToInt16(reader["ticket_amount"]);
    
@@ -149,10 +148,7 @@ namespace FestivalLib.model
             DbParameter par4 = Database.AddParameter("@typeid", ticket.TicketType.ID);
 
             int i = Database.ModifyData(sql, par1, par2, par3, par4);
-            if (i == 0)
-            {
-                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
-            }
+           
             Console.WriteLine(i + " row(s) are affected ticket");
         }
 

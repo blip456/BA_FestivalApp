@@ -1,41 +1,50 @@
-﻿@model FestivalLib.model.Ticket
+﻿@model SSA_FestivalApp.Models.TicketTypeVM
 
 @{
     ViewBag.Title = "Reserveer";
 }
 
 <h2>Reserveer</h2>
-@using (Html.BeginForm("Reserveer", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+@using (Html.BeginForm("Insert", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Ticket</legend>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TicketHolder)
-        </div>
-
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TicketHolder)
-            @Html.ValidationMessageFor(model => model.TicketHolder)
-        </div>
+        <legend>TicketTypeVM</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.TicketHolderEmail)
+            Naam:
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.TicketHolderEmail)
-            @Html.ValidationMessageFor(model => model.TicketHolderEmail)
+            @Html.EditorFor(model => model.Ticket.TicketHolder)
+            @Html.ValidationMessageFor(model => model.Ticket.TicketHolder)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Amount)
+            Email adres:
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Amount)
-            @Html.ValidationMessageFor(model => model.Amount)
+            @Html.EditorFor(model => model.Ticket.TicketHolderEmail)
+            @Html.ValidationMessageFor(model => model.Ticket.TicketHolderEmail)
         </div>
+
+        <div class="editor-label">
+            Aantal:
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Ticket.Amount)
+            @Html.ValidationMessageFor(model => model.Ticket.Amount)
+        </div>
+
+        <div class="editor-label">
+            Selecteer ticket:
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SelectedType", (SelectList)Model.lstTypes, "---Selecteer ticket---") 
+        </div>
+
         <p>
             <input type="submit" value="Create" />
         </p>

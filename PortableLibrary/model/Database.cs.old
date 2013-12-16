@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Navigatie.model
+{
+    class Database
+    {
+        // references > add reff > system.configuration toevoegen voor 'ConnectionStringSettings' te kunnen gebruiken
+
+        // conection string in settings zetten
+        /*
+        rm project -> properties -> settings ->  type connection string -> op de 3 puntjes drukken -> SQL Database kiezen (ik heb nu voor een Acces DB gekozen wegens computer problemen
+        
+        */
+
+        private static ConnectionStringSettings ConnectionStringSetting
+        {
+            // probleem bij het resolven van ConnectionStringSettings is dat hij een class will genereeren -> opl: rm references -> System.Configuration -> als je dan resolved lukt het wel
+            get { return ConfigurationManager.ConnectionStrings["ConnectionString"]; } //["ConnectionString"] komt terug van app.config -> eigen naam
+        }
+        private static DbConnection GetConnection()
+        {
+            DbConnection con = DbProviderFactories.GetFactory(ConnectionStringSetting.ProviderName).CreateConnection(); //ConnectionString bevat de provider name -> zodat hij weet welke soort connctie hij moet maken
+            con.ConnectionString = ConnectionStringSetting.ConnectionString;
+            con.Open();
+            return con;
+        }
+
+        public static void ReleaseConnection(DbConnection con)
+        {
+            if (con != null)
+            {
+                con.Close();
+                con = null; // we maken ze nog eens null, maar via close kan het even duren en is ze nog niet opgekuist door de garbage collector -> je zou geen nieuwe con kunnen maken + meerdere connecties zullen runnen
+            }
+        }
+
+        private static DbCommand BuildCommand(string sql, params DbParameter[] parameters)
+        {
+            //params dient voor meerdere dingen mee te geven, in dit geval DbParameters, maar kan ook string zijn -> params string lol
+            DbCommand command = GetConnection().CreateCommand();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = sql;
+
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);    // addrange = zelfde als foreach, alle dingen meteen toevoegen
+            }
+            return command;
+        }
+
+        public static DbDataReader GetData(string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = null;
+            DbDataReader reader = null;
+
+            try
+            {
+                command = BuildCommand(sql, parameters);
+                reader = command.ExecuteReader(CommandBehavior.CloseConnection);        //commandbehavior -> sluiten van con als reader sluit
+
+                return reader;
+            }
+            catch (Exception ex)
+            {
+                
+                Console.WriteLine(ex.Message);
+                if (reader != null)
+	            {
+                    ReleaseConnection(command.Connection);
+	            }
+
+                throw;
+            }
+        }
+
+        public static int ModifyData(string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = null;
+            try
+            {
+                command = BuildCommand(sql, parameters);
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (command != null)
+                {
+                    ReleaseConnection(command.Connection);
+                    return 0;   //aantal lijntjes dat is bewerkt/uitgevoerd
+                }
+                throw;
+            }
+        }
+
+        public static DbParameter AddParameter(string name, object value)
+        {
+            DbParameter par = DbProviderFactories.GetFactory(ConnectionStringSetting.ProviderName).CreateParameter();
+            par.ParameterName = name;
+            par.Value = value;
+            return par;
+        }
+
+        #region Transaction
+        public static DbTransaction BeginTransaction()
+        {
+            DbConnection con = null;
+            try
+            {
+                con = GetConnection();
+                return con.BeginTransaction();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                ReleaseConnection(con);
+                throw;
+            }
+        }
+
+        private static DbCommand BuildCommand(DbTransaction trans, string sql, params DbParameter[] parameters)
+        {
+            //params dient voor meerdere dingen mee te geven, in dit geval DbParameters, maar kan ook string zijn -> params string lol
+            DbCommand command = trans.Connection.CreateCommand();
+            command.CommandType = System.Data.CommandType.Text;
+            command.CommandText = sql;
+
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);    // addrange = zelfde als foreach, alle dingen meteen toevoegen
+            }
+            return command;
+        }
+
+        public static DbDataReader GetData(DbTransaction trans, string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = null;
+            DbDataReader reader = null;
+
+            try
+            {
+                command = BuildCommand(trans,sql, parameters);
+                command.Transaction = trans;
+                reader = command.ExecuteReader(CommandBehavior.CloseConnection);        //commandbehavior -> sluiten van con als reader sluit
+
+                return reader;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                if (reader != null)
+                {
+                    ReleaseConnection(command.Connection);
+                }
+
+                throw;
+            }
+        }
+
+        public static int ModifyData(DbTransaction trans, string sql, params DbParameter[] parameters)
+        {
+            DbCommand command = null;
+            try
+            {
+                command = BuildCommand(trans, sql, parameters);
+                command.Transaction = trans;
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (command != null)
+                {
+                    ReleaseConnection(command.Connection);
+                    return 0;   //aantal lijntjes dat is bewerkt/uitgevoerd
+                }
+                throw;
+            }
+        } 
+        #endregion
+
+    }
+}

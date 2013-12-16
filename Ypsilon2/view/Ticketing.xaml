@@ -69,10 +69,17 @@
                     <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Path=TicketType.Categorie}"/> 
                     <GridViewColumn Header="Dag" DisplayMemberBinding="{Binding Path=TicketType.Name}"/>
                     <!--Volgende 5 lijnen code komt van: http://stackoverflow.com/questions/13584643/wpf-delete-button-in-listview-mvvm Antwoord van 'ArsenMkrt'-->
-                    <GridViewColumn Width="auto">
+                    <GridViewColumn Width="auto" Header="Verwijder">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="X" Command="{Binding ElementName=lsvReserveringen, Path=DataContext.DeleteReserveringCommand}" CommandParameter="{Binding Path=ID}" Style="{StaticResource DeleteContact}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="auto" Header="Print ticket">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="P" Command="{Binding ElementName=lsvReserveringen, Path=DataContext.PrintTicketCommand}" CommandParameter="{Binding Path=ID}" Style="{StaticResource DeleteContact}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

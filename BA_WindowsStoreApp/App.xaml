@@ -1,0 +1,15 @@
+﻿<Application
+    x:Class="BA_WindowsStoreApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BA_WindowsStoreApp"
+    xmlns:localData="using:BA_WindowsStoreApp.Data">
+
+    <Application.Resources>
+
+        <!-- Application-specific resources -->
+
+        <x:String x:Key="AppName">BA_WindowsStoreApp</x:String>
+
+    </Application.Resources>
+</Application>

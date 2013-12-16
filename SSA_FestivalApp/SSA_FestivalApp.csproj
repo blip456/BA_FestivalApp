@@ -194,6 +194,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\LineUpVM.cs" />
     <Compile Include="Models\TicketTypeVM.cs" />
     <Compile Include="Models\_DAL\BandRepository.cs" />
     <Compile Include="Models\_DAL\ContactRepository.cs" />

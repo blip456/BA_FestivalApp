@@ -14,5 +14,11 @@ namespace SSA_FestivalApp.Models._DAL
             ObservableCollection<LineUp> lstLineUps = LineUp.GetLineUps();
             return lstLineUps;
         }
+
+        public static ObservableCollection<LineUp> GetLineUpsByDay(int iPod, DateTime datum)
+        {            
+            ObservableCollection < LineUp > lsLineUps = LineUp.GetBandsByLineUpIDAndDate(iPod, datum);
+            return lsLineUps;
+        }
     }
 }

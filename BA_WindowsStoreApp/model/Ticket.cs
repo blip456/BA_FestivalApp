@@ -14,7 +14,7 @@ namespace FestivalLib.model
     public class Ticket
     {
         public static ObservableCollection<TicketType> lstTicketTypes = TicketType.GetTicketTypes();
-        public static ObservableCollection<Ticket> lstAlleTickets = Ticket.GetTickets();
+
         #region prop en field
 
         private string _id;
@@ -108,10 +108,10 @@ namespace FestivalLib.model
             return lstTickets;
         }
 
-        public static Ticket GetTicketByID(int id)
+        public static Ticket GetTicketByID(ObservableCollection<Ticket> lst, int id)
         {
             Ticket gevondenTicket = new Ticket();
-            foreach (Ticket ticket in lstAlleTickets)
+            foreach (Ticket ticket in lst)
             {
                 if (ticket.ID == Convert.ToString(id))
                 {
@@ -182,11 +182,6 @@ namespace FestivalLib.model
                 MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
             }
             Console.WriteLine(i + " row(s) are deleted");
-        }
-
-        public static void PrintTicket(int id)
-        {
-
         }
 
         #endregion

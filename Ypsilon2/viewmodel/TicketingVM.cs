@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FestivalLib.model;
 using Ypsilon2.viewmodel;
+using System.IO;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Ypsilon2.viewmodel
 {
@@ -223,7 +226,102 @@ namespace Ypsilon2.viewmodel
             SoldTicketNormal = Ticket.SoldTickets(Reserveringen)[1];
             SoldTicketVip = Ticket.SoldTickets(Reserveringen)[0];
         }
+
+
+        public ICommand PrintTicketCommand
+        {
+            get { return new RelayCommand<int>(PrintTicket); }
+        }
+
+        private void PrintTicket(int id)
+        {
+            Ticket ticket = Ticket.GetTicketByID(id);
+            Festival festival = Festival.GetFestivals();
+            string sFileNaam = ticket.ID + "_" + ticket.TicketHolder + ".docx";
+            File.Copy("template.docx", sFileNaam, true);
+
+            WordprocessingDocument newDoc = WordprocessingDocument.Open(sFileNaam, true);
+            IDictionary<string, BookmarkStart> bookmarks = new Dictionary<string, BookmarkStart>();
+            foreach (BookmarkStart bms in newDoc.MainDocumentPart.RootElement.Descendants<BookmarkStart>()) 
+            {
+                bookmarks[bms.Name] = bms;
+            }
+
+            //Festival name moet iets anders qua opmaak zijn
+            Run runTitle = new Run(new Text(festival.Name));
+
+            RunProperties propTitle = new RunProperties();
+            RunFonts fontTitle = new RunFonts() { Ascii = "Segoe UI", HighAnsi = "Segoe UI" };
+            FontSize sizeTitle = new FontSize() { Val = "36" };
+
+            propTitle.Append(fontTitle);
+            propTitle.Append(sizeTitle);
+            runTitle.PrependChild<RunProperties>(propTitle);
+
+            bookmarks["FestivalTitle"].Parent.InsertAfter<Run>(runTitle, bookmarks["FestivalTitle"]);
+            
+            //bookmarks["FestivalTitle"].Parent.InsertAfter<Run>(new Run(new Text(festival.Name)),bookmarks["FestivalTitle"]);
+
+
+            bookmarks["Name"].Parent.InsertAfter<Run>(new Run(new Text(ticket.TicketHolder)), bookmarks["Name"]);
+            bookmarks["Email"].Parent.InsertAfter<Run>(new Run(new Text(ticket.TicketHolderEmail)), bookmarks["Email"]);
+            bookmarks["Day"].Parent.InsertAfter<Run>(new Run(new Text(ticket.TicketType.Name)), bookmarks["Day"]);
+            bookmarks["Type"].Parent.InsertAfter<Run>(new Run(new Text(ticket.TicketType.Categorie)), bookmarks["Type"]);
+            bookmarks["Amount"].Parent.InsertAfter<Run>(new Run(new Text(ticket.Amount.ToString())), bookmarks["Amount"]);
+            bookmarks["Price"].Parent.InsertAfter<Run>(new Run(new Text(ticket.TicketType.Price.ToString())), bookmarks["Price"]);
+            double iTotalPrice = ticket.Amount * ticket.TicketType.Price;
+            bookmarks["Totalprice"].Parent.InsertAfter<Run>(new Run(new Text(iTotalPrice.ToString())), bookmarks["Totalprice"]);
+
+            //BARCODE TOEVOEGEN            
+            //string code = Guid.NewGuid().ToString();
+            string code = GenerateUnique(ticket.TicketHolderEmail);
+            Run run = new Run(new Text(code));
+            
+            RunProperties prop = new RunProperties();
+            RunFonts font = new RunFonts() { Ascii = "Free 3 of 9 Extended", HighAnsi = "Free 3 of 9 Extended" };
+            FontSize size = new FontSize() { Val = "96" };
+
+            prop.Append(font);
+            prop.Append(size);
+            run.PrependChild<RunProperties>(prop);
+
+            bookmarks["Barcode"].Parent.InsertAfter<Run>(run, bookmarks["Barcode"]);
+
+           
+
+            newDoc.Close();
+        }
+
+        public static string GenerateUnique(string sEmail)
+        {
+            string ticks = DateTime.UtcNow.Ticks.ToString();
+            string s1 = ticks.Substring(ticks.Length / 2, ticks.Length - (ticks.Length / 2));
+
+            return s1;
+
+            //string chrs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            //string ticks = DateTime.UtcNow.Ticks.ToString();
+            //string unique = "";
+            //for (var i = 0; i < chrs.Length; i += 2)
+            //{
+            //    if ((i + 2) <= ticks.Length)
+            //    {
+            //        var number = int.Parse(ticks.Substring(i, 2));
+            //        if (number > chrs.Length - 1)
+            //        {
+            //            var one = double.Parse(number.ToString().Substring(0, 1));
+            //            var two = double.Parse(number.ToString().Substring(1, 1));
+            //            unique += chrs[Convert.ToInt32(one)];
+            //            unique += chrs[Convert.ToInt32(two)];
+            //        }
+            //        else
+            //            unique += chrs[number];
+            //    }
+            //}
+            //return unique;
+        }
         #endregion
+
        
 
     }

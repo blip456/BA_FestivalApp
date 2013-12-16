@@ -1,6 +1,19 @@
 ﻿@model IEnumerable<FestivalLib.model.LineUp>
 
 <h1>Line Up</h1>
+@using (Html.BeginForm("Index", "LineUp", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+      <div class="editor-label">
+        Selecteer ticket:
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("SelectedDag", (SelectList)Model.lst, "---Selecteer dag---") 
+    </div>
+    
+    <p>
+        <input type="submit" value="Toon" />
+    </p>
+}
 <table>
     <tr>
         <th>
@@ -20,13 +33,13 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Date)
+            @Html.DisplayFor(modelItem => item.Date.Day)/@Html.DisplayFor(modelItem => item.Date.Month)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.From)
+            @Html.DisplayFor(modelItem => item.From.Hour):@Html.DisplayFor(modelItem => item.From.Minute)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Until)
+            @Html.DisplayFor(modelItem => item.Until.Hour):@Html.DisplayFor(modelItem =>item.Until.Minute)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Band.Name)

@@ -17,6 +17,7 @@ namespace SSA_FestivalApp.Controllers
         public ActionResult Index()
         {
             ObservableCollection<LineUp> lstLineUps = LineUpRepository.GetLineUps();
+           
             return View("Index",lstLineUps);
         }
 

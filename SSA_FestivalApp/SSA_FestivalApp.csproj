@@ -323,9 +323,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\LineUp\Index.cshtml" />
+    <Content Include="Views\LineUp\Index.old.cshtml" />
     <Content Include="Views\LineUp\BandDetails.cshtml" />
     <Content Include="Views\Ticket\Reserveer.cshtml" />
+    <Content Include="Views\LineUp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

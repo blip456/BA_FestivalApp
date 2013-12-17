@@ -1,32 +1,36 @@
-﻿@model SSA_FestivalApp.Models.LineUpVM
+﻿@model IEnumerable<>
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-@using (Html.BeginForm("Filter", "LineUp", FormMethod.Post))
+<h1>Line Up</h1>
+@using (Html.BeginForm("Index", "LineUp", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.DropDownList("SelectedDag", (SelectList)Model.lstDagen)
-    @Html.DropDownList("SelectedPod", (SelectList)Model.lstPodia)
-    <input type="submit" value="Toon" />
-    <table>
+      <div class="editor-label">
+        Selecteer ticket:
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("SelectedDag", (SelectList)Model., "---Selecteer dag---") 
+    </div>
+    
+    <p>
+        <input type="submit" value="Toon" />
+    </p>
+}
+<table>
     <tr>
         <th>
             Dag
         </th>
         <th>
-            Begin
+            Beginuur
         </th>
         <th>
-            Eind
+            Einduur
         </th>
         <th>
-            Band
+            Bandnaam
         </th>
     </tr>
 
-    @foreach (var item in Model.LineUps) {
+@foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Date.Day)/@Html.DisplayFor(modelItem => item.Date.Month)
@@ -48,5 +52,3 @@
 }
 
 </table>
-
-}

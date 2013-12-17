@@ -22,7 +22,7 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <TextBlock Style="{StaticResource TextBlock}" Text="Selecteer een dag"/>
-            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" ItemStringFormat="dd/MM/yyyy" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}"/>
+            <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" ItemStringFormat="dd/MM/yyyy" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}" Margin="5,15"/>
         </StackPanel>
 
         <Grid x:Name="LineUpskes" Grid.Row="1">

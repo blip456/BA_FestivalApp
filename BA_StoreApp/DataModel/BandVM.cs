@@ -1,24 +1,17 @@
 ﻿using FestivalLibPort;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
-using BA_WindowsStoreApp.DataModel;
 using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.Storage.Streams;
+using System.ComponentModel;
 
 
-
-namespace BA_WindowsStoreApp.DataModel 
+namespace BA_StoreApp.DataModel 
 {
-    public class BandVM:ObservableObject
+    public class BandVM : ObservableObject, INotifyPropertyChanged
     {
         public BandVM()
         {
@@ -102,18 +95,6 @@ namespace BA_WindowsStoreApp.DataModel
             return gevondenband ;
         }
 
-        private async Task<BitmapImage> ByteArrayToBitmapImage(byte[] byteArray)
-        {
-            var bitmapImage = new BitmapImage();
-
-            var stream = new InMemoryRandomAccessStream();
-            await stream.WriteAsync(byteArray.AsBuffer());
-            stream.Seek(0);
-
-            bitmapImage.SetSource(stream);
-            return bitmapImage;
-        }
-
-
+       
     }
 }

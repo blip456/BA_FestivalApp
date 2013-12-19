@@ -113,6 +113,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\BandVM.cs" />
+    <Compile Include="DataModel\ByteToImageConverter.cs" />
+    <Compile Include="DataModel\LineUpVM.cs" />
+    <Compile Include="LineUp.xaml.cs">
+      <DependentUpon>LineUp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ItemsPage.xaml.cs">
       <DependentUpon>ItemsPage.xaml</DependentUpon>
     </Compile>
@@ -147,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="LineUp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ItemsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

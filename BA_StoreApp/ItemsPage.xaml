@@ -9,12 +9,14 @@
     xmlns:common="using:BA_StoreApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:datamodel="using:BA_WindowsStoreApp.DataModel"
+    xmlns:datamodel="using:BA_StoreApp.DataModel"
+    xmlns:c="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- Collection of items displayed by this page -->
-            <datamodel:BandVM x:Key="bndInstance"/>
+        <!-- Collection of items displayed by this page -->        
+        <datamodel:BandVM x:Key="bndInstance"/> 
+        <c:ByteToImageConverter x:Key="byteImageConverter"/>
     </Page.Resources>
 
     <!--
@@ -26,10 +28,11 @@
         <AppBar>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Bands" Width="140" Click="Button_Click"/>
-            </StackPanel>          
+                <Button Content="Line Up" Width="140" Click="Button_Click_1"/>
+            </StackPanel>
         </AppBar>
     </Page.TopAppBar>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -59,14 +62,12 @@
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <!--<Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>-->
+                            <Image Source="{Binding Picture, Converter={StaticResource byteImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Height="30" Margin="15,0,15,0" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}"  Margin="15,0,15,0" FontWeight="Bold"/>
                             <TextBlock Text="{Binding Descr}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
-                            <TextBlock Text="{Binding Facebook}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
-                            <TextBlock Text="{Binding Twitter}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
-                        </StackPanel>
+                           </StackPanel>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>

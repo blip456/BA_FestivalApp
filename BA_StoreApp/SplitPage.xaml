@@ -8,7 +8,8 @@
     xmlns:common="using:BA_StoreApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:datamodel="using:BA_WindowsStoreApp.DataModel"
+    xmlns:datamodel="using:BA_StoreApp.DataModel"
+    xmlns:converter="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -17,6 +18,7 @@
         x:Name="itemsViewSource"
         Source="{Binding Items}"/>
         <datamodel:BandVM x:Key="instance"/>
+        <converter:ByteToImageConverter x:Key="converter"/>
     </Page.Resources>
 
     <!--
@@ -76,7 +78,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            <Image Source="{Binding Picture, Converter={StaticResource converter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
                         <StackPanel Grid.Column="1" Margin="10,0,0,0">
                             <TextBlock Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="40"/>
@@ -126,6 +128,8 @@
                         
                     </ListView>
                 </StackPanel>
+                
+                <Image Source="{Binding Picture, Converter={StaticResource converter}}" Width="500"/>
                 <!--<TextBlock Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0" Text="{Binding Twitter}" Style="{StaticResource BodyTextBlockStyle}"/>-->
             </Grid>
         </ScrollViewer>

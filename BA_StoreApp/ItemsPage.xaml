@@ -14,10 +14,6 @@
 
     <Page.Resources>
         <!-- Collection of items displayed by this page -->
-        <CollectionViewSource
-            x:Name="itemsViewSource"
-            Source="{Binding Items}"
-            d:Source="{Binding Groups, Source={d:DesignData Source=/DataModel/SampleData.json, Type=data:SampleDataSource}}"/>
             <datamodel:BandVM x:Key="bndInstance"/>
     </Page.Resources>
 
@@ -30,8 +26,7 @@
         <AppBar>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Bands" Width="140" Click="Button_Click"/>
-            </StackPanel>
-          
+            </StackPanel>          
         </AppBar>
     </Page.TopAppBar>
     
@@ -55,7 +50,7 @@
             Grid.RowSpan="2"
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource bndInstance}, Path=Bands, Mode=TwoWay}"
-
+            SelectedItem="{Binding Source={StaticResource bndInstance}, Path=SelectedBand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"

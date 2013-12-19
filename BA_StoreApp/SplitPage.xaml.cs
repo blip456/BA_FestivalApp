@@ -1,5 +1,4 @@
 ﻿using BA_StoreApp.Common;
-//using BA_StoreApp.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using FestivalLibPort;
 
 // The Split Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234234
 
@@ -25,10 +24,18 @@ namespace BA_StoreApp
     /// A page that displays a group title, a list of items within the group, and details for
     /// the currently selected item.
     /// </summary>
-    public sealed partial class SplitPage : Page
+    public sealed partial class SplitPage1 : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        /// <summary>
+        /// This can be changed to a strongly typed view model.
+        /// </summary>
+        public ObservableDictionary DefaultViewModel
+        {
+            get { return this.defaultViewModel; }
+        }
 
         /// <summary>
         /// NavigationHelper is used on each page to aid in navigation and 
@@ -39,15 +46,7 @@ namespace BA_StoreApp
             get { return this.navigationHelper; }
         }
 
-        /// <summary>
-        /// This can be changed to a strongly typed view model.
-        /// </summary>
-        public ObservableDictionary DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
-
-        public SplitPage()
+        public SplitPage1()
         {
             this.InitializeComponent();
 
@@ -58,13 +57,21 @@ namespace BA_StoreApp
 
             // Setup the logical page navigation components that allow
             // the page to only show one pane at a time.
-            this.navigationHelper.GoBackCommand = new RelayCommand(() => this.GoBack(), () => this.CanGoBack());
-            this.itemListView.SelectionChanged += ItemListView_SelectionChanged;
+            this.navigationHelper.GoBackCommand = new BA_StoreApp.Common.RelayCommand(() => this.GoBack(), () => this.CanGoBack());
+            this.itemListView.SelectionChanged += itemListView_SelectionChanged;
 
             // Start listening for Window size changes 
             // to change from showing two panes to showing a single pane
             Window.Current.SizeChanged += Window_SizeChanged;
             this.InvalidateVisualState();
+        }
+
+        void itemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.UsingLogicalPageNavigation())
+            {
+                this.navigationHelper.GoBackCommand.RaiseCanExecuteChanged();
+            }
         }
 
         /// <summary>
@@ -78,15 +85,13 @@ namespace BA_StoreApp
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            var group = await Band.GetGroupAsync((String)e.NavigationParameter);
-            this.DefaultViewModel["Group"] = group;
-            this.DefaultViewModel["Items"] = group.Items;
+            // TODO: Assign a bindable group to Me.DefaultViewModel("Group")
+            // TODO: Assign a collection of bindable items to Me.DefaultViewModel("Items")
 
             if (e.PageState == null)
             {
-                this.itemListView.SelectedItem = null;
                 // When this is a new page, select the first item automatically unless logical page
                 // navigation is being used (see the logical page navigation #region below.)
                 if (!this.UsingLogicalPageNavigation() && this.itemsViewSource.View != null)
@@ -99,8 +104,9 @@ namespace BA_StoreApp
                 // Restore the previously saved state associated with this page
                 if (e.PageState.ContainsKey("SelectedItem") && this.itemsViewSource.View != null)
                 {
-                    var selectedItem = await Band.GetItemAsync((String)e.PageState["SelectedItem"]);
-                    this.itemsViewSource.View.MoveCurrentTo(selectedItem);
+                    // TODO: Invoke Me.itemsViewSource.View.MoveCurrentTo() with the selected
+                    //       item as specified by the value of pageState("SelectedItem")
+
                 }
             }
         }
@@ -110,9 +116,6 @@ namespace BA_StoreApp
         /// page is discarded from the navigation cache.  Values must conform to the serialization
         /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="navigationParameter">The parameter value passed to
-        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested.
-        /// </param>
         /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
         /// <param name="e">Event data that provides an empty dictionary to be populated with
         /// serializable state.</param>
@@ -120,8 +123,9 @@ namespace BA_StoreApp
         {
             if (this.itemsViewSource.View != null)
             {
-                var selectedItem = (Data.SampleDataItem)this.itemsViewSource.View.CurrentItem;
-                if (selectedItem != null) e.PageState["SelectedItem"] = selectedItem.UniqueId;
+                // TODO: Derive a serializable navigation parameter and assign it to
+                //       pageState("SelectedItem")
+
             }
         }
 

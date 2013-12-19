@@ -1,5 +1,5 @@
 ﻿using BA_StoreApp.Common;
-using BA_StoreApp.Data;
+//using BA_StoreApp.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FestivalLibPort;
+using BA_WindowsStoreApp.DataModel;
 
 // The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
@@ -66,7 +68,7 @@ namespace BA_StoreApp
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
+            var sampleDataGroups = await BandVM.GetBandsAsync();
             this.DefaultViewModel["Items"] = sampleDataGroups;
         }
 
@@ -80,9 +82,8 @@ namespace BA_StoreApp
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var groupId = ((FestivalLibPort.Band)e.ClickedItem).ID;
-            
-            this.Frame.Navigate(typeof(SplitPage), groupId);
+            var groupId = ((FestivalLibPort.Band)e.ClickedItem).ID;            
+            this.Frame.Navigate(typeof(SplitPage1), groupId);
         }
 
         #region NavigationHelper registration

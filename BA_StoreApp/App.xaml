@@ -8,6 +8,6 @@
     <Application.Resources>
 
         <!-- Application-specific resources -->
-        <x:String x:Key="AppName">BA_StoreApp</x:String>
+        <x:String x:Key="AppName">Festival App</x:String>
     </Application.Resources>
 </Application>

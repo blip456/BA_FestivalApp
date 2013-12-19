@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xceed.Wpf.Toolkit;
 //using FestivalLib.Model;
 
@@ -52,16 +48,24 @@ namespace FestivalLib.model
 
         public static void AddGenre(string sGenreNaam)
         {
-            string sql = "INSERT INTO genre(genre_name) values (@name);";
-
-            DbParameter par1 = Database.AddParameter("@name", sGenreNaam);           
-
-            int i = Database.ModifyData(sql, par1);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "INSERT INTO genre(genre_name) values (@name);";
+
+                DbParameter par1 = Database.AddParameter("@name", sGenreNaam);           
+
+                int i = Database.ModifyData(sql, par1);
+                if (i == 0)
+                {
+                    MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
         }
 
         public static void AddGenreToBand(Band band)

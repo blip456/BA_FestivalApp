@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,14 +16,15 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Item Detail Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234232
+// The Items Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234233
 
 namespace BA_WindowsStoreApp
 {
     /// <summary>
-    /// A page that displays details for a single item within a group.
+    /// A page that displays a collection of item previews.  In the Split App this page
+    /// is used to display and select one of the available groups.
     /// </summary>
-    public sealed partial class ItemDetailPage : Page
+    public sealed partial class ItemsPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -43,7 +46,7 @@ namespace BA_WindowsStoreApp
             get { return this.defaultViewModel; }
         }
 
-        public ItemDetailPage()
+        public ItemsPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -64,8 +67,22 @@ namespace BA_WindowsStoreApp
         private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var item = await SampleDataSource.GetItemAsync((String)e.NavigationParameter);
-            this.DefaultViewModel["Item"] = item;
+            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
+            this.DefaultViewModel["Items"] = sampleDataGroups;
+        }
+
+        /// <summary>
+        /// Invoked when an item is clicked.
+        /// </summary>
+        /// <param name="sender">The GridView (or ListView when the application is snapped)
+        /// displaying the item clicked.</param>
+        /// <param name="e">Event data that describes the item clicked.</param>
+        void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Navigate to the appropriate destination page, configuring the new page
+            // by passing required information as a navigation parameter
+            var groupId = ((SampleDataGroup)e.ClickedItem).UniqueId;
+            this.Frame.Navigate(typeof(SplitPage), groupId);
         }
 
         #region NavigationHelper registration
@@ -78,7 +95,6 @@ namespace BA_WindowsStoreApp
         /// and <see cref="GridCS.Common.NavigationHelper.SaveState"/>.
         /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
-
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {

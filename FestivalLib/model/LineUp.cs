@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xceed.Wpf.Toolkit;
-//using FestivalLib.Model;
 
 namespace FestivalLib.model
 {
@@ -78,7 +72,6 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
-
         private static LineUp CreateLineUp(DbDataReader reader)
         {
             LineUp lineup = new LineUp();
@@ -86,7 +79,7 @@ namespace FestivalLib.model
             lineup.Date = Convert.ToDateTime(reader["lineup_date"]);
             lineup.From = Convert.ToDateTime(reader["lineup_from"]);
             lineup.Until = Convert.ToDateTime(reader["lineup_until"]);
-            //lineup.Stage = //een methode die de stage name ophaalt -> enkel name (string) is genoeg
+            //lineup.Stage = //een methode die de stage name ophaalt -> enkel name (string) is genoeg            
             lineup.Band = Band.GetBandByID(Convert.ToInt32(reader["lineup_band"]));
             return lineup;
         }
@@ -141,22 +134,29 @@ namespace FestivalLib.model
 
         public static void AddLineUp(LineUp lineup)
         {
-            string sql = "INSERT INTO lineup(lineup_date, lineup_from, lineup_until, lineup_stage, lineup_band) VALUES (@date, @from, @until, @stageid, @bandid);";
-
-            DbParameter par1 = Database.AddParameter("@date", lineup.Date);
-            DbParameter par2 = Database.AddParameter("@from", lineup.From);
-            DbParameter par3 = Database.AddParameter("@until", lineup.Until);
-            DbParameter par4 = Database.AddParameter("@stageid", lineup.Stage.ID);
-            DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
-            }
-            Console.WriteLine(i + " row(s) are affected");
-        }
+                string sql = "INSERT INTO lineup(lineup_date, lineup_from, lineup_until, lineup_stage, lineup_band) VALUES (@date, @from, @until, @stageid, @bandid);";
 
+                DbParameter par1 = Database.AddParameter("@date", lineup.Date);
+                DbParameter par2 = Database.AddParameter("@from", lineup.From);
+                DbParameter par3 = Database.AddParameter("@until", lineup.Until);
+                DbParameter par4 = Database.AddParameter("@stageid", lineup.Stage.ID);
+                DbParameter par5 = Database.AddParameter("@bandid", lineup.Band.ID);
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
+                if (i == 0)
+                {
+                    MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+        }
         #endregion
 
         #region Methods
@@ -168,6 +168,7 @@ namespace FestivalLib.model
         //berekend hoeveel tijd er tussen het begin en einde van een optreden zit, dit wordt oa gebruikt voor de breedte van de stackpanel te bepalen
         public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
         {
+  
             string sFrom = dtFrom.ToString("HH:mm");
             string sUntil = dtUntil.ToString("HH:mm");
 
@@ -185,7 +186,6 @@ namespace FestivalLib.model
 
             return dTimespan;
         }
-
         #endregion
     }
 }

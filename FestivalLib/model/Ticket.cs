@@ -1,14 +1,11 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using FestivalLib.model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using FestivalLib.Model;
 using Xceed.Wpf.Toolkit;
 
@@ -212,11 +209,11 @@ namespace FestivalLib.model
             }
 
             //Festival name moet iets anders qua opmaak zijn
-            Run runTitle = new Run(new Text(festival.Name));
+            Run runTitle = new Run(new Text(festival.Name + " - " + festival.Omschrijving));
 
             RunProperties propTitle = new RunProperties();
             RunFonts fontTitle = new RunFonts() { Ascii = "Segoe UI", HighAnsi = "Segoe UI" };
-            FontSize sizeTitle = new FontSize() { Val = "36" };
+            FontSize sizeTitle = new FontSize() { Val = "36" };            
 
             propTitle.Append(fontTitle);
             propTitle.Append(sizeTitle);

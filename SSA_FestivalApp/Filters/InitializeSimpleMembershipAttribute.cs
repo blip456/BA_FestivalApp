@@ -38,7 +38,7 @@ namespace SSA_FestivalApp.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("ConnectionString", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
                 }
                 catch (Exception ex)
                 {

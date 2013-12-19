@@ -1,12 +1,6 @@
-﻿using FestivalLib.model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xceed.Wpf.Toolkit;
 using System.ComponentModel;
 
@@ -118,7 +112,7 @@ namespace FestivalLib.model
             contact.Email = Convert.ToString(reader["contactperson_email"]);
             contact.Phone = Convert.ToString(reader["contactperson_phone"]);
             contact.Cellphone = Convert.ToString(reader["contactperson_cell"]);
-            return contact;
+            return contact;         
         }
 
         public static ObservableCollection<Contactperson> GetContacts()
@@ -129,7 +123,7 @@ namespace FestivalLib.model
             {
                 lstContacts.Add(CreateContact(reader));
             }
-            return lstContacts;
+            return lstContacts;          
         }
 
         public static Contactperson GetContactByID(ObservableCollection<Contactperson> lst, int id)
@@ -142,7 +136,7 @@ namespace FestivalLib.model
                     gevondenContact = contact;
                 }
             }
-            return gevondenContact;
+            return gevondenContact;           
         }
 
         public static ObservableCollection<Contactperson> GetContactsByString(ObservableCollection<Contactperson> lst, string search)
@@ -156,63 +150,87 @@ namespace FestivalLib.model
                 }
             }
 
-            return lstGevondenContacts;
+            return lstGevondenContacts;            
         }
 
         public static void AddContact(Contactperson contact)
         {
-            string sql = "INSERT INTO contactperson(contactperson_name, contactperson_company, contactperson_city, contactperson_email, contactperson_phone, contactperson_cell, contactpersontype_idJobrole) VALUES (@name, @company, @city, @email, @phone, @cell, @idjobrole);";
-
-            DbParameter par1 = Database.AddParameter("@name", contact.Name);
-            DbParameter par2 = Database.AddParameter("@company", contact.Company);
-            DbParameter par3 = Database.AddParameter("@city", contact.City);
-            DbParameter par4 = Database.AddParameter("@email", contact.Email);
-            DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
-            DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
-            DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "INSERT INTO contactperson(contactperson_name, contactperson_company, contactperson_city, contactperson_email, contactperson_phone, contactperson_cell, contactpersontype_idJobrole) VALUES (@name, @company, @city, @email, @phone, @cell, @idjobrole);";
+
+                DbParameter par1 = Database.AddParameter("@name", contact.Name);
+                DbParameter par2 = Database.AddParameter("@company", contact.Company);
+                DbParameter par3 = Database.AddParameter("@city", contact.City);
+                DbParameter par4 = Database.AddParameter("@email", contact.Email);
+                DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
+                DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
+                DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7);
+                if (i == 0)
+                {
+                    MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }           
         }
 
         public static void EditContact(Contactperson contact)
         {
-            string sql = "UPDATE contactperson SET contactperson_name=@name, contactperson_company=@company, contactperson_city=@city, contactperson_email=@email, contactperson_phone=@phone, contactperson_cell=@cell, contactpersontype_idJobrole=@idjobrole WHERE contactperson_id=@ID;";
-
-            DbParameter par1 = Database.AddParameter("@name", contact.Name);
-            DbParameter par2 = Database.AddParameter("@company", contact.Company);
-            DbParameter par3 = Database.AddParameter("@city", contact.City);
-            DbParameter par4 = Database.AddParameter("@email", contact.Email);
-            DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
-            DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
-            DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
-
-            DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(contact.ID));
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7, parID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "UPDATE contactperson SET contactperson_name=@name, contactperson_company=@company, contactperson_city=@city, contactperson_email=@email, contactperson_phone=@phone, contactperson_cell=@cell, contactpersontype_idJobrole=@idjobrole WHERE contactperson_id=@ID;";
+
+                DbParameter par1 = Database.AddParameter("@name", contact.Name);
+                DbParameter par2 = Database.AddParameter("@company", contact.Company);
+                DbParameter par3 = Database.AddParameter("@city", contact.City);
+                DbParameter par4 = Database.AddParameter("@email", contact.Email);
+                DbParameter par5 = Database.AddParameter("@phone", contact.Phone);
+                DbParameter par6 = Database.AddParameter("@cell", contact.Cellphone);
+                DbParameter par7 = Database.AddParameter("@idjobrole", contact.JobRole.ID);
+
+                DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(contact.ID));
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, par6, par7, parID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }           
         }
 
         public static void DeleteContact(int id)
         {
-            string sql = "DELETE FROM contactperson WHERE contactperson_id = @ID;";
-
-            DbParameter parID = Database.AddParameter("@ID", id);
-
-            int i = Database.ModifyData(sql, parID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "DELETE FROM contactperson WHERE contactperson_id = @ID;";
+
+                DbParameter parID = Database.AddParameter("@ID", id);
+
+                int i = Database.ModifyData(sql, parID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are deleted");
             }
-            Console.WriteLine(i + " row(s) are deleted");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }            
         }
         #endregion
     }

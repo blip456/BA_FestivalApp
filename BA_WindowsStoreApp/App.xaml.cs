@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Grid App template is documented at http://go.microsoft.com/fwlink/?LinkId=234226
+// The Split App template is documented at http://go.microsoft.com/fwlink/?LinkId=234228
 
 namespace BA_WindowsStoreApp
 {
@@ -45,10 +45,8 @@ namespace BA_WindowsStoreApp
         {
 
 #if DEBUG
-            // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                // Display the current frame rate counters
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
@@ -91,7 +89,7 @@ namespace BA_WindowsStoreApp
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootFrame.Navigate(typeof(GroupedItemsPage), e.Arguments);
+                rootFrame.Navigate(typeof(ItemsPage), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();

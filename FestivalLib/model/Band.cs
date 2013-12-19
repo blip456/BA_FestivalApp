@@ -1,14 +1,8 @@
-﻿using FestivalLib.model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using FestivalLib.Model;
-using Microsoft.Win32;
-using System.IO;
 using Xceed.Wpf.Toolkit;
 
 namespace FestivalLib.model
@@ -16,7 +10,6 @@ namespace FestivalLib.model
     public class Band
     {
         #region field en prop
-
         private string _id;
 
         public string ID
@@ -72,9 +65,6 @@ namespace FestivalLib.model
             get { return _genres; }
             set { _genres = value; }
         }
-
-
-
         #endregion
 
         public static ObservableCollection<Band> lstAlleBands = GetBands();
@@ -82,7 +72,6 @@ namespace FestivalLib.model
         #region SQL
         private static Band CreateBand(DbDataReader reader)
         {
-
             Band band = new Band();
             band.ID = Convert.ToString(reader["band_id"]);
             band.Name = Convert.ToString(reader["band_name"]);
@@ -91,7 +80,7 @@ namespace FestivalLib.model
             band.Twitter = Convert.ToString(reader["band_twitter"]);
             band.Facebook = Convert.ToString(reader["band_facebook"]);
             band.Genres = Genre.GetGenresByBandID(Convert.ToInt32(reader["band_id"]));
-            return band;
+            return band;       
         }
 
         public static ObservableCollection<Band> GetBands()
@@ -100,10 +89,9 @@ namespace FestivalLib.model
             DbDataReader reader = Database.GetData("SELECT * FROM band");
             while (reader.Read())
             {
-                // Band band = CreateBand(reader);
                 lstBands.Add(CreateBand(reader));
             }
-            return lstBands;
+            return lstBands;          
         }
 
         public static ObservableCollection<Band> GetBandsByString(string search)
@@ -116,8 +104,7 @@ namespace FestivalLib.model
                     lstGevondenBands.Add(band);
                 }
             }
-
-            return lstGevondenBands;
+            return lstGevondenBands;       
         }
 
         public static Band GetBandByID(int id)
@@ -125,75 +112,106 @@ namespace FestivalLib.model
             Band gevondenBand = new Band();
             gevondenBand = lstAlleBands.Single(i => i.ID == Convert.ToString(id));
 
-            return gevondenBand;
+            return gevondenBand;         
         }
 
         public static void AddBand(Band band)
         {
-            string sql = "INSERT INTO band(band_name, band_picture, band_description, band_twitter, band_facebook) VALUES (@name, @picture, @description, @twitter, @facebook);";
-
-            DbParameter par1 = Database.AddParameter("@name", band.Name);
-            DbParameter par2 = Database.AddParameter("@picture", band.Picture);
-            DbParameter par3 = Database.AddParameter("@description", band.Descr);
-            DbParameter par4 = Database.AddParameter("@twitter", band.Twitter);
-            DbParameter par5 = Database.AddParameter("@facebook", band.Facebook);
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "INSERT INTO band(band_name, band_picture, band_description, band_twitter, band_facebook) VALUES (@name, @picture, @description, @twitter, @facebook);";
+
+                DbParameter par1 = Database.AddParameter("@name", band.Name);
+                DbParameter par2 = Database.AddParameter("@picture", band.Picture);
+                DbParameter par3 = Database.AddParameter("@description", band.Descr);
+                DbParameter par4 = Database.AddParameter("@twitter", band.Twitter);
+                DbParameter par5 = Database.AddParameter("@facebook", band.Facebook);
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, par5);
+                if (i == 0)
+                {
+                    MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }           
         }
 
         public static void EditBand(Band band)
         {
-            string sql = "UPDATE band SET band_name=@name, band_picture=@picture, band_description=@description, band_twitter=@twitter, band_facebook=@facebook WHERE band_id=@ID;";
-
-            DbParameter par1 = Database.AddParameter("@name", band.Name);
-            DbParameter par2 = Database.AddParameter("@picture", band.Picture);
-            DbParameter par3 = Database.AddParameter("@description", band.Descr);
-            DbParameter par4 = Database.AddParameter("@twitter", band.Twitter);
-            DbParameter par5 = Database.AddParameter("@facebook", band.Facebook);
-
-            DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(band.ID));
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, parID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "UPDATE band SET band_name=@name, band_picture=@picture, band_description=@description, band_twitter=@twitter, band_facebook=@facebook WHERE band_id=@ID;";
+
+                DbParameter par1 = Database.AddParameter("@name", band.Name);
+                DbParameter par2 = Database.AddParameter("@picture", band.Picture);
+                DbParameter par3 = Database.AddParameter("@description", band.Descr);
+                DbParameter par4 = Database.AddParameter("@twitter", band.Twitter);
+                DbParameter par5 = Database.AddParameter("@facebook", band.Facebook);
+
+                DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(band.ID));
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, par5, parID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }            
         }
 
         public static void DeleteBand(int id)
         {
-            string sql = "DELETE FROM band WHERE band_id = @ID;";
-
-            DbParameter parID = Database.AddParameter("@ID", id);
-
-            int i = Database.ModifyData(sql, parID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "DELETE FROM band WHERE band_id = @ID;";
+
+                DbParameter parID = Database.AddParameter("@ID", id);
+
+                int i = Database.ModifyData(sql, parID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are deleted");
             }
-            Console.WriteLine(i + " row(s) are deleted");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
+
+            
         }
 
         public static void DeleteBandFromLineUp(int lineupID)
         {
-            string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
-            DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);
-            int i = Database.ModifyData(sql, parLineUpID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "DELETE FROM lineup WHERE lineup_id = @lineupID;";
+                DbParameter parLineUpID = Database.AddParameter("@lineupID", lineupID);
+                int i = Database.ModifyData(sql, parLineUpID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Verwijderen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + "row deleted");
             }
-            Console.WriteLine(i + "row deleted");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }            
         }
-
         #endregion
-
-
     }
 }

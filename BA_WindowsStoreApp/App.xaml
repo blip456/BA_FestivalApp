@@ -8,8 +8,6 @@
     <Application.Resources>
 
         <!-- Application-specific resources -->
-
-        <x:String x:Key="AppName">BA_WindowsStoreApp</x:String>
-
+        <x:String x:Key="AppName">Mijn app</x:String>       
     </Application.Resources>
 </Application>

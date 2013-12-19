@@ -1,11 +1,6 @@
-﻿using FestivalLib.model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //using FestivalLib.Model;
 using Xceed.Wpf.Toolkit;
 
@@ -60,9 +55,7 @@ namespace FestivalLib.model
 
         #endregion 
 
-
         #region SQL
-
         public static Festival GetFestivals()
         {
             Festival festival = new Festival();
@@ -80,21 +73,29 @@ namespace FestivalLib.model
 
         public static void EditFestival(Festival festival)
         {
-            string sql = "UPDATE festival SET festival_start=@begin, festival_end=@end, festival_name=@name, festival_omschrijving=@omschrijving WHERE festival_id=@ID;";
-
-            DbParameter par1 = Database.AddParameter("@begin", festival.StartDate);
-            DbParameter par2 = Database.AddParameter("@end", festival.EndDate);
-            DbParameter par3 = Database.AddParameter("@name", festival.Name);
-            DbParameter par4 = Database.AddParameter("@omschrijving", festival.Omschrijving);
-
-            DbParameter parID = Database.AddParameter("@ID", festival.ID);
-
-            int i = Database.ModifyData(sql, par1, par2, par3, par4, parID);
-            if (i == 0)
+            try
             {
-                MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                string sql = "UPDATE festival SET festival_start=@begin, festival_end=@end, festival_name=@name, festival_omschrijving=@omschrijving WHERE festival_id=@ID;";
+
+                DbParameter par1 = Database.AddParameter("@begin", festival.StartDate);
+                DbParameter par2 = Database.AddParameter("@end", festival.EndDate);
+                DbParameter par3 = Database.AddParameter("@name", festival.Name);
+                DbParameter par4 = Database.AddParameter("@omschrijving", festival.Omschrijving);
+
+                DbParameter parID = Database.AddParameter("@ID", festival.ID);
+
+                int i = Database.ModifyData(sql, par1, par2, par3, par4, parID);
+                if (i == 0)
+                {
+                    MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+                }
+                Console.WriteLine(i + " row(s) are affected");
             }
-            Console.WriteLine(i + " row(s) are affected");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw ex;
+            }
         }
         #endregion
 
@@ -114,6 +115,5 @@ namespace FestivalLib.model
 
             return lstDagen;
         }
-
     }
 }

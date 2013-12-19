@@ -1,20 +1,14 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using FestivalLib.model;
-using Ypsilon2.view;
 
 namespace Ypsilon2.viewmodel
 {
     class LineUpVM : ObservableObject, IPage
     {
-        private ObservableCollection<Stage> lstAlleStages = Stage.GetAlleStages();
+       //private ObservableCollection<FestivalLib.model.Stage> lstAlleStages = FestivalLib.model.Stage.GetAlleStages();
 
         #region fields en props
 
@@ -22,8 +16,9 @@ namespace Ypsilon2.viewmodel
         {
             _bands = FestivalLib.model.Band.GetBands();
             _uniekeDagen = FestivalLib.model.Festival.aantalDagen();
-            _stagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            _stagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
             _lineUp = new FestivalLib.model.LineUp();
+            
         }
 
         public string Name
@@ -40,7 +35,7 @@ namespace Ypsilon2.viewmodel
             {
                 _selectedDag = value;
                 OnPropertyChanged("SelectedDag");
-                StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
             }
         }
 
@@ -52,9 +47,9 @@ namespace Ypsilon2.viewmodel
             set { _uniekeDagen = value; OnPropertyChanged("UniekeDagen"); }
         }
 
-        private ObservableCollection<Stage> _stagesPerDag;
+        private ObservableCollection<FestivalLib.model.Stage> _stagesPerDag;
 
-        public ObservableCollection<Stage> StagesPerDag
+        public ObservableCollection<FestivalLib.model.Stage> StagesPerDag
         {
             get { return _stagesPerDag; }
             set { _stagesPerDag = value; OnPropertyChanged("StagesPerDag"); }
@@ -87,7 +82,7 @@ namespace Ypsilon2.viewmodel
         {
             FestivalLib.model.LineUp.AddLineUp(LineUp);
 
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
         }
 
         public ICommand SaveStageCommand
@@ -96,8 +91,8 @@ namespace Ypsilon2.viewmodel
         }
         public void SaveStage(string NewPodiumName)
         {
-            Stage.AddStage(NewPodiumName);
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            FestivalLib.model.Stage.AddStage(NewPodiumName);
+            StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
         }
 
         public ICommand DeleteStageCommand
@@ -106,11 +101,11 @@ namespace Ypsilon2.viewmodel
         }
         public void DeleteStage(int id)
         {
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
             {
-                Stage.DeleteStage(id);
-                StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+                FestivalLib.model.Stage.DeleteStage(id);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
             }
             else
             {
@@ -130,7 +125,7 @@ namespace Ypsilon2.viewmodel
             {
                 FestivalLib.model.Band.DeleteBandFromLineUp(id);
                 Bands = FestivalLib.model.Band.GetBands();
-                StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
             }
             else
             {

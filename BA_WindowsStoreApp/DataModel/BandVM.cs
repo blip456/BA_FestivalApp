@@ -8,14 +8,17 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using BA_WindowsStoreApp.DataModel;
 
-namespace BA_WindowsStoreApp.DataModel
+
+namespace BA_WindowsStoreApp.DataModel 
 {
-    public class BandVM
+    public class BandVM:ObservableObject
     {
         public BandVM()
         {
-            //Bands = GetBandFromAPI();           
+            GetBandFromAPI();           
             _test = "tetjesforsure";
         }
 
@@ -24,7 +27,7 @@ namespace BA_WindowsStoreApp.DataModel
         public List<FestivalLibPort.Band> Bands
         {
             get { return _bands; }
-            set { _bands = value; }
+            set { _bands = value; OnPropertyChanged("Bands"); }
         }
 
         private string _test;

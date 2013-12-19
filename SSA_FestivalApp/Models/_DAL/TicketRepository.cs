@@ -19,5 +19,11 @@ namespace SSA_FestivalApp.Models._DAL
             ObservableCollection<TicketType> lstAlleTicketTypes = TicketType.GetTicketTypes();
             return lstAlleTicketTypes;
         }
+
+        public static ObservableCollection<Ticket> GetAllTickets()
+        {
+            ObservableCollection<Ticket> lst = Ticket.GetTickets();
+            return lst;
+        }
     }
 }

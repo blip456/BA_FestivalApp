@@ -15,7 +15,7 @@ namespace SSA_FestivalApp.Controllers
         //
         // GET: /Ticket/       
 
-        [AllowAnonymous]
+        [Authorize(Roles="Registered, Admin")]
         public ActionResult Reserveer()
         {
             TicketTypeVM vm = new TicketTypeVM();
@@ -30,6 +30,13 @@ namespace SSA_FestivalApp.Controllers
             ticket.TicketType = TicketType.GetTicketTypeByID(vm.SelectedType);
             TicketRepository.ReserveerTicket(vm.Ticket);
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Summary()
+        {
+            ObservableCollection<Ticket> lstAlleTickets = TicketRepository.GetAllTickets();
+            return View(lstAlleTickets);
         }
 
     }

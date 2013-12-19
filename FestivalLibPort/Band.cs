@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FestivalLibPort
 {
-    public class Band
+    public class Band:ObservableObject
     {
         #region field en prop
 

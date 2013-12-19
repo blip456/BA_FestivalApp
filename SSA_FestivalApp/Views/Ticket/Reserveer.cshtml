@@ -4,6 +4,19 @@
     ViewBag.Title = "Reserveer";
 }
 
+<div>
+    @if (User.Identity.AuthenticationType == "Registered")
+    {
+         @Html.ActionLink("Reeds besteld", "Summary")
+    }
+    else
+    {
+        @:BLABLA geen admin
+    }
+
+   
+</div>
+
 <h2>Reserveer</h2>
 
 @using (Html.BeginForm("Insert", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data" }))

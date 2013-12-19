@@ -1,0 +1,36 @@
+﻿@model IEnumerable<FestivalLib.model.Ticket>
+
+@{
+    ViewBag.Title = "Overzicht van de reeds bestelde tickets";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <tr>
+        <th>
+            Naam
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Aantal
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketHolder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketHolderEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+    </tr>
+}
+
+</table>

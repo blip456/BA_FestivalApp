@@ -1,11 +1,10 @@
 ﻿@model SSA_FestivalApp.Models.RegisterModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Registreer";
 }
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
+    <h1>@ViewBag.Title</h1>
 </hgroup>
 
 @using (Html.BeginForm()) {
@@ -16,19 +15,25 @@
         <legend>Registration Form</legend>
         <ol>
             <li>
-                @Html.LabelFor(m => m.Email)
+                <div class="editor-label">
+                    Email: 
+                </div>
                 @Html.TextBoxFor(m => m.Email)
             </li>
             <li>
-                @Html.LabelFor(m => m.Password)
+                <div class="editor-label">
+                    Wachtwoord:
+                </div>
                 @Html.PasswordFor(m => m.Password)
             </li>
             <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
+                <div class="editor-label">
+                    Bevestig wachtwoord: 
+                </div>
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
         </ol>
-        <input type="submit" value="Register" />
+        <input type="submit" value="Registreer" />
     </fieldset>
 }
 

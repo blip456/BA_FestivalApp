@@ -146,7 +146,7 @@ footer {
 ----------------------------------------------------------*/
 .site-title {
     color: #c8c8c8;
-    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-family: Lato, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
 }
@@ -344,7 +344,6 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #c8c8c8;
     float: left;
     width: 55%;
 }

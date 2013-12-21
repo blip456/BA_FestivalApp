@@ -10,7 +10,7 @@ namespace SSA_FestivalApp.Models
 {
     public class TicketTypeVM
     {
-        public Ticket Ticket { get; set; }
+        public Ticket Ticket { get; set; }      
         public int SelectedType { get; set; }
         public SelectList lstTypes { get; set; }              
     }

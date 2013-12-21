@@ -21,8 +21,8 @@ namespace SSA_FestivalApp.Controllers
            
             //return View("Index",lstLineUps);
             LineUpVM vm = new LineUpVM();
-            vm.LineUps = LineUp.GetLineUps();
-            vm.lstDagen = new SelectList(LineUpRepository.GetDagen().ToList());
+            vm.LineUps = LineUpRepository.GetLineUps();            
+            vm.lstDagen = new SelectList(LineUpRepository.GetDagen().ToList());            
             vm.lstPodia = new SelectList(LineUpRepository.GetStages().ToList(), "ID", "Name");
             return View("Index", vm);
         }

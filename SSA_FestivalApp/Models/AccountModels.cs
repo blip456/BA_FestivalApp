@@ -58,33 +58,35 @@ namespace SSA_FestivalApp.Models
     public class LoginModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        [Display(Name = "Emailadres")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Onthouden?")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        [Display(Name = "Emailadres")]
+        [DataType(DataType.EmailAddress)]        
+        public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Het {0} moet op zijn minst {2} karaketers lang zijn.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Bevestig wachtwoord")]
+        [Compare("Password", ErrorMessage = "Wachtwoord en bevestigingswachtwoord komen niet overeen.")]
         public string ConfirmPassword { get; set; }
     }
 

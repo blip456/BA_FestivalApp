@@ -48,6 +48,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -188,6 +189,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineUpController.cs" />
+    <Compile Include="Controllers\RSSController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -209,6 +211,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\feed-icon-14x14.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\logo_white.png" />
+    <Content Include="Content\Site - Copy.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -326,6 +332,8 @@
     <Content Include="Views\Ticket\Reserveer.cshtml" />
     <Content Include="Views\LineUp\Index.cshtml" />
     <Content Include="Views\Ticket\Summary.cshtml" />
+    <Content Include="Views\Home\RSS.cshtml" />
+    <Content Include="Views\Ticket\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

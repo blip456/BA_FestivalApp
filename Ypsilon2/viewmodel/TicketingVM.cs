@@ -245,9 +245,7 @@ namespace Ypsilon2.viewmodel
             {
                 string sPad = fbd.SelectedPath;
                 Ticket.PrintWord(ticket, festival, sPad);
-            }
-
-            
+            }            
         }
         #endregion
 

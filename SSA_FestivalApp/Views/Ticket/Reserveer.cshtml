@@ -4,18 +4,6 @@
     ViewBag.Title = "Reserveer";
 }
 
-<div>
-    @if (User.Identity.AuthenticationType == "Registered")
-    {
-         @Html.ActionLink("Reeds besteld", "Summary")
-    }
-    else
-    {
-        @:BLABLA geen admin
-    }
-
-   
-</div>
 
 <h2>Reserveer</h2>
 
@@ -31,7 +19,7 @@
             Naam:
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Ticket.TicketHolder)
+            @Html.EditorFor(model => model.Ticket.TicketHolder)            
             @Html.ValidationMessageFor(model => model.Ticket.TicketHolder)
         </div>
 
@@ -39,7 +27,7 @@
             Email adres:
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Ticket.TicketHolderEmail)
+            @Html.TextBoxFor(model => model.Ticket.TicketHolderEmail, new { @Value = User.Identity.Name, @readonly=true })
             @Html.ValidationMessageFor(model => model.Ticket.TicketHolderEmail)
         </div>
 

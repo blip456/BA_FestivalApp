@@ -137,6 +137,13 @@
     <None Include="Common\ReadMe.txt" />
     <None Include="BA_StoreApp_TemporaryKey.pfx" />
     <Content Include="DataModel\SampleData.json" />
+    <Content Include="DataModel\Web.config" />
+    <Content Include="DataModel\Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="DataModel\Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />

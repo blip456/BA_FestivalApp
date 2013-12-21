@@ -35,7 +35,7 @@ namespace SSA_FestivalApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid && WebSecurity.Login(model.Email, model.Password, persistCookie: model.RememberMe))
             {
                 return RedirectToLocal(returnUrl);
             }
@@ -79,8 +79,8 @@ namespace SSA_FestivalApp.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.Email, model.Password);
+                    WebSecurity.Login(model.Email, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)

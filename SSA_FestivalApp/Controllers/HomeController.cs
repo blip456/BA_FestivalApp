@@ -3,8 +3,10 @@ using SSA_FestivalApp.Models._DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace SSA_FestivalApp.Controllers
 {
@@ -19,17 +21,11 @@ namespace SSA_FestivalApp.Controllers
             return View(festival);
         }
 
-        public ActionResult About()
+        [AllowAnonymous]
+        public ActionResult RSS()
         {
-            ViewBag.Message = "Your app description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
+            List<RssItem> lst = RssItem.GetRssItems();
+           // RssItem.GetRssItems();
             return View();
         }
     }

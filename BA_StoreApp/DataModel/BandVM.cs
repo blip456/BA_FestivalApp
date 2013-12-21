@@ -42,7 +42,7 @@ namespace BA_StoreApp.DataModel
             client.DefaultRequestHeaders.Accept.Add(new
             System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
 
-            HttpResponseMessage response = await client.GetAsync("http://localhost:8081/api/band");
+            HttpResponseMessage response = await client.GetAsync("http://localhost:8090/api/band");
             if (response.IsSuccessStatusCode)
             {
                 Stream stream = await response.Content.ReadAsStreamAsync();
@@ -62,7 +62,7 @@ namespace BA_StoreApp.DataModel
             client.DefaultRequestHeaders.Accept.Add(new
             System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
 
-            HttpResponseMessage response = await client.GetAsync("http://localhost:8081/api/band");
+            HttpResponseMessage response = await client.GetAsync("http://localhost:8090/api/band");
             if (response.IsSuccessStatusCode)
             {
                 Stream stream = await response.Content.ReadAsStreamAsync();

@@ -1,0 +1,39 @@
+﻿@model FestivalLib.model.Ticket
+
+@{
+    ViewBag.Title = "Overzicht";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>Gegevens</legend>
+
+    <div class="display-label">
+         Naam:
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TicketHolder)
+    </div>
+
+    <div class="display-label">
+         Email: 
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TicketHolderEmail)
+    </div>
+
+    <div class="display-label">
+         Aantal: 
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+
+    <div class="display-label">
+        Prijs per ticket: 
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TicketType.Price)
+    </div>
+</fieldset>

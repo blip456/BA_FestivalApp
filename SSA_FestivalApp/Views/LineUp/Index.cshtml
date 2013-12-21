@@ -1,10 +1,10 @@
 ﻿@model SSA_FestivalApp.Models.LineUpVM
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Line up";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 @using (Html.BeginForm("Filter", "LineUp", FormMethod.Post))
 {
     @Html.DropDownList("SelectedDag", (SelectList)Model.lstDagen)
@@ -24,6 +24,9 @@
         <th>
             Band
         </th>
+        <th>
+            Podium
+        </th>
     </tr>
 
     @foreach (var item in Model.LineUps) {
@@ -38,11 +41,10 @@
             @Html.DisplayFor(modelItem => item.Until.Hour):@Html.DisplayFor(modelItem =>item.Until.Minute)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Band.Name)
+            @Html.ActionLink(item.Band.Name, "BandDetails", new { bandID = item.Band.ID })
         </td>
-
         <td>
-            @Html.ActionLink("Details", "BandDetails", new { bandID=item.Band.ID })
+            @Html.DisplayFor(modelItem=>item.Stage.Name)
         </td>
     </tr>
 }

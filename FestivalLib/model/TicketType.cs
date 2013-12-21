@@ -8,6 +8,11 @@ namespace FestivalLib.model
 {
     public class TicketType
     {
+        public TicketType()
+        {
+           
+        }
+
         #region field en prop
 
         private string _id;
@@ -49,9 +54,15 @@ namespace FestivalLib.model
             get { return _categorie; }
             set { _categorie = value; }
         }
+
+        private string _nameCat;
+
+        public string NameCat
+        {
+            get { return _nameCat; }
+            set { _nameCat = value; }
+        }
         
-
-
         #endregion
 
         public static ObservableCollection<TicketType> lstAlleTypes = GetTicketTypes();
@@ -65,6 +76,7 @@ namespace FestivalLib.model
             ticket.Price = Convert.ToDouble(reader["tickettype_price"]);
             ticket.AvailableTickets = Convert.ToInt32(reader["tickettype_available"]);
             ticket.Categorie = Convert.ToString(reader["tickettype_categorie"]);
+            ticket.NameCat = ticket.Name + " - " + ticket.Categorie;
             return ticket;
         }
 

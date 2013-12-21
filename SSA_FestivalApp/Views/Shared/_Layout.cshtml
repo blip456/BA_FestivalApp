@@ -1,51 +1,52 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    @*<p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>*@
-                    <a href="@Url.Action("Index", "Home")"><img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSqgaZytyluZ0MYUHpeN-3RL85xLJqHhsv0-yG8OTjUKUf4iNeb3GYLlNr9" alt="Logo + link naar home" /></a>                  
-                    @*<a href="<%= Url.Action(" actionname", "ControllerName" ) %>"><img src="<%= Url.Content(" ~ />Content/img/imgname.jpg") %>" />*@
-                    </a>
-                </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Line Up","Index", "LineUp")</li>
-                            <li>@Html.ActionLink("Tickets bestellen", "Reserveer", "Ticket")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <a href="@Url.Action("Index", "Home")" class="float-left"><img src="~/Content/images/logo_white.png" height="47px" "Logo + link naar home" /></a>
+            <section id="login">
+                @Html.Partial("_LoginPartial")
             </section>
+            <nav>
+                <ul id="menu">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Line Up", "Index", "LineUp")</li>
+                    <li>@Html.ActionLink("Tickets bestellen", "Reserveer", "Ticket")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Admin panel", "Summary", "Ticket")</li>
+                    }
+                </ul>
+            </nav>
         </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Gemaakt door Yoran Broodcooren</p>
             </div>
-        </footer>
+            <div class="float-right feed">
+                <img src="~/Content/images/feed-icon-14x14.png"/>
+                <a href="http://localhost:61968/api/rss">Aboneer je op onze RSS feed</a>                
+            </div>
+        </div>
+    </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
 </html>

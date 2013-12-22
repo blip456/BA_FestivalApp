@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.ServiceModel.Syndication;
@@ -21,54 +22,34 @@ namespace FestivalLib.model
         public string Link { get; set; }
         public string Title { get; set; }
         public string Descr { get; set; }
+        public DateTime Date { get; set; }
 
-        public static List<RssItem> GetRssItems()
+
+        public static List<SyndicationItem> GetRssItems()
         {
-            Rss20FeedFormatter feedFormatter = new Rss20FeedFormatter();
-            XmlReader rssReader = XmlReader.Create("http://localhost:61968/api/rss");
-            if (feedFormatter.CanRead(rssReader))
+            List<SyndicationItem> lstFeedItems = new List<SyndicationItem>();
+            DbDataReader reader = Database.GetData("SELECT * FROM rssfeed;");
+
+            while (reader.Read())
             {
-                feedFormatter.ReadFrom(rssReader);
-                rssReader.Close();
-            }
+                SyndicationItem item = new SyndicationItem((string)reader["rssfeed_title"], (string)reader["rssfeed_descr"], new Uri((string)reader["rssfeed_link"]), "ID", (DateTime)reader["rssfeed_date"]);
+                lstFeedItems.Add(item);
+            }           
+            return lstFeedItems;
+        }
 
+        public static void AddRssItem(RssItem item)
+        {
+            string sql = "INSERT INTO rssfeed(rssfeed_link, rssfeed_descr, rssfeed_title, rssfeed_date) VALUES (@link, @descr, @title, @date);";
 
-            return null;
+            DbParameter par1 = Database.AddParameter("@link", item.Link);
+            DbParameter par2 = Database.AddParameter("@descr", item.Descr);
+            DbParameter par3 = Database.AddParameter("@title", item.Title);
+            DbParameter par4 = Database.AddParameter("@date", DateTime.Now);
 
+            int i = Database.ModifyData(sql, par1, par2, par3, par4);
 
-            //string rssURL = "http://localhost:61968/api/rss";
-            //List<RssItem> rssFeeds = new List<RssItem>();
-            //try
-            //{
-            //    XDocument doc = new XDocument();
-            //    doc = XDocument.Load(rssURL);            
-            //    var items = (from x in doc.Descendants("item")
-            //                 select new
-            //                 {
-            //                    title = x.Element("title").Value,
-            //                    link =x.Element("link").Value,
-            //                    descr = x.Element("description").Value
-            //                 });
-            //    if (items != null)
-            //    {
-            //        foreach (var i in items)
-            //        {
-            //            RssItem rssItem = new RssItem();
-            //            rssItem.Title = i.title;
-            //            rssItem.Link = i.link;
-            //            rssItem.Descr = i.descr;
-            //            rssFeeds.Add(rssItem);
-            //        }
-            //        return rssFeeds;
-            //    }
-            //}                
-            //catch (Exception ex)
-            //{
-                
-            //    throw;
-            //}
-
-            //return rssFeeds;
+            Console.WriteLine(i + " row(s) are affected ticket");
         }
     }
 }

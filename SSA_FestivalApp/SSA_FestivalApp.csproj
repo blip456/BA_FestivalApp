@@ -190,6 +190,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineUpController.cs" />
     <Compile Include="Controllers\RSSController.cs" />
+    <Compile Include="Controllers\RssFeedController.cs" />
     <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -334,6 +335,7 @@
     <Content Include="Views\Ticket\Summary.cshtml" />
     <Content Include="Views\Home\RSS.cshtml" />
     <Content Include="Views\Ticket\Overview.cshtml" />
+    <Content Include="Views\RssFeed\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,7 +1,7 @@
 ﻿
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 html {
-    background-color: #e2e2e2;
+    background-color: white;
     margin: 0;
     padding: 0;
 }
@@ -17,6 +17,40 @@ body {
 }   
 
 
+.tables
+{
+	width: 480px;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #365359;
+}
+.tables th
+{
+	padding: 12px 17px 12px 17px;
+	font-weight: normal;
+	font-size: 16px;
+	color: white;
+    background-color:#365359;
+}
+.tables td
+{
+	padding: 7px 17px 7px 17px;
+	
+}
+.tables tbody tr:hover td
+{
+	color: white;
+	background: #567C8F;
+}
+
+.tables tr:nth-child(odd)
+{
+	background: #D6D6D6;
+}
+.tables tr:nth-child(even)
+{
+	background: #DFDFDF;
+}
 
 a {
     color: #333;
@@ -109,7 +143,7 @@ h5, h6 {
 }
 
 #body {
-    background-color:#EAEAEC;
+    background-color:#fefefe;
     clear: both;
     padding-bottom: 35px;
 }

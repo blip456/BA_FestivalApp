@@ -24,7 +24,7 @@ namespace SSA_FestivalApp.Controllers
         [AllowAnonymous]
         public ActionResult RSS()
         {
-            List<RssItem> lst = RssItem.GetRssItems();
+            //List<RssItem> lst = RssItem.GetRssItems();
            // RssItem.GetRssItems();
             return View();
         }

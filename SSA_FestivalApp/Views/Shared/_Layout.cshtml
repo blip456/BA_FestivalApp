@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <title>@ViewBag.Title - Moustache Festival</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
@@ -20,10 +20,10 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Line Up", "Index", "LineUp")</li>
                     <li>@Html.ActionLink("Tickets bestellen", "Reserveer", "Ticket")</li>
-                    @if (User.IsInRole("Admin"))
+                    @*@if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Admin panel", "Summary", "Ticket")</li>
-                    }
+                    }*@
                 </ul>
             </nav>
         </div>
@@ -41,7 +41,12 @@
             </div>
             <div class="float-right feed">
                 <img src="~/Content/images/feed-icon-14x14.png"/>
-                <a href="http://localhost:61968/api/rss">Aboneer je op onze RSS feed</a>                
+                <a href="http://localhost:61968/api/rss">Aboneer je op onze RSS feed</a>  
+                @*@if (User.IsInRole("Admin"))
+                {
+                    <p>@Html.ActionLink("Pas de RSS feed aan", "Index", "RssFeed")</p> 
+                }*@
+                             
             </div>
         </div>
     </footer>

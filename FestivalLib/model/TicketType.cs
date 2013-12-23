@@ -88,6 +88,8 @@ namespace FestivalLib.model
             {
                 lstTicketTypes.Add(CreateTicket(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstTicketTypes;
         }
 

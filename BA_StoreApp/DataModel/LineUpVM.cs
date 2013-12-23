@@ -12,22 +12,37 @@ namespace BA_StoreApp.DataModel
 {
     public class LineUpVM:ObservableObject
     {
-        private List<Band> _lineUps;
+        public LineUpVM()
+        {
+            GetLineUpsFromAPI();
+        }
+        
 
-        public List<Band> LineUps
+        private List<LineUp> _lineUps;
+
+        public List<LineUp> LineUps
         {
             get { return _lineUps; }
             set { _lineUps = value; OnPropertyChanged("LineUps"); }
         }
 
-        public async void GetBandFromAPI()
+        private List<Stage> _uniekeStages;
+
+        public List<Stage> UniekeStages
+        {
+            get { return _uniekeStages; }
+            set { _uniekeStages = value; OnPropertyChanged("UniekeStages"); }
+        }
+        
+
+        public async void GetLineUpsFromAPI()
         {
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new
             System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
 
-            HttpResponseMessage response = await client.GetAsync("http://localhost:8081/api/band");
+            HttpResponseMessage response = await client.GetAsync("http://localhost:8090/api/lineup");
             if (response.IsSuccessStatusCode)
             {
                 Stream stream = await response.Content.ReadAsStreamAsync();
@@ -35,11 +50,11 @@ namespace BA_StoreApp.DataModel
                 //DataContractJsonSerializer djs = new
                 //DataContractJsonSerializer(typeof(List<FestivalLibPort.Band>));
                 //Bands = djs.ReadObject(stream) as List<FestivalLibPort.Band>; 
-                DataContractSerializer dxml = new DataContractSerializer(typeof(List<FestivalLibPort.Band>));
-                LineUps = dxml.ReadObject(stream) as List<FestivalLibPort.Band>;
+                DataContractSerializer dxml = new DataContractSerializer(typeof(List<FestivalLibPort.LineUp>));
+                LineUps = dxml.ReadObject(stream) as List<FestivalLibPort.LineUp>;
             }
         }
 
-        
+
     }
 }

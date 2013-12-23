@@ -123,6 +123,8 @@ namespace FestivalLib.model
             {
                 lstContacts.Add(CreateContact(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstContacts;          
         }
 

@@ -164,13 +164,17 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BandController.cs" />
+    <Compile Include="Controllers\FestivalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LineUpController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Database.cs" />
     <Compile Include="Models\_DAL\BandRepository.cs" />
+    <Compile Include="Models\_DAL\FestivalRepository.cs" />
+    <Compile Include="Models\_DAL\LineUpRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -305,6 +309,10 @@
     <ProjectReference Include="..\FestivalLibPort\FestivalLibPort.csproj">
       <Project>{9dae0c1e-22c9-4d28-b69a-260a322a836e}</Project>
       <Name>FestivalLibPort</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FestivalLib\FestivalLib.csproj">
+      <Project>{32b96c09-99ff-4184-b08d-86327bda4d9b}</Project>
+      <Name>FestivalLib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

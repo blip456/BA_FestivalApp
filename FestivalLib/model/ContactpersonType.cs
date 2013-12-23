@@ -47,6 +47,8 @@ namespace FestivalLib.model
             {
                 lstContactTypes.Add(CreateContactType(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstContactTypes;          
         }
 

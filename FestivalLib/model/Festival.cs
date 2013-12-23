@@ -68,6 +68,8 @@ namespace FestivalLib.model
                 festival.ID = Convert.ToInt32(reader["festival_id"]);
                 festival.Omschrijving = (string)reader["festival_omschrijving"];
             }
+            if (reader != null)
+                reader.Close();
             return festival;
         }       
 

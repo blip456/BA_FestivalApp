@@ -94,6 +94,8 @@ namespace FestivalLib.model
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstGevondenLineUps;
         }
 
@@ -105,6 +107,8 @@ namespace FestivalLib.model
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstGevondenLineUps;
         }
 
@@ -117,6 +121,8 @@ namespace FestivalLib.model
             {
                 lstLineUps.Add(CreateLineUp(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstLineUps;
         }
 
@@ -129,7 +135,8 @@ namespace FestivalLib.model
             {
                 gevondenLineUp = CreateLineUp(reader);
             }
-
+            if (reader != null)
+                reader.Close();
             return gevondenLineUp;
         }
 

@@ -91,6 +91,8 @@ namespace FestivalLib.model
             {
                 lstBands.Add(CreateBand(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstBands;          
         }
 

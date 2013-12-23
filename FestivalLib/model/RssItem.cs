@@ -34,7 +34,9 @@ namespace FestivalLib.model
             {
                 SyndicationItem item = new SyndicationItem((string)reader["rssfeed_title"], (string)reader["rssfeed_descr"], new Uri((string)reader["rssfeed_link"]), "ID", (DateTime)reader["rssfeed_date"]);
                 lstFeedItems.Add(item);
-            }           
+            }
+            if (reader != null)
+                reader.Close();
             return lstFeedItems;
         }
 

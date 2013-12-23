@@ -112,8 +112,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\BooleanNegationConverter.cs" />
+    <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="DataModel\BandVM.cs" />
     <Compile Include="DataModel\ByteToImageConverter.cs" />
+    <Compile Include="DataModel\FestivalVM.cs" />
     <Compile Include="DataModel\LineUpVM.cs" />
     <Compile Include="LineUp.xaml.cs">
       <DependentUpon>LineUp.xaml</DependentUpon>
@@ -126,6 +129,9 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="SearchBandGenre.xaml.cs">
+      <DependentUpon>SearchBandGenre.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SplitPage.xaml.cs">
       <DependentUpon>SplitPage.xaml</DependentUpon>
     </Compile>
@@ -166,6 +172,10 @@
     <Page Include="ItemsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SearchBandGenre.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SplitPage.xaml">
       <SubType>Designer</SubType>

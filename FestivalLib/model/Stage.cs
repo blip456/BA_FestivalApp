@@ -68,6 +68,8 @@ namespace FestivalLib.model
             {
                 lstStages.Add(CreateStage(reader));
             }
+            if (reader != null)
+                reader.Close();
             return lstStages;
         }
 
@@ -79,7 +81,8 @@ namespace FestivalLib.model
             {
                 lstStages.Add(CreateStageWithDate(reader, date));
             }
-            
+            if (reader != null)
+                reader.Close();
             return lstStages;
         }
 
@@ -91,6 +94,8 @@ namespace FestivalLib.model
             {
                 gevondenStage.Name = (string)reader["stage_name"];                
             }
+            if (reader != null)
+                reader.Close();
             return gevondenStage;
         }
 

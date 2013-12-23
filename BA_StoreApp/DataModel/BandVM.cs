@@ -78,23 +78,22 @@ namespace BA_StoreApp.DataModel
             return null;
         }
 
-        public static Band GetBandAsync2(string selectedBand)
-        {
-            Band gevondenBand = new Band();
-            //ObservableCollection<Band> lst = await GetBandsAsync();
+        //public static Band GetBandAsync2(string selectedBand)
+        //{
+        //    Band gevondenBand = new Band();
+        //    //ObservableCollection<Band> lst = await GetBandsAsync();
             
-            return gevondenBand;
-        }
+        //    return gevondenBand;
+        //}
 
-        public static async Task<Band> GetBandAsync(string selectedBand)
-        {
-            ObservableCollection<Band> lst = await GetBandsAsync();
-            Band gevondenband = new Band();
-            gevondenband = lst.Single(item => item.ID == selectedBand);
+        //public static async Task<Band> GetBandAsync(string selectedBand)
+        //{
+        //    ObservableCollection<Band> lst = await GetBandsAsync();
+        //    Band gevondenband = new Band();
+        //    gevondenband = lst.Single(item => item.ID == selectedBand);
 
-            return gevondenband ;
-        }
-
+        //    return gevondenband ;
+        //}
        
     }
 }

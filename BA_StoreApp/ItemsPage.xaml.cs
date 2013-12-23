@@ -118,5 +118,10 @@ namespace BA_StoreApp
         {
             this.Frame.Navigate(typeof(GroupedItemsPage1));
         }
+
+        private void SearchBoxEventsQuerySubmitted(Windows.UI.Xaml.Controls.SearchBox sender, SearchBoxQuerySubmittedEventArgs args)
+        {
+            this.Frame.Navigate(typeof(SearchBandGenre), args.QueryText);
+        }
     }
 }

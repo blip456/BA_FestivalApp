@@ -43,6 +43,8 @@ namespace FestivalLib.model
                 genre.ID = Convert.ToString(reader["genre_id"]);
                 gevondenGenres.Add(genre);
             }
+            if (reader != null)
+                reader.Close();
             return gevondenGenres;
         }
 

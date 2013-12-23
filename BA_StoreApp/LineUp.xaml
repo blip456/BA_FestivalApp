@@ -9,6 +9,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:datamodel="using:BA_StoreApp.DataModel"
+    xmlns:c="using:BA_StoreApp.DataModel"
+    xmlns:festival="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -22,7 +24,9 @@
             Source="{Binding Groups}"
             IsSourceGrouped="true"
             ItemsPath="TopItems"/>
-        <datamodel:BandVM x:Key="bndInst"/>
+        <datamodel:LineUpVM x:Key="lineInst"/>
+        <c:ByteToImageConverter x:Key="byteImageConverter"/>
+        <festival:FestivalVM x:Key="festInst"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">Line Up</x:String>
     </Page.Resources>
@@ -40,28 +44,35 @@
         </Grid.ChildrenTransitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <!-- Horizontal scrolling grid -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <ItemsControl ItemsSource="{Binding Source={StaticResource festInst}, Path=Dagen}" ItemTemplate="{StaticResource btnTemplate}"/>
+            <Button Content="Zoek"/>
+        </StackPanel>
         <GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemGridView"
             AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             Padding="116,137,40,46"
-            ItemsSource="{Binding Source={StaticResource bndInst}, Path=Bands}"
+            ItemsSource="{Binding Source={StaticResource lineInst}, Path=LineUps}"
             SelectionMode="None"
-            IsSwipeEnabled="false">
+            IsSwipeEnabled="false"
+            Grid.Row="2">
+
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                            <Image Source="{Binding Band.Picture, Converter={StaticResource byteImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                            <TextBlock Text="{Binding Subtitle}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                            <TextBlock Text="{Binding Band.Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding Stage.Name}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

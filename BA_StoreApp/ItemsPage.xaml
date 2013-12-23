@@ -14,8 +14,8 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- Collection of items displayed by this page -->        
-        <datamodel:BandVM x:Key="bndInstance"/> 
+        <!-- Collection of items displayed by this page -->
+        <datamodel:BandVM x:Key="bndInstance"/>
         <c:ByteToImageConverter x:Key="byteImageConverter"/>
     </Page.Resources>
 
@@ -29,6 +29,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Bands" Width="140" Click="Button_Click"/>
                 <Button Content="Line Up" Width="140" Click="Button_Click_1"/>
+                <SearchBox x:Name="mySearchBox" Width="140" FocusOnKeyboardInput="True" QuerySubmitted="SearchBoxEventsQuerySubmitted" />
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -67,7 +68,7 @@
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
                             <TextBlock Text="{Binding Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}"  Margin="15,0,15,0" FontWeight="Bold"/>
                             <TextBlock Text="{Binding Descr}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
-                           </StackPanel>
+                        </StackPanel>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>

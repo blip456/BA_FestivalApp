@@ -6,8 +6,11 @@
     xmlns:localData="using:BA_StoreApp.Data">
 
     <Application.Resources>
-
         <!-- Application-specific resources -->
         <x:String x:Key="AppName">Festival App</x:String>
+        <DataTemplate x:Key="btnTemplate">
+            <Button Content="{Binding Date}"/>
+        </DataTemplate>
     </Application.Resources>
+
 </Application>

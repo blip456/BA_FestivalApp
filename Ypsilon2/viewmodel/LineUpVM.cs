@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using FestivalLib.model;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -8,7 +9,7 @@ namespace Ypsilon2.viewmodel
 {
     class LineUpVM : ObservableObject, IPage
     {
-       //private ObservableCollection<FestivalLib.model.Stage> lstAlleStages = FestivalLib.model.Stage.GetAlleStages();
+        //private ObservableCollection<FestivalLib.model.Stage> lstAlleStages = FestivalLib.model.Stage.GetAlleStages();
 
         #region fields en props
 
@@ -16,9 +17,8 @@ namespace Ypsilon2.viewmodel
         {
             _bands = FestivalLib.model.Band.GetBands();
             _uniekeDagen = FestivalLib.model.Festival.aantalDagen();
-            _stagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+            _stagesPerDag = FestivalLib.model.Stage.GetStagesByDay(DateTime.Now);
             _lineUp = new FestivalLib.model.LineUp();
-            
         }
 
         public string Name
@@ -71,12 +71,21 @@ namespace Ypsilon2.viewmodel
             set { _lineUp = value; OnPropertyChanged("LineUp"); }
         }
 
+        private Stage _selectedStageEdit;
+
+        public Stage SelectedStageEdit
+        {
+            get { return _selectedStageEdit; }
+            set { _selectedStageEdit = value; OnPropertyChanged("SelectedStageEdit"); }
+        }
+        
+
         #endregion
 
         #region commands
         public ICommand SaveLineUpCommand
         {
-            get { return new RelayCommand(SaveLineUp); }
+            get { return new RelayCommand(SaveLineUp, LineUp.IsValid); }
         }
         public void SaveLineUp()
         {
@@ -89,7 +98,18 @@ namespace Ypsilon2.viewmodel
         {
             get { return new RelayCommand<string>(SaveStage); }
         }
+
         public void SaveStage(string NewPodiumName)
+        {
+            Stage.EditStage(NewPodiumName, SelectedStageEdit);
+            StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+        }
+
+        public ICommand AddStageCommand
+        {
+            get { return new RelayCommand<string>(AddStage); }
+        }
+        public void AddStage(string NewPodiumName)
         {
             FestivalLib.model.Stage.AddStage(NewPodiumName);
             StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
@@ -101,16 +121,24 @@ namespace Ypsilon2.viewmodel
         }
         public void DeleteStage(int id)
         {
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.OK)
+            if (Stage.IsStageDeleteAllowed(id))
             {
-                FestivalLib.model.Stage.DeleteStage(id);
-                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+                var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Stage.GetStageByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.OK)
+                {
+                    FestivalLib.model.Stage.DeleteStage(id);
+                    StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
-                return;
+                MessageBox.Show("Deze stage heeft nog optredens! U moet eerst alle optredens verwijderen voordat u deze stage kunt verwijderen", "Opgelet", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
         public ICommand DeleteBandFromLineUpCommand

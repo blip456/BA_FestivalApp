@@ -48,6 +48,16 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Height" Value="30"/>
             <Setter Property="FontFamily" Value="{StaticResource BaseFont}"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="Foreground" Value="Red"/>
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+                <!--<Trigger Property="Validation.HasError" Value="False">
+                    <Setter Property="BorderBrush" Value="Green"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>-->
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="Counter" TargetType="TextBlock">
@@ -175,10 +185,8 @@
         <!-- Error Template -->
         <ControlTemplate x:Key="ErrorTemplate" TargetType="{x:Type Control}">
             <StackPanel>
-                <Border BorderBrush="Red" BorderThickness="2">
-                    <AdornedElementPlaceholder/>
+                <Border BorderBrush="#999999" BorderThickness="0">
                 </Border>
-                <TextBlock Foreground="Red" Text="{Binding [0].ErrorContent}"/>
             </StackPanel>
         </ControlTemplate>
 
@@ -191,7 +199,7 @@
 
 
         <DataTemplate x:Key="scBandTemplate">
-            <Border BorderBrush="#FF007BB2" BorderThickness="1" Margin="2" ToolTip="{Binding Band.Name}">
+            <Border BorderBrush="#FF007BB2" BorderThickness="1" Margin="0" ToolTip="{Binding Band.Name}">
                 <StackPanel Background="#FF19B8FF" Width="{Binding TimeSpan}">
                     <Button Style="{DynamicResource DeleteContact}" HorizontalAlignment="Right" Content="X" Command="{Binding DataContext.DeleteBandFromLineUpCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}"/>
                     <TextBlock Text="{Binding Band.Name}" Style="{DynamicResource LineUpTxb}"/>
@@ -213,8 +221,8 @@
         <!-- nieuwe line up datatemplate -->
         <DataTemplate x:Key="scStageTemplate">
             <WrapPanel Margin="10">
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <Button Content="X" Command="{Binding DataContext.DeleteStageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}" Style="{StaticResource DeleteContact}"/>
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,5,0" Width="150"/>
+                <Button Content="X" Command="{Binding DataContext.DeleteStageCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" CommandParameter="{Binding ID}" Style="{StaticResource DeleteContact}" HorizontalAlignment="Left"/>
                 <ItemsControl Margin="20,0,0,0" ItemTemplate="{DynamicResource scBandTemplate}" ItemsSource="{Binding Bands}" ItemsPanel="{DynamicResource ItemSPanel}">
                 </ItemsControl>
             </WrapPanel>

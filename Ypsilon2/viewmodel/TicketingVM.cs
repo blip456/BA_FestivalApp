@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using System.Windows.Forms;
+using System.Windows;
 
 namespace Ypsilon2.viewmodel
 {
@@ -31,7 +32,9 @@ namespace Ypsilon2.viewmodel
             _soldTicketsVip = Ticket.SoldTickets(Reserveringen)[0];
 
             _totalTicketTypeNormal = TicketType.CountTotalNormal(TicketTypes);
-            _totalTicketTypeVip = TicketType.CountTotalVip(TicketTypes);            
+            _totalTicketTypeVip = TicketType.CountTotalVip(TicketTypes);
+
+            _reservering = new Ticket();
         }
 
         public string Name
@@ -86,52 +89,17 @@ namespace Ypsilon2.viewmodel
             get { return _selectedDagVip; }
             set { _selectedDagVip = value; }
         }
+
+        private Ticket _reservering;
+
+        public Ticket Reservering
+        {
+            get { return _reservering; }
+            set { _reservering = value; OnPropertyChanged("Reservering"); }
+        }
+        
         #endregion
         
-        //Deze values zijn gebined aan de textboxen voor een reserveringen te plaatsen.
-        //Via properties zal er een ticket object gemaakt worden en doorgestuurd naar de AddTicket methode
-        #region Doorstuur properties
-
-        private TicketType _selectedDagReservering;
-
-        public TicketType SelectedDagReservering
-        {
-            get { return _selectedDagReservering; }
-            set { _selectedDagReservering = value; OnPropertyChanged("SelectedDagReservering"); }
-        }
-
-        private string _voornaam;
-
-        public string Voornaam
-        {
-            get { return _voornaam; }
-            set { _voornaam = value; OnPropertyChanged("Voornaam"); }
-        }
-
-        private string _achternaam;
-
-        public string Achternaam
-        {
-            get { return _achternaam; }
-            set { _achternaam = value; OnPropertyChanged("Achternaam"); }
-        }
-
-        private string _emailadres;
-
-        public string Emailadres
-        {
-            get { return _emailadres; }
-            set { _emailadres = value; OnPropertyChanged("Emailadres"); }
-        }
-
-        private int _aantalTickets;
-
-        public int AantalTickets
-        {
-            get { return _aantalTickets; }
-            set { _aantalTickets = value; OnPropertyChanged("AantalTickets"); }
-        }
-        #endregion
 
         //Hier zitten de totaal aantal verkochte tickets in voor zowel normaal als VIP.
         //Alsook zit hier het totaal aantal beschikbare tickets in
@@ -200,29 +168,28 @@ namespace Ypsilon2.viewmodel
 
         private void DeleteReservering(int id)
         {
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ticket.GetTicketByID(id).TicketHolder + " zijn reservering te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.OK)
+            {
+                Ticket.DeleteTicket(id);
+            }
+            else
+            {
+                return;
+            }
+
             Ticket.DeleteTicket(id);
             Reserveringen = Ticket.GetTickets();
         }
 
         public ICommand ReserveerCommand
         {
-            get { return new RelayCommand(Reserveer); }
+            get { return new RelayCommand(Reserveer, Reservering.IsValid); }
         }
 
         public void Reserveer()
         {
-            Ticket ticket = new Ticket();
-            ticket.TicketHolder = _voornaam + " " + _achternaam;
-            ticket.TicketHolderEmail = _emailadres;
-            ticket.Amount = _aantalTickets;
-            ticket.TicketType = _selectedDagReservering;
-
-            Ticket.AddTicket(ticket);
-
-            Emailadres = "";
-            Voornaam = "";
-            Achternaam = "";
-
+            Ticket.AddTicket(Reservering);
 
             Reserveringen = Ticket.GetTickets();
             SoldTicketNormal = Ticket.SoldTickets(Reserveringen)[1];

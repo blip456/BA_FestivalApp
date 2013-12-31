@@ -34,7 +34,7 @@ namespace FestivalLib.model
         {
             string query = "SELECT * FROM genre INNER JOIN bandgenre on bandgenre.genre_id = genre.genre_id WHERE band_id = " + id + ";";
 
-            ObservableCollection<Genre> gevondenGenres = new ObservableCollection<Genre>();            
+            ObservableCollection<Genre> gevondenGenres = new ObservableCollection<Genre>();
             DbDataReader reader = Database.GetData(query);
             while (reader.Read())
             {
@@ -48,33 +48,62 @@ namespace FestivalLib.model
             return gevondenGenres;
         }
 
-        public static void AddGenre(string sGenreNaam)
+        public static ObservableCollection<Genre> Getgenres()
         {
-            try
+            string sql = "SELECT * FROM genre";
+            ObservableCollection<Genre> lst = new ObservableCollection<Genre>();
+            DbDataReader reader = Database.GetData(sql);
+            while (reader.Read())
             {
-                string sql = "INSERT INTO genre(genre_name) values (@name);";
-
-                DbParameter par1 = Database.AddParameter("@name", sGenreNaam);           
-
-                int i = Database.ModifyData(sql, par1);
-                if (i == 0)
-                {
-                    MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
-                }
-                Console.WriteLine(i + " row(s) are affected");
+                Genre genre = new Genre();
+                genre.Name = Convert.ToString(reader["genre_name"]);
+                genre.ID = Convert.ToString(reader["genre_id"]);
+                lst.Add(genre);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw ex;
-            }
+            return lst;
         }
 
-        public static void AddGenreToBand(Band band)
-        {
 
+        public static Genre GetGenreByString(string genre)
+        {
+            string sql = "SELECT * FROM genre WHERE genre_name=@name;";
+            DbParameter par1 = Database.AddParameter("@name", genre);
+            DbDataReader reader = Database.GetData(sql, par1);
+            Genre gevondenGenre = new Genre();
+            while (reader.Read())
+            {
+                gevondenGenre.Name = Convert.ToString(reader["genre_name"]);
+                gevondenGenre.ID = Convert.ToString(reader["genre_id"]);
+            }
+            return gevondenGenre;
         }
+
+        //public static void AddGenre(Band band)
+        //{
+        //    try
+        //    {
+        //        string sql = "INSERT INTO genre(genre_name) values (@name);";
+
+        //        DbParameter par1 = Database.AddParameter("@name", sGenreNaam);
+
+        //        int i = Database.ModifyData(sql, par1);
+        //        if (i == 0)
+        //        {
+        //            MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
+        //        }
+        //        Console.WriteLine(i + " row(s) are affected");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw ex;
+        //    }
+        //}
+
+        //public static void AddGenreToBand(Band band)
+        //{
+
+        //}
         #endregion
-
     }
 }

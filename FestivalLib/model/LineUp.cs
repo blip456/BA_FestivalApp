@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using Xceed.Wpf.Toolkit;
 
 namespace FestivalLib.model
 {
-    public class LineUp
+    public class LineUp : IDataErrorInfo
     {
         #region Prop en field
 
@@ -18,7 +20,7 @@ namespace FestivalLib.model
         }
 
         private DateTime _date;
-
+        [Required(ErrorMessage="U moet een dag selecteren")]
         public DateTime Date
         {
             get { return _date; }
@@ -26,7 +28,7 @@ namespace FestivalLib.model
         }
 
         private DateTime _from;
-
+        [Required(ErrorMessage = "U moet een beginuur selecteren")]
         public DateTime From
         {
             get { return _from; }
@@ -34,7 +36,7 @@ namespace FestivalLib.model
         }
 
         private DateTime _until;
-
+        [Required(ErrorMessage = "U moet een einduur selecteren")]
         public DateTime Until
         {
             get { return _until; }
@@ -42,7 +44,7 @@ namespace FestivalLib.model
         }
 
         private Stage _stage;
-
+        [Required(ErrorMessage = "U moet een stage selecteren")]
         public Stage Stage
         {
             get { return _stage; }
@@ -50,7 +52,7 @@ namespace FestivalLib.model
         }
 
         private Band _band;
-
+        [Required(ErrorMessage = "U moet een band selecteren")]
         public Band Band
         {
             get { return _band; }
@@ -71,6 +73,42 @@ namespace FestivalLib.model
 
         #endregion
 
+        #region Errorhandling
+        public string Error
+        {
+            get { return "Het object is niet valid"; }
+        }
+
+        public string this[string columName]
+        {
+            get
+            {
+                try
+                {
+                    object value = this.GetType().GetProperty(columName).GetValue(this);
+                    Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+                    {
+                        MemberName = columName
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+                return string.Empty;
+            }
+
+        }
+        #endregion
+
+        #region Enable/Disable Controls
+        public bool IsValid()
+        {
+            return Validator.TryValidateObject(this, new ValidationContext(this, null, null),
+            null, true);
+        }
+        #endregion
+
         #region SQL
         private static LineUp CreateLineUp(DbDataReader reader)
         {
@@ -88,15 +126,19 @@ namespace FestivalLib.model
         public static ObservableCollection<LineUp> GetBandsByLineUpIDAndDate(int id, DateTime date)
         {
             ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
-            DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + " AND  lineup_date='" + date.ToString("yyyy-MM-dd HH:mm:ss") + "' ORDER BY lineup_from ASC;");
+          
+            string sql = "SELECT * FROM lineup WHERE lineup_stage=@id AND lineup_date=@date ORDER BY lineup_from ASC;";
+            DbParameter parID = Database.AddParameter("@id", id);
+            DbParameter par1 = Database.AddParameter("@date", date.Date);
 
+            DbDataReader reader = Database.GetData(sql, parID, par1);
             while (reader.Read())
             {
                 lstGevondenLineUps.Add(CreateLineUp(reader));
             }
             if (reader != null)
                 reader.Close();
-            return lstGevondenLineUps;
+            return lstGevondenLineUps;         
         }
 
         public static ObservableCollection<LineUp> GetBandsByLineUpID(int id)
@@ -165,6 +207,7 @@ namespace FestivalLib.model
                 throw ex;
             }
         }
+    
         #endregion
 
         #region Methods
@@ -176,7 +219,6 @@ namespace FestivalLib.model
         //berekend hoeveel tijd er tussen het begin en einde van een optreden zit, dit wordt oa gebruikt voor de breedte van de stackpanel te bepalen
         public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
         {
-  
             string sFrom = dtFrom.ToString("HH:mm");
             string sUntil = dtUntil.ToString("HH:mm");
 
@@ -191,7 +233,6 @@ namespace FestivalLib.model
             double dUntil = dUntilHour + (dUntilMinute / 60);
 
             double dTimespan = (dUntil - dFrom) * 100;
-
             return dTimespan;
         }
         #endregion

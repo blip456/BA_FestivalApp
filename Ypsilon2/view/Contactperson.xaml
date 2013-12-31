@@ -20,12 +20,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <WrapPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <TextBlock Style="{StaticResource TextBlock}" Text="Sorteer volgens: "/>
-                <ComboBox Style="{StaticResource BaseStyle}"/>
-                <!--Combo moet nog kunnen gebined worden aan alles header items uit de listview-->
-
-            </WrapPanel>
+            <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{StaticResource Subtitle}"/>
             <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <xctk:WatermarkTextBox Watermark="Zoek..." Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
                     <i:Interaction.Triggers>
@@ -70,21 +65,21 @@
 
             <StackPanel Grid.Column="0" Style="{StaticResource TwoPaneStackpanel}">
                 <TextBlock Text="Naam:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Margin="0,5,0,5" Watermark="Naam" Style="{StaticResource BaseStyle}" Validation.ErrorTemplate="{StaticResource ErrorTemplate }" Text="{Binding Contact.Name, ValidatesOnDataErrors=True}" Name="txtName" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Naam" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Name="txtName" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Bedrijf:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding Contact.Company}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Bedrijf"  Style="{StaticResource BaseStyle}" Text="{Binding Contact.Company, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Stad:" Style="{StaticResource TextBlock}"/>
                 <xctk:WatermarkTextBox Watermark="Stad" Style="{StaticResource BaseStyle}" Text="{Binding Contact.City}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Emailadres:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Emailadres" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Email}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Emailadres" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" SelectAllOnGotFocus="True" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">
                 <TextBlock Text="Telefoon:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Telefoon" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Phone}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Telefoon" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Phone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" SelectAllOnGotFocus="True" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
                 <TextBlock Text="Gsm:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Cellphone}" SelectAllOnGotFocus="True"/>
+                <xctk:WatermarkTextBox Watermark="Gsm" Style="{StaticResource BaseStyle}" Text="{Binding Contact.Cellphone, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" SelectAllOnGotFocus="True" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
                 <TextBlock Text="Contacttype:" Style="{StaticResource TextBlock}"/>
-                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedContactType}"/>
+                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding ContactTypes}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedContactType, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
                 <TextBlock Text="" Style="{StaticResource TextBlock}" Visibility="Hidden"/>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 //using FestivalLib.Model;
 using Xceed.Wpf.Toolkit;
 
 namespace FestivalLib.model
 {
-    public class Festival
+    public class Festival : IDataErrorInfo
     {
         #region Field en properties
 
@@ -20,7 +22,8 @@ namespace FestivalLib.model
         
 
         private string _name;
-
+        [Required(ErrorMessage = "U moet een naam invullen")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een naam moet tussen de 3 en 50 karakters liggen")] 
         public string Name
         {
             get { return _name; }
@@ -28,7 +31,7 @@ namespace FestivalLib.model
         }        
 
         private DateTime _startDate;
-
+        [Required(ErrorMessage="U moet een begindatum selecteren")]
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -37,7 +40,7 @@ namespace FestivalLib.model
 
 
         private DateTime _endDatde;
-
+        [Required(ErrorMessage="U moet een einddatum selecteren")]
         public DateTime EndDate
         {
             get { return _endDatde; }
@@ -45,7 +48,8 @@ namespace FestivalLib.model
         }
 
         private string _omschrijving;
-
+        [Required(ErrorMessage="U moet een omschrijving invullen")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een omschrijving moet tussen de 20 en 255 karakters liggen")] 
         public string Omschrijving
         {
             get { return _omschrijving; }
@@ -54,6 +58,42 @@ namespace FestivalLib.model
         
 
         #endregion 
+
+        #region Errorhandling
+        public string Error
+        {
+            get { return "Het object is niet valid"; }
+        }
+
+        public string this[string columName]
+        {
+            get
+            {
+                try
+                {
+                    object value = this.GetType().GetProperty(columName).GetValue(this);
+                    Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+                    {
+                        MemberName = columName
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+                return string.Empty;
+            }
+
+        }
+        #endregion
+
+        #region Enable/Disable Controls
+        public bool IsValid()
+        {
+            return Validator.TryValidateObject(this, new ValidationContext(this, null, null),
+            null, true);
+        }
+        #endregion
 
         #region SQL
         public static Festival GetFestivals()

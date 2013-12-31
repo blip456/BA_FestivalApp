@@ -19,8 +19,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="350"/>
         </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{StaticResource Subtitle}"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <TextBlock Style="{StaticResource TextBlock}" Text="Selecteer een dag"/>
             <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" ItemStringFormat="dd/MM/yyyy" DisplayMemberPath="Date" SelectedIndex="0" SelectedItem="{Binding SelectedDag}" Margin="5,15"/>
         </StackPanel>
@@ -44,14 +44,22 @@
 
                 <UniformGrid Columns="2" Rows="7" Grid.Column="0"  Margin="0,0,20,0">
 
-                    <TextBlock Style="{StaticResource Heading1}" Text="Podia - toevoegen"/>
+                    <TextBlock Style="{StaticResource Heading1}" Text="Stage - toevoegen"/>
                     <TextBlock/>
 
                     <TextBlock Text="Podium naam" Style="{StaticResource TextBlock}"/>
                     <xctk:WatermarkTextBox Watermark="Podium naam" Style="{StaticResource BaseStyle}" Name="txtNewStageName"/>
                     <TextBlock/>
 
-                    <Button Content="Toevoegen" Style="{StaticResource BaseStyle}" Command="{Binding SaveStageCommand}" CommandParameter="{Binding ElementName=txtNewStageName, Path=Text}"/>
+                    <Button Content="Toevoegen" Style="{StaticResource BaseStyle}" Command="{Binding AddStageCommand}" CommandParameter="{Binding ElementName=txtNewStageName, Path=Text}"/>
+
+                    <TextBlock Style="{StaticResource Heading1}" Text="Stage - aanpassen"/>
+                    <TextBlock/>
+                    <ComboBox ItemsSource="{Binding StagesPerDag}" Style="{StaticResource BaseStyle}" SelectedItem="{Binding SelectedStageEdit}" DisplayMemberPath="Name"/>
+                    <xctk:WatermarkTextBox Watermark="Nieuwe stagenaam" Style="{StaticResource BaseStyle}" Name="txtStageName"/>                   
+                    <TextBlock/>
+                    <Button Content="Aanpassen" Style="{StaticResource BaseStyle}" Command="{Binding SaveStageCommand}" CommandParameter="{Binding ElementName=txtStageName, Path=Text}"/>
+                    
                 </UniformGrid>
 
                 <UniformGrid Columns="2" Rows="7" Grid.Column="1"  Margin="20,0,0,0">
@@ -59,23 +67,24 @@
                     <TextBlock/>
 
                     <TextBlock Text="Band" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Bands}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Band}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Bands, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Band}"/>
 
 
                     <TextBlock Text="Podium" Style="{StaticResource TextBlock}" />
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Stage}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding StagesPerDag, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" DisplayMemberPath="Name" SelectedItem="{Binding LineUp.Stage}"/>
 
                     <TextBlock Text="Dag" Style="{StaticResource TextBlock}"/>
-                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen}" DisplayMemberPath="Date" ItemStringFormat="dd/MM/yyyy" SelectedItem="{Binding LineUp.Date}" SelectedIndex="0"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding UniekeDagen, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" DisplayMemberPath="Date" ItemStringFormat="dd/MM/yyyy" SelectedItem="{Binding LineUp.Date}"/>
 
 
                     <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.From, UpdateSourceTrigger=LostFocus}" Grid.Row="6" Grid.Column="5" Style="{StaticResource BaseStyle}"/>
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.From, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Style="{StaticResource BaseStyle}" Margin="5,10"/>
 
                     <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
-                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.Until, UpdateSourceTrigger=LostFocus}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
+                    <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding LineUp.Until, UpdateSourceTrigger=LostFocus,ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Grid.Row="7" Grid.Column="5" Style="{StaticResource BaseStyle}" />
+                    <TextBlock Style="{StaticResource TextBlock}"/>
                     <Button Style="{StaticResource BaseStyle}" Content="Opslaan" Command="{Binding SaveLineUpCommand}"/>
-                    <Button Style="{StaticResource BaseStyle}" Content="Annuleer" IsCancel="True"/>
+                    
                     <!-- HH = 24u formaat, hh = 12u formaat -->
                 </UniformGrid>
             </Grid>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Data;
 using FestivalLib.model;
 using Ypsilon2.converter;
+using System.Collections.Generic;
 
 namespace FestivalLib.converter
 {
@@ -59,18 +60,16 @@ namespace FestivalLib.converter
         {
             //throw new NotImplementedException();      
             
-            Observablecollection<Genre> lstGenres = new Observablecollection<Genre>();
+            List<Genre> list = new List<Genre>();
 
             string[] arrSplits = value.ToString().Split(';');
             foreach (string item in arrSplits)
             {
                 Genre genre = new Genre();
                 genre.Name = value.ToString();
-                
-                
-            }
-
-            return lstGenres;
+                list.Add(genre);
+            }                        
+            return list;
         }
     }
 }

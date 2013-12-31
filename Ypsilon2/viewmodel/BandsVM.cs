@@ -29,7 +29,7 @@ namespace Ypsilon2.viewmodel
         public string Name
         {
             get { return "Bands"; }
-        }       
+        }
 
         private ObservableCollection<Band> _bands;
 
@@ -54,8 +54,7 @@ namespace Ypsilon2.viewmodel
             get { return _selectedBand; }
             set
             {
-                _selectedBand = value; 
-                OnPropertyChanged("SelectedBand");
+                _selectedBand = value;
 
                 //als er een band geselecteerd is zal de foto van die band getoond worden, indien er geen foto in de DB zit zal een 'blank' foto getoond worden
                 //als er een band geselecteerd is zal het huidige contact die contactpersoon zijn
@@ -71,6 +70,8 @@ namespace Ypsilon2.viewmodel
                         ImageSource = convertStringToByte("../../content/images/blank.jpg");
                     }
                 }
+                Band = _selectedBand;
+                OnPropertyChanged("SelectedBand");
 
             }
         }
@@ -82,7 +83,7 @@ namespace Ypsilon2.viewmodel
             get { return _band; }
             set { _band = value; OnPropertyChanged("Band"); }
         }
-        
+
         private byte[] _imageSource;
 
         public byte[] ImageSource
@@ -107,8 +108,16 @@ namespace Ypsilon2.viewmodel
             set { _searchString = value; OnPropertyChanged("SearchString"); }
         }
 
+        private string _genre;
+
+        public string Genre
+        {
+            get { return _genre; }
+            set { _genre = value; OnPropertyChanged("Genre"); }
+        }
+
         #endregion
-       
+
         #region commands
 
         public ICommand SearchCommand
@@ -126,7 +135,7 @@ namespace Ypsilon2.viewmodel
             get { return new RelayCommand(SelectImage); }
         }
         private void SelectImage()
-        {            
+        {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "JPG(*.jpg)|*.jpg|PNG(*.png)|*.png";
             ofd.Title = "Selecteer een afbeelding";
@@ -140,12 +149,13 @@ namespace Ypsilon2.viewmodel
 
         public ICommand SaveBandCommand
         {
-            get { return new RelayCommand(SaveBand); }
+            get { return new RelayCommand(SaveBand, Band.IsValid); }
         }
         public void SaveBand()
         {
-            Band.Picture = ImageSource;  
+            Band.Picture = ImageSource;
             //add genre to band oproepen
+
             Band.EditBand(Band);
             Bands = FestivalLib.model.Band.GetBands();
             GefilterdeBands = Bands;
@@ -153,10 +163,10 @@ namespace Ypsilon2.viewmodel
 
         public ICommand AddBandCommand
         {
-            get { return new RelayCommand(AddBand); }
+            get { return new RelayCommand(AddBand, Band.IsValid); }
         }
         public void AddBand()
-        {            
+        {
             if (SelectedImagePad != null)
             {
                 Band.Picture = convertStringToByte(SelectedImagePad);
@@ -164,8 +174,8 @@ namespace Ypsilon2.viewmodel
             else
             {
                 Band.Picture = ImageSource;
-            }    
-                  
+            }
+
             Band.AddBand(Band);
             Bands = Band.GetBands();
             GefilterdeBands = Bands;
@@ -180,17 +190,35 @@ namespace Ypsilon2.viewmodel
         }
         public void DeleteBand(int id)
         {
-            //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Band.GetBandByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.OK)
+            if (Band.IsBandDeleteAllowed(id))
             {
-                Band.DeleteBand(id);
-                GefilterdeBands = Band.GetBands();
+                //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
+                var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Band.GetBandByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.OK)
+                {
+                    Band.DeleteBand(id);
+                    GefilterdeBands = Band.GetBands();
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
-                return;
+                MessageBox.Show("Deze band heeft nog optredens! U moet eerst alle optredens verwijderen voordat u deze band kunt verwijderen", "Opgelet", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        public ICommand AddGenreToBandCommand
+        {
+            get { return new RelayCommand(AddGenreToBand); }
+        }
+        public void AddGenreToBand()
+        {
+            FestivalLib.model.Band.AddGenre(SelectedBand, Genre);
+            Bands = FestivalLib.model.Band.GetBands();
+            SelectedBand = Band.GetBandByID(Convert.ToInt32(SelectedBand.ID));
         }
 
         #endregion

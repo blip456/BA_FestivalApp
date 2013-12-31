@@ -105,7 +105,7 @@ namespace Ypsilon2.viewmodel
 
         public ICommand SaveContactCommand
         {
-            get { return new RelayCommand(SaveContact); }
+            get { return new RelayCommand(SaveContact, Contact.IsValid); }
         }
         public void SaveContact()
         {
@@ -125,7 +125,7 @@ namespace Ypsilon2.viewmodel
 
         public ICommand AddContactCommand
         {
-            get { return new RelayCommand(AddContact); }
+            get { return new RelayCommand(AddContact, Contact.IsValid); }
         }
         public void AddContact()
         {
@@ -158,7 +158,7 @@ namespace Ypsilon2.viewmodel
         {
             //Een bevestiging of de gebruiker wel degelijk deze contactpersoon wilt verwijderen
             // je zou ook Contact.Name kunnen gebruiken > deze kent enkel de Name als je eerst het contact selecteerd en dan verwijdered > GetContactByID kent .Name zonder een contact te selecteren
-            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Contactperson.GetContactByID(Contacts, id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
+            var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + FestivalLib.model.Contactperson.GetContactByID(id).Name + " te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);            
             if (result == MessageBoxResult.OK)
             {
                 FestivalLib.model.Contactperson.DeleteContact(id);

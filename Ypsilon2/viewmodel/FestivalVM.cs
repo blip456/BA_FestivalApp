@@ -35,18 +35,12 @@ namespace Ypsilon2.viewmodel
 
         public ICommand SaveFestivalCommand
         {
-            get { return new RelayCommand(SaveFestival); }
+            get { return new RelayCommand(SaveFestival, Festivals.IsValid); }
         }
 
         public void SaveFestival()
-        {
-            Festival festival = new Festival();
-            festival.ID = Festivals.ID;
-            festival.Name = Festivals.Name;
-            festival.Omschrijving = Festivals.Omschrijving;
-            festival.StartDate = Festivals.StartDate;
-            festival.EndDate = Festivals.EndDate;
-            Festival.EditFestival(festival);
+        {           
+            Festival.EditFestival(Festivals);
             Festivals = Festival.GetFestivals();
         }
     }

@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.Data.Common;
 using Xceed.Wpf.Toolkit;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace FestivalLib.model
 {
-    public class Contactperson:IDataErrorInfo
+    public class Contactperson : IDataErrorInfo
     {
         #region field en properties
         private string _id;
@@ -18,7 +19,8 @@ namespace FestivalLib.model
         }
 
         private string _name;
-
+        [Required(ErrorMessage = "U moet een naam invullen")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een naam moet tussen de 3 en 50 karakters liggen")]
         public string Name
         {
             get { return _name; }
@@ -26,7 +28,8 @@ namespace FestivalLib.model
         }
 
         private string _company;
-        
+        [Required(ErrorMessage = "U moet een bedrijfsnaam invullen")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een bedrijfsnaam moet tussen de 3 en 50 karakters liggen")]
         public string Company
         {
             get { return _company; }
@@ -50,7 +53,8 @@ namespace FestivalLib.model
         }
 
         private string _email;
-
+        [Required(ErrorMessage = "U moet een emailadres invullen")]
+        [EmailAddress(ErrorMessage = "Een emailadres moet van het formaat 'example@example.org' zijn")]
         public string Email
         {
             get { return _email; }
@@ -58,7 +62,8 @@ namespace FestivalLib.model
         }
 
         private string _phone;
-
+        [Required(ErrorMessage = "U moet een telefoon nummer invullen")]
+        [RegularExpression(@"^([0-9]{3}/|[0-9]{2}/)[0-9]{2}.[0-9]{2}.[0-9]{2}$")]
         public string Phone
         {
             get { return _phone; }
@@ -66,7 +71,8 @@ namespace FestivalLib.model
         }
 
         private string _cellphone;
-
+        [Required(ErrorMessage = "U moet een gsm nummer invullen")]
+        [RegularExpression(@"^[0-9]{4}/[0-9]{2}.[0-9]{2}.[0-9]{2}$")]
         public string Cellphone
         {
             get { return _cellphone; }
@@ -75,29 +81,40 @@ namespace FestivalLib.model
 
         #endregion
 
-        #region Validation
+        #region Errorhandling
         public string Error
         {
-            get {return "Er is een fout!"; }
+            get { return "Het object is niet valid"; }
         }
 
-        public string this[string columnName]
+        public string this[string columName]
         {
-            get 
+            get
             {
-                switch (columnName)
+                try
                 {
-                    case "Name":
-                        if (Name != null && Name.Length <=2)
-                        {
-                            return "De naam moet minstens 3 karakters hebben";
-                        }
-                        break;
+                    object value = this.GetType().GetProperty(columName).GetValue(this);
+                    Validator.ValidateProperty(value, new ValidationContext(this, null, null)
+                    {
+                        MemberName = columName
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
                 }
                 return string.Empty;
             }
-        }
 
+        }
+        #endregion
+
+        #region Enable/Disable Controls
+        public bool IsValid()
+        {
+            return Validator.TryValidateObject(this, new ValidationContext(this, null, null),
+            null, true);
+        }
         #endregion
 
         #region SQL
@@ -112,7 +129,7 @@ namespace FestivalLib.model
             contact.Email = Convert.ToString(reader["contactperson_email"]);
             contact.Phone = Convert.ToString(reader["contactperson_phone"]);
             contact.Cellphone = Convert.ToString(reader["contactperson_cell"]);
-            return contact;         
+            return contact;
         }
 
         public static ObservableCollection<Contactperson> GetContacts()
@@ -125,20 +142,22 @@ namespace FestivalLib.model
             }
             if (reader != null)
                 reader.Close();
-            return lstContacts;          
+            return lstContacts;
         }
 
-        public static Contactperson GetContactByID(ObservableCollection<Contactperson> lst, int id)
+        public static Contactperson GetContactByID(int id)
         {
             Contactperson gevondenContact = new Contactperson();
-            foreach (Contactperson contact in lst)
+            string sql = "SELECT * FROM contactperson WHERE contactperson_id=@id;";
+            DbParameter parID = Database.AddParameter("@ID", id);
+            DbDataReader reader = Database.GetData(sql, parID);
+            while (reader.Read())
             {
-                if (contact.ID == Convert.ToString(id))
-                {
-                    gevondenContact = contact;
-                }
+                gevondenContact = CreateContact(reader);
             }
-            return gevondenContact;           
+            if (reader != null)
+                reader.Close();
+            return gevondenContact;
         }
 
         public static ObservableCollection<Contactperson> GetContactsByString(ObservableCollection<Contactperson> lst, string search)
@@ -152,7 +171,7 @@ namespace FestivalLib.model
                 }
             }
 
-            return lstGevondenContacts;            
+            return lstGevondenContacts;
         }
 
         public static void AddContact(Contactperson contact)
@@ -180,7 +199,7 @@ namespace FestivalLib.model
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
-            }           
+            }
         }
 
         public static void EditContact(Contactperson contact)
@@ -210,7 +229,7 @@ namespace FestivalLib.model
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
-            }           
+            }
         }
 
         public static void DeleteContact(int id)
@@ -232,7 +251,7 @@ namespace FestivalLib.model
             {
                 Console.WriteLine(ex.Message);
                 throw ex;
-            }            
+            }
         }
         #endregion
     }

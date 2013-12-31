@@ -29,7 +29,7 @@ namespace SSA_FestivalApp.Controllers
             Ticket ticket = vm.Ticket;
             ticket.TicketType = TicketType.GetTicketTypeByID(vm.SelectedType);
             TicketRepository.ReserveerTicket(vm.Ticket); 
-            Ticket.SendMail(vm.Ticket);
+            //Ticket.SendMail(vm.Ticket);
             //waarom gebruik ik een tempdata? => tempdata kan itt viebag  of viewdata een redirect overleven 
             //-> viebag/viewdata is voor in de view zelf (tempdata is voor redirect-
             TempData["order"] = vm.Ticket;

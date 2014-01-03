@@ -78,7 +78,7 @@ namespace Ypsilon2.viewmodel
             get { return _selectedStageEdit; }
             set { _selectedStageEdit = value; OnPropertyChanged("SelectedStageEdit"); }
         }
-        
+
 
         #endregion
 
@@ -89,9 +89,15 @@ namespace Ypsilon2.viewmodel
         }
         public void SaveLineUp()
         {
-            FestivalLib.model.LineUp.AddLineUp(LineUp);
-
-            StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+            if (LineUp.From < LineUp.Until)
+            {
+                FestivalLib.model.LineUp.AddLineUp(LineUp);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+            }
+            else
+            {
+                MessageBox.Show("Een begin uur kan niet kleiner of gelijk zijn aan het eind uur", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand SaveStageCommand
@@ -101,8 +107,23 @@ namespace Ypsilon2.viewmodel
 
         public void SaveStage(string NewPodiumName)
         {
-            Stage.EditStage(NewPodiumName, SelectedStageEdit);
-            StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+            if (SelectedStageEdit != null)
+            {
+                if (NewPodiumName != "")
+                {
+                    Stage.EditStage(NewPodiumName, SelectedStageEdit);
+                    StagesPerDag = Stage.GetStagesByDay(SelectedDag);
+                }
+                else
+                {
+                    MessageBox.Show("Uw podiumnaam moet op zijn minst 1 karakter bevatten", "Opmerking", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("U moet een podium selecteren", "Opmerking", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+                
         }
 
         public ICommand AddStageCommand
@@ -111,8 +132,15 @@ namespace Ypsilon2.viewmodel
         }
         public void AddStage(string NewPodiumName)
         {
-            FestivalLib.model.Stage.AddStage(NewPodiumName);
-            StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+            if (NewPodiumName != "")
+            {
+                FestivalLib.model.Stage.AddStage(NewPodiumName);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+            }
+            else
+            {
+                MessageBox.Show("Uw podiumnaam moet op zijn minst 1 karakter bevatten", "Opmerking", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         public ICommand DeleteStageCommand

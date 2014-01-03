@@ -19,19 +19,19 @@ namespace FestivalLib.model
             get { return _ID; }
             set { _ID = value; }
         }
-        
+
 
         private string _name;
         [Required(ErrorMessage = "U moet een naam invullen")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een naam moet tussen de 3 en 50 karakters liggen")] 
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een naam moet tussen de 3 en 50 karakters liggen")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
-        }        
+        }
 
         private DateTime _startDate;
-        [Required(ErrorMessage="U moet een begindatum selecteren")]
+        [Required(ErrorMessage = "U moet een begindatum selecteren")]
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -40,7 +40,7 @@ namespace FestivalLib.model
 
 
         private DateTime _endDatde;
-        [Required(ErrorMessage="U moet een einddatum selecteren")]
+        [Required(ErrorMessage = "U moet een einddatum selecteren")]
         public DateTime EndDate
         {
             get { return _endDatde; }
@@ -48,16 +48,16 @@ namespace FestivalLib.model
         }
 
         private string _omschrijving;
-        [Required(ErrorMessage="U moet een omschrijving invullen")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een omschrijving moet tussen de 20 en 255 karakters liggen")] 
+        [Required(ErrorMessage = "U moet een omschrijving invullen")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Een omschrijving moet tussen de 20 en 255 karakters liggen")]
         public string Omschrijving
         {
             get { return _omschrijving; }
             set { _omschrijving = value; }
         }
-        
 
-        #endregion 
+
+        #endregion
 
         #region Errorhandling
         public string Error
@@ -98,20 +98,28 @@ namespace FestivalLib.model
         #region SQL
         public static Festival GetFestivals()
         {
-            Festival festival = new Festival();
-            DbDataReader reader = Database.GetData("SELECT * FROM festival");
-            while (reader.Read())
+            try
             {
-                festival.StartDate = Convert.ToDateTime(reader["festival_start"]);
-                festival.EndDate = Convert.ToDateTime(reader["festival_end"]);
-                festival.Name = Convert.ToString(reader["festival_name"]);
-                festival.ID = Convert.ToInt32(reader["festival_id"]);
-                festival.Omschrijving = (string)reader["festival_omschrijving"];
+                Festival festival = new Festival();
+                DbDataReader reader = Database.GetData("SELECT * FROM festival");
+                while (reader.Read())
+                {
+                    festival.StartDate = Convert.ToDateTime(reader["festival_start"]);
+                    festival.EndDate = Convert.ToDateTime(reader["festival_end"]);
+                    festival.Name = Convert.ToString(reader["festival_name"]);
+                    festival.ID = Convert.ToInt32(reader["festival_id"]);
+                    festival.Omschrijving = (string)reader["festival_omschrijving"];
+                }
+                if (reader != null)
+                    reader.Close();
+                return festival;
             }
-            if (reader != null)
-                reader.Close();
-            return festival;
-        }       
+            catch (Exception ex)
+            {
+                Console.WriteLine("get festivals: " + ex.Message);
+                return null;
+            }
+        }
 
         public static void EditFestival(Festival festival)
         {
@@ -135,27 +143,72 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Edit festival: " + ex.Message);
+            }
+        }
+
+        public static void ChangeTicketDates()
+        {
+            try
+            {
+                ObservableCollection<DateTime> dagen = aantalDagen();
+                int iName = 1;
+                bool isVIP = false;
+
+                for (int i = 0; i < dagen.Count * 2; i++)
+                {
+                    string sql = "INSERT INTO tickettype (tickettype_name, tickettype_price, tickettype_categorie, tickettype_available) SELECT @name, @price, @cat, @avail WHERE NOT EXISTS (SELECT 1 FROM tickettype WHERE tickettype_name = @name AND tickettype_categorie = @cat);";
+
+                    DbParameter par1 = Database.AddParameter("@name", "Dag " + iName);
+                    DbParameter par2 = Database.AddParameter("@cat", "");
+                    if (isVIP == false)
+                    {
+                        par2 = Database.AddParameter("@cat", "Normaal");
+                        isVIP = true;
+                    }
+                    else if (isVIP == true)
+                    {
+                        par2 = Database.AddParameter("@cat", "VIP");
+                        iName += 1;
+                        isVIP = false;
+                    }
+                    DbParameter par3 = Database.AddParameter("@price", 0);
+                    DbParameter par4 = Database.AddParameter("@avail", 0);
+                    int iResult = Database.ModifyData(sql, par1, par2, par3, par4);
+                    Console.WriteLine(iName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Change ticket dates: " + ex.Message);
             }
         }
         #endregion
 
+        #region Public Vars
         public static ObservableCollection<DateTime> aantalDagen()
         {
-            ObservableCollection<DateTime> lstDagen = new ObservableCollection<DateTime>();
-            Festival festival = GetFestivals();
-            TimeSpan timespan = festival.EndDate - festival.StartDate;
-            DateTime volgendeDag = festival.StartDate;
-            for (int i = 0; i <= timespan.Days+1; i++)
+            try
             {
-                TimeSpan ts = TimeSpan.FromDays(i);
-                volgendeDag = festival.StartDate.Add(ts);
-               
-                lstDagen.Add(volgendeDag.Date);                
-            }
+                ObservableCollection<DateTime> lstDagen = new ObservableCollection<DateTime>();
+                Festival festival = GetFestivals();
+                TimeSpan timespan = festival.EndDate - festival.StartDate;
+                DateTime volgendeDag = festival.StartDate;
+                for (int i = 0; i <= timespan.Days; i++)
+                {
+                    TimeSpan ts = TimeSpan.FromDays(i);
+                    volgendeDag = festival.StartDate.Add(ts);
 
-            return lstDagen;
+                    lstDagen.Add(volgendeDag.Date);
+                }
+                return lstDagen;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Aantal dagen: " + ex.Message);
+                return null;
+            }
         }
+        #endregion
     }
 }

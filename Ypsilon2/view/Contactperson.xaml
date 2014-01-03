@@ -22,14 +22,13 @@
             </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding Name}" Grid.Column="0" Style="{StaticResource Subtitle}"/>
             <WrapPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <xctk:WatermarkTextBox Watermark="Zoek..." Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch">
+                <xctk:WatermarkTextBox Watermark="Zoek..." Style="{StaticResource BaseStyle}" Width="250" Name="txtSearch" HorizontalAlignment="Right">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="KeyUp">
                             <cmd:EventToCommand Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </xctk:WatermarkTextBox>
-                <Button Content="Zoek" Style="{StaticResource BaseStyle}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
             </WrapPanel>
         </Grid>
 

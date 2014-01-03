@@ -24,16 +24,16 @@
             <xctk:WatermarkTextBox Watermark="Festival naam" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
             <TextBlock Text="Omschrijving" Style="{StaticResource TextBlock}"/>
-            <xctk:WatermarkTextBox Watermark="Omschrijving" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Omschrijving, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
+            <xctk:WatermarkTextBox Watermark="Omschrijving" TextWrapping="WrapWithOverflow" Height="auto" Style="{StaticResource BaseStyle}" Text="{Binding Festivals.Omschrijving, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
 
             <TextBlock Text="Begin datum" Style="{StaticResource TextBlock}"/>
-            <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.StartDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
+            <DatePicker Style="{StaticResource BaseStyle}" DisplayDate="{Binding Festivals.StartDate , UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" SelectedDate="{Binding Festivals.StartDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}"/>
 
             <TextBlock Text="Begin uur" Style="{StaticResource TextBlock}" />
             <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.StartDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource BaseStyle}"/>
 
             <TextBlock Text="Eind datum" Style="{StaticResource TextBlock}"/>
-            <DatePicker Style="{StaticResource BaseStyle}" Text="{Binding Festivals.EndDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>
+            <DatePicker Style="{StaticResource BaseStyle}" DisplayDate="{Binding Festivals.EndDate , UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" SelectedDate="{Binding Festivals.EndDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}"/>
 
             <TextBlock Text="Eind uur" Style="{StaticResource TextBlock}"/>
             <xctk:DateTimeUpDown Format="Custom" FormatString="HH:mm" Value="{Binding Festivals.EndDate, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Style="{StaticResource BaseStyle}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>

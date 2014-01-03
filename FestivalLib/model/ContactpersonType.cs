@@ -28,52 +28,57 @@ namespace FestivalLib.model
 
         #endregion
 
-        public static ObservableCollection<ContactpersonType> lstContactTypes = GetContactTypes();       
-
         #region SQL
         private static ContactpersonType CreateContactType(DbDataReader reader)
         {
-            ContactpersonType contactType = new ContactpersonType();
-            contactType.ID = Convert.ToString(reader["contactpersontype_id"]);
-            contactType.Name = Convert.ToString(reader["contactpersontype_name"]);            
-            return contactType;                      
+            try
+            {
+                ContactpersonType contactType = new ContactpersonType();
+                contactType.ID = Convert.ToString(reader["contactpersontype_id"]);
+                contactType.Name = Convert.ToString(reader["contactpersontype_name"]);
+                return contactType;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Create contacttype: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<ContactpersonType> GetContactTypes()
         {
-            ObservableCollection<ContactpersonType> lstContactTypes = new ObservableCollection<ContactpersonType>();
-            DbDataReader reader = Database.GetData("SELECT * FROM contactpersontype");
-            while (reader.Read())
+            try
             {
-                lstContactTypes.Add(CreateContactType(reader));
+                ObservableCollection<ContactpersonType> lstContactTypes = new ObservableCollection<ContactpersonType>();
+                DbDataReader reader = Database.GetData("SELECT * FROM contactpersontype");
+                while (reader.Read())
+                {
+                    lstContactTypes.Add(CreateContactType(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstContactTypes;
             }
-            if (reader != null)
-                reader.Close();
-            return lstContactTypes;          
+            catch (Exception ex)
+            {
+                Console.WriteLine("Get contact types: " + ex.Message);
+                return null;
+            }
         }
 
         public static ContactpersonType GetContactTypeByID(int id)
         {
-            ContactpersonType gevondenContactType = new ContactpersonType();
-            gevondenContactType = lstContactTypes.Single(i => i.ID == Convert.ToString(id));
-            return gevondenContactType;        
-        }
-
-        public static string AddOrEdit(ContactpersonType contactType)
-        {
-            string str = "";
-            ObservableCollection<ContactpersonType> lstContactTypes = GetContactTypes();
-            if (lstContactTypes.Any(item => item.ID == contactType.ID))
+            try
             {
-                EditContactType(contactType);
-                str = "edit";
+                ContactpersonType gevondenContactType = new ContactpersonType();
+                gevondenContactType = lstContactTypes.Single(i => i.ID == Convert.ToString(id));
+                return gevondenContactType;
             }
-            else
+            catch (Exception ex)
             {
-                AddContactType(contactType);
-                str = "add";
+                Console.WriteLine("Get contactype by id: " + ex.Message);
+                return null;
             }
-            return str;
         }
 
         public static void AddContactType(ContactpersonType contactType)
@@ -82,7 +87,7 @@ namespace FestivalLib.model
             {
                 string sql = "INSERT INTO contactpersontype(contactpersontype_name) VALUES (@name);";
 
-                DbParameter par1 = Database.AddParameter("@name", contactType.Name);            
+                DbParameter par1 = Database.AddParameter("@name", contactType.Name);
 
                 int i = Database.ModifyData(sql, par1);
                 if (i == 0)
@@ -93,8 +98,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Add contacttype: " + ex.Message);
             }
         }
 
@@ -104,7 +108,7 @@ namespace FestivalLib.model
             {
                 string sql = "UPDATE contactpersontype SET contactpersontype_name=@name WHERE contactpersontype_id=@ID;";
 
-                DbParameter par1 = Database.AddParameter("@name", contactType.Name); 
+                DbParameter par1 = Database.AddParameter("@name", contactType.Name);
 
                 DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(contactType.ID));
 
@@ -117,11 +121,13 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Edit contacttype: " + ex.Message);
             }
         }
         #endregion
 
+        #region Public Vars
+        public static ObservableCollection<ContactpersonType> lstContactTypes = GetContactTypes();
+        #endregion
     }
 }

@@ -45,11 +45,15 @@ namespace Ypsilon2.viewmodel
         }
 
         private void ChangePage(IPage page)
-        {
+        {   
+            if (page.Name == "Ticketing")
+            {
+                page = new TicketingVM();
+            }
             CurrentPage = page;
         }
 
-        public ICommand ChangePageByIdCommand 
+        public ICommand ChangePageByIdCommand
         {
             get { return new RelayCommand<int>(ChangePageById); }
         }
@@ -58,8 +62,6 @@ namespace Ypsilon2.viewmodel
         {
             Console.WriteLine("klikerdeklik");
             CurrentPage = Pages[i];
-        }        
-        
-        
+        }
     }
 }

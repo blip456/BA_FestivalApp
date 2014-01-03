@@ -10,7 +10,7 @@ namespace FestivalLib.model
     {
         public TicketType()
         {
-           
+
         }
 
         #region field en prop
@@ -62,134 +62,175 @@ namespace FestivalLib.model
             get { return _nameCat; }
             set { _nameCat = value; }
         }
-        
-        #endregion
 
-        public static ObservableCollection<TicketType> lstAlleTypes = GetTicketTypes();
+        #endregion
 
         #region SQL
         private static TicketType CreateTicket(DbDataReader reader)
         {
-            TicketType ticket = new TicketType();
-            ticket.ID = Convert.ToString(reader["tickettype_id"]);
-            ticket.Name = Convert.ToString(reader["tickettype_name"]);
-            ticket.Price = Convert.ToDouble(reader["tickettype_price"]);
-            ticket.AvailableTickets = Convert.ToInt32(reader["tickettype_available"]);
-            ticket.Categorie = Convert.ToString(reader["tickettype_categorie"]);
-            ticket.NameCat = ticket.Name + " - " + ticket.Categorie;
-            return ticket;
+            try
+            {
+                TicketType ticket = new TicketType();
+                ticket.ID = Convert.ToString(reader["tickettype_id"]);
+                ticket.Name = Convert.ToString(reader["tickettype_name"]);
+                ticket.Price = Convert.ToDouble(reader["tickettype_price"]);
+                ticket.AvailableTickets = Convert.ToInt32(reader["tickettype_available"]);
+                ticket.Categorie = Convert.ToString(reader["tickettype_categorie"]);
+                ticket.NameCat = ticket.Name + " - " + ticket.Categorie;
+                return ticket;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("create tickettype: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<TicketType> GetTicketTypes()
         {
-            ObservableCollection<TicketType> lstTicketTypes = new ObservableCollection<TicketType>();
-            DbDataReader reader = Database.GetData("SELECT * FROM tickettype");
-            while (reader.Read())
+            try
             {
-                lstTicketTypes.Add(CreateTicket(reader));
+                ObservableCollection<DateTime> lstAantalDagen = Festival.aantalDagen();
+                int iAantalDagen = lstAantalDagen.Count * 2;
+
+                ObservableCollection<TicketType> lstTicketTypes = new ObservableCollection<TicketType>();
+                DbDataReader reader = Database.GetData("SELECT TOP " + iAantalDagen + " * FROM tickettype");
+                while (reader.Read())
+                {
+                    lstTicketTypes.Add(CreateTicket(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstTicketTypes;
             }
-            if (reader != null)
-                reader.Close();
-            return lstTicketTypes;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get ticket types: " + ex.Message);
+                return null;
+            }
+
         }
-
-        //public static ObservableCollection<TicketType> GetTicketTypeByString(string search)
-        //{
-        //    ObservableCollection<TicketType> lstGevondenTicketTypes = new ObservableCollection<TicketType>();
-        //    DbParameter par = Database.AddParameter("@str", "%" + search + "%");
-        //    DbDataReader reader = Database.GetData("SELECT * FROM tickettype WHERE tickettype_categorie LIKE @str;", par);
-        //    while (reader.Read())
-        //    {
-        //        lstGevondenTicketTypes.Add(CreateTicket(reader));
-        //    }
-
-        //    return lstGevondenTicketTypes;
-        //}
 
         public static ObservableCollection<TicketType> GetTicketTypeByString(string search)
         {
-            ObservableCollection<TicketType> lstGevondenTickets = new ObservableCollection<TicketType>();
-            foreach (TicketType ticket in lstAlleTypes)
+            try
             {
-                if (ticket.Categorie.ToUpper().Contains(search.ToUpper()))
+                ObservableCollection<DateTime> lstAantalDagen = Festival.aantalDagen();
+                int iAantalDagen = lstAantalDagen.Count;
+
+                ObservableCollection<TicketType> lstGevondenTicketTypes = new ObservableCollection<TicketType>();
+                string sql = "SELECT TOP " + iAantalDagen + " * FROM tickettype WHERE tickettype_categorie LIKE @str;";
+                DbParameter par1 = Database.AddParameter("@i", iAantalDagen);
+                DbParameter par2 = Database.AddParameter("@str", "%" + search + "%");
+                DbDataReader reader = Database.GetData(sql, par1, par2);
+                while (reader.Read())
                 {
-                    lstGevondenTickets.Add(ticket);
+                    lstGevondenTicketTypes.Add(CreateTicket(reader));
                 }
+                if (reader != null)
+                    reader.Close();
+                return lstGevondenTicketTypes;
             }
-            return lstGevondenTickets;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get ticket types bystring: " + ex.Message);
+                return null;
+            }
+
         }
 
-        //public static TicketType GetTicketByID(int id)
-        //{
-        //    TicketType gevondenTicket = new TicketType();
-        //    DbParameter par = Database.AddParameter("@ID", id);
-        //    DbDataReader reader = Database.GetData("SELECT * FROM tickettype WHERE tickettype_id=@ID", par);
-        //    while (reader.Read())
-        //    {
-        //        gevondenTicket = CreateTicket(reader);
-        //        return gevondenTicket;
-        //    }
-
-        //    return gevondenTicket;
-        //}
-
-        public static TicketType GetTicketTypeByID( int id)
+        public static TicketType GetTicketTypeByID(int id)
         {
-            TicketType gevondenTicketType = new TicketType();
-            foreach (TicketType ticketType in lstAlleTypes)
+            try
             {
-                if (ticketType.ID == Convert.ToString(id))
+                TicketType gevondenTicketType = new TicketType();
+                foreach (TicketType ticketType in lstAlleTypes)
                 {
-                    gevondenTicketType = ticketType;
+                    if (ticketType.ID == Convert.ToString(id))
+                    {
+                        gevondenTicketType = ticketType;
+                    }
                 }
+                return gevondenTicketType;
             }
-            return gevondenTicketType;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get tickettype by id: " + ex.Message);
+                return null;
+            }
         }
 
-        
         public static int CountTotalNormal(ObservableCollection<TicketType> lst)
         {
-            int iTotal = 0;
-            foreach (var item in GetTicketTypeByString("Normaal"))
+            try
             {
-                iTotal += item.AvailableTickets;
+                int iTotal = 0;
+                foreach (var item in GetTicketTypeByString("Normaal"))
+                {
+                    iTotal += item.AvailableTickets;
+                }
+                return iTotal;
             }
-            return iTotal;
+            catch (Exception ex)
+            {
+                Console.WriteLine("count total normal: " + ex.Message);
+                return 0;
+            }
         }
 
         public static int CountTotalVip(ObservableCollection<TicketType> lst)
         {
-            int iTotal = 0;
-            foreach (var item in GetTicketTypeByString("VIP"))
+            try
             {
-                iTotal += item.AvailableTickets;
+                int iTotal = 0;
+                foreach (var item in GetTicketTypeByString("VIP"))
+                {
+                    iTotal += item.AvailableTickets;
+                }
+                return iTotal;
             }
-            return iTotal;
+            catch (Exception ex)
+            {
+                Console.WriteLine("count totl vip: " + ex.Message);
+                return 0;
+            }
+
         }
 
         public static void EditTicketType(TicketType ticket)
         {
-            string sql = "UPDATE tickettype SET tickettype_name=@name, tickettype_price=@price, tickettype_available=@available WHERE tickettype_id=@ID;";
-
-            DbParameter par1 = Database.AddParameter("@name", ticket.Name);
-            DbParameter par2 = Database.AddParameter("@price", ticket.Price);
-            DbParameter par3 = Database.AddParameter("@available", ticket.AvailableTickets);
-
-            DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(ticket.ID));
-
-            int i = Database.ModifyData(sql, par1, par2, par3, parID);
-            Console.WriteLine(i + " row(s) are affected");
-            if (i == 1)
+            try
             {
-                MessageBox.Show("Opslaan is gelukt", "Gelukt", System.Windows.MessageBoxButton.OK);
+                string sql = "UPDATE tickettype SET tickettype_name=@name, tickettype_price=@price, tickettype_available=@available WHERE tickettype_id=@ID;";
+
+                DbParameter par1 = Database.AddParameter("@name", ticket.Name);
+                DbParameter par2 = Database.AddParameter("@price", ticket.Price);
+                DbParameter par3 = Database.AddParameter("@available", ticket.AvailableTickets);
+
+                DbParameter parID = Database.AddParameter("@ID", Convert.ToInt16(ticket.ID));
+
+                int i = Database.ModifyData(sql, par1, par2, par3, parID);
+                Console.WriteLine(i + " row(s) are affected");
+                if (i == 1)
+                {
+                    MessageBox.Show("Opslaan is gelukt", "Gelukt", System.Windows.MessageBoxButton.OK);
+                }
+                else
+                {
+                    MessageBox.Show("Opslaan mislukt", "Mislukt", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Opslaan mislukt", "Mislukt", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                Console.WriteLine("edit ticket type: " + ex.Message);
             }
-            
+
+
         }
+        #endregion
 
+        #region Public Vars
+        public static ObservableCollection<TicketType> lstAlleTypes = GetTicketTypes();
         #endregion
     }
 }

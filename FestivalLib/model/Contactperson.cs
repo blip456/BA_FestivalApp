@@ -45,7 +45,8 @@ namespace FestivalLib.model
         }
 
         private string _city;
-
+        [Required(ErrorMessage="U moet een stad invullen")]
+        [StringLength(50, MinimumLength = 2, ErrorMessage="Een stadsnaam moet tussen de 2 en 50 karakters liggen")]
         public string City
         {
             get { return _city; }
@@ -63,7 +64,7 @@ namespace FestivalLib.model
 
         private string _phone;
         [Required(ErrorMessage = "U moet een telefoon nummer invullen")]
-        [RegularExpression(@"^([0-9]{3}/|[0-9]{2}/)[0-9]{2}.[0-9]{2}.[0-9]{2}$")]
+        [RegularExpression(@"^\+[0-9]{0,3}([0-9]{3}/|[0-9]{2}/)([0-9]{2,3}|[0-9]{2}).[0-9]{2}.[0-9]{2}$", ErrorMessage = "Een telefoonnummer moet van het formaat '+32xx/xx.xx.xx' of 'xx/xxx.xx.xx' zijn. Andere internationale landcodes zijn toegestaan.")]
         public string Phone
         {
             get { return _phone; }
@@ -72,7 +73,7 @@ namespace FestivalLib.model
 
         private string _cellphone;
         [Required(ErrorMessage = "U moet een gsm nummer invullen")]
-        [RegularExpression(@"^[0-9]{4}/[0-9]{2}.[0-9]{2}.[0-9]{2}$")]
+        [RegularExpression(@"^\+[0-9]{0,3}([0-9]{4}/[0-9]{2}.[0-9]{2}.[0-9]{2}$)", ErrorMessage = "Een gsm nummer moet van het formaat '+32xxx/xx.xx.xx' zijn. Andere internationale landcodes zijn toegestaan.")]
         public string Cellphone
         {
             get { return _cellphone; }
@@ -120,58 +121,90 @@ namespace FestivalLib.model
         #region SQL
         private static Contactperson CreateContact(DbDataReader reader)
         {
-            Contactperson contact = new Contactperson();
-            contact.ID = Convert.ToString(reader["contactperson_id"]);
-            contact.Name = Convert.ToString(reader["contactperson_name"]);
-            contact.Company = Convert.ToString(reader["contactperson_company"]);
-            contact.JobRole = ContactpersonType.GetContactTypeByID((int)reader["contactpersontype_idJobrole"]);
-            contact.City = Convert.ToString(reader["contactperson_city"]);
-            contact.Email = Convert.ToString(reader["contactperson_email"]);
-            contact.Phone = Convert.ToString(reader["contactperson_phone"]);
-            contact.Cellphone = Convert.ToString(reader["contactperson_cell"]);
-            return contact;
+            try
+            {
+                Contactperson contact = new Contactperson();
+                contact.ID = Convert.ToString(reader["contactperson_id"]);
+                contact.Name = Convert.ToString(reader["contactperson_name"]);
+                contact.Company = Convert.ToString(reader["contactperson_company"]);
+                contact.JobRole = ContactpersonType.GetContactTypeByID((int)reader["contactpersontype_idJobrole"]);
+                contact.City = Convert.ToString(reader["contactperson_city"]);
+                contact.Email = Convert.ToString(reader["contactperson_email"]);
+                contact.Phone = Convert.ToString(reader["contactperson_phone"]);
+                contact.Cellphone = Convert.ToString(reader["contactperson_cell"]);
+                return contact;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Create contact:" + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<Contactperson> GetContacts()
         {
-            ObservableCollection<Contactperson> lstContacts = new ObservableCollection<Contactperson>();
-            DbDataReader reader = Database.GetData("SELECT * FROM contactperson");
-            while (reader.Read())
+            try
             {
-                lstContacts.Add(CreateContact(reader));
+                ObservableCollection<Contactperson> lstContacts = new ObservableCollection<Contactperson>();
+                DbDataReader reader = Database.GetData("SELECT * FROM contactperson");
+                while (reader.Read())
+                {
+                    lstContacts.Add(CreateContact(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstContacts;
             }
-            if (reader != null)
-                reader.Close();
-            return lstContacts;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Get contacts: " + ex.Message);
+                return null;
+            }
         }
 
         public static Contactperson GetContactByID(int id)
         {
-            Contactperson gevondenContact = new Contactperson();
-            string sql = "SELECT * FROM contactperson WHERE contactperson_id=@id;";
-            DbParameter parID = Database.AddParameter("@ID", id);
-            DbDataReader reader = Database.GetData(sql, parID);
-            while (reader.Read())
+            try
             {
-                gevondenContact = CreateContact(reader);
+                Contactperson gevondenContact = new Contactperson();
+                string sql = "SELECT * FROM contactperson WHERE contactperson_id=@id;";
+                DbParameter parID = Database.AddParameter("@ID", id);
+                DbDataReader reader = Database.GetData(sql, parID);
+                while (reader.Read())
+                {
+                    gevondenContact = CreateContact(reader);
+                }
+                if (reader != null)
+                    reader.Close();
+                return gevondenContact;
             }
-            if (reader != null)
-                reader.Close();
-            return gevondenContact;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Get contact by id: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<Contactperson> GetContactsByString(ObservableCollection<Contactperson> lst, string search)
         {
-            ObservableCollection<Contactperson> lstGevondenContacts = new ObservableCollection<Contactperson>();
-            foreach (Contactperson contact in lst)
+            try
             {
-                if (contact.Name.ToUpper().Contains(search.ToUpper()) || contact.City.ToUpper().Contains(search.ToUpper()) || contact.Company.ToUpper().Contains(search.ToUpper()) || contact.Email.ToUpper().Contains(search.ToUpper()) || contact.Cellphone.ToUpper().Contains(search.ToUpper()) || contact.Phone.ToUpper().Contains(search.ToUpper()))
+                ObservableCollection<Contactperson> lstGevondenContacts = new ObservableCollection<Contactperson>();
+                foreach (Contactperson contact in lst)
                 {
-                    lstGevondenContacts.Add(contact);
+                    if (contact.Name.ToUpper().Contains(search.ToUpper()) || contact.City.ToUpper().Contains(search.ToUpper()) || contact.Company.ToUpper().Contains(search.ToUpper()) || contact.Email.ToUpper().Contains(search.ToUpper()) || contact.Cellphone.ToUpper().Contains(search.ToUpper()) || contact.Phone.ToUpper().Contains(search.ToUpper()))
+                    {
+                        lstGevondenContacts.Add(contact);
+                    }
                 }
-            }
 
-            return lstGevondenContacts;
+                return lstGevondenContacts;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Get contacts by string: " + ex.Message);
+                return null;
+            }
         }
 
         public static void AddContact(Contactperson contact)
@@ -197,8 +230,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Add contact: " + ex.Message);
             }
         }
 
@@ -227,8 +259,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("edit contact" + ex.Message);
             }
         }
 
@@ -249,8 +280,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Delete contact: " + ex.Message);
             }
         }
         #endregion

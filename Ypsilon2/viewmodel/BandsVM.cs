@@ -116,6 +116,15 @@ namespace Ypsilon2.viewmodel
             set { _genre = value; OnPropertyChanged("Genre"); }
         }
 
+        private Genre _selectedGenre;
+
+        public Genre SelectedGenre
+        {
+            get { return _selectedGenre; }
+            set { _selectedGenre = value; OnPropertyChanged("SelectedGenre"); }
+        }
+
+
         #endregion
 
         #region commands
@@ -210,15 +219,39 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        public ICommand DeleteGenreFromBandCommand
+        {
+            get { return new RelayCommand(DeleteGenreFromBand); }
+        }
+
+        public void DeleteGenreFromBand()
+        {
+            Band.DeleteGenre(SelectedBand, SelectedGenre);
+            Bands = FestivalLib.model.Band.GetBands();
+            GefilterdeBands = Bands;
+            Genre = "";
+            ImageSource = convertStringToByte("../../content/images/blank.jpg");
+        }
+
         public ICommand AddGenreToBandCommand
         {
             get { return new RelayCommand(AddGenreToBand); }
         }
         public void AddGenreToBand()
         {
-            FestivalLib.model.Band.AddGenre(SelectedBand, Genre);
-            Bands = FestivalLib.model.Band.GetBands();
-            SelectedBand = Band.GetBandByID(Convert.ToInt32(SelectedBand.ID));
+            if (Genre != "")
+            {
+                FestivalLib.model.Band.AddGenre(SelectedBand, Genre);
+                Bands = FestivalLib.model.Band.GetBands();
+                GefilterdeBands = Bands;
+                Genre = "";
+                ImageSource = convertStringToByte("../../content/images/blank.jpg");
+            }
+            else
+            {
+                Xceed.Wpf.Toolkit.MessageBox.Show("U kunt geen leeg genre meegeven", "Opgelet", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+
         }
 
         #endregion

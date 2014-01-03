@@ -20,7 +20,7 @@ namespace FestivalLib.model
         }
 
         private DateTime _date;
-        [Required(ErrorMessage="U moet een dag selecteren")]
+        [Required(ErrorMessage = "U moet een dag selecteren")]
         public DateTime Date
         {
             get { return _date; }
@@ -112,74 +112,114 @@ namespace FestivalLib.model
         #region SQL
         private static LineUp CreateLineUp(DbDataReader reader)
         {
-            LineUp lineup = new LineUp();
-            lineup.ID = Convert.ToString(reader["lineup_id"]);
-            lineup.Date = Convert.ToDateTime(reader["lineup_date"]);
-            lineup.From = Convert.ToDateTime(reader["lineup_from"]);
-            lineup.Until = Convert.ToDateTime(reader["lineup_until"]);
-              
-            lineup.Stage = Stage.GetStageByID(Convert.ToInt16(reader["lineup_stage"]));
-            lineup.Band = Band.GetBandByID(Convert.ToInt32(reader["lineup_band"]));
-            return lineup;
+            try
+            {
+                LineUp lineup = new LineUp();
+                lineup.ID = Convert.ToString(reader["lineup_id"]);
+                lineup.Date = Convert.ToDateTime(reader["lineup_date"]);
+                lineup.From = Convert.ToDateTime(reader["lineup_from"]);
+                lineup.Until = Convert.ToDateTime(reader["lineup_until"]);
+
+                lineup.Stage = Stage.GetStageByID(Convert.ToInt16(reader["lineup_stage"]));
+                lineup.Band = Band.GetBandByID(Convert.ToInt32(reader["lineup_band"]));
+                return lineup;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("create lineup: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<LineUp> GetBandsByLineUpIDAndDate(int id, DateTime date)
         {
-            ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
-          
-            string sql = "SELECT * FROM lineup WHERE lineup_stage=@id AND lineup_date=@date ORDER BY lineup_from ASC;";
-            DbParameter parID = Database.AddParameter("@id", id);
-            DbParameter par1 = Database.AddParameter("@date", date.Date);
-
-            DbDataReader reader = Database.GetData(sql, parID, par1);
-            while (reader.Read())
+            try
             {
-                lstGevondenLineUps.Add(CreateLineUp(reader));
+                ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
+
+                string sql = "SELECT * FROM lineup WHERE lineup_stage=@id AND lineup_date=@date ORDER BY lineup_from ASC;";
+                DbParameter parID = Database.AddParameter("@id", id);
+                DbParameter par1 = Database.AddParameter("@date", date.Date);
+
+                DbDataReader reader = Database.GetData(sql, parID, par1);
+                while (reader.Read())
+                {
+                    lstGevondenLineUps.Add(CreateLineUp(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstGevondenLineUps;
             }
-            if (reader != null)
-                reader.Close();
-            return lstGevondenLineUps;         
+            catch (Exception ex)
+            {
+                Console.WriteLine("getbands by line up id and date: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<LineUp> GetBandsByLineUpID(int id)
         {
-            ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
-            DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + ";");
-            while (reader.Read())
+            try
             {
-                lstGevondenLineUps.Add(CreateLineUp(reader));
+                ObservableCollection<LineUp> lstGevondenLineUps = new ObservableCollection<LineUp>();
+                DbDataReader reader = Database.GetData("SELECT * FROM lineup WHERE lineup_stage = " + id + ";");
+                while (reader.Read())
+                {
+                    lstGevondenLineUps.Add(CreateLineUp(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstGevondenLineUps;
             }
-            if (reader != null)
-                reader.Close();
-            return lstGevondenLineUps;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get bands by lineup id: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<LineUp> GetLineUps()
         {
-            ObservableCollection<LineUp> lstLineUps = new ObservableCollection<LineUp>();
-            string sql = "SELECT * FROM lineup";
-            DbDataReader reader = Database.GetData(sql);
-            while (reader.Read())
+            try
             {
-                lstLineUps.Add(CreateLineUp(reader));
+                ObservableCollection<LineUp> lstLineUps = new ObservableCollection<LineUp>();
+                string sql = "SELECT * FROM lineup";
+                DbDataReader reader = Database.GetData(sql);
+                while (reader.Read())
+                {
+                    lstLineUps.Add(CreateLineUp(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstLineUps;
             }
-            if (reader != null)
-                reader.Close();
-            return lstLineUps;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get lineups" + ex.Message);
+                return null;
+            }
         }
 
         public static LineUp GetLineUpByID(int id)
         {
-            LineUp gevondenLineUp = new LineUp();
-            string sql = "SELECT * FROM lineup WHERE lineup_id = " + id + "";
-            DbDataReader reader = Database.GetData(sql);
-            while (reader.Read())
+            try
             {
-                gevondenLineUp = CreateLineUp(reader);
+                LineUp gevondenLineUp = new LineUp();
+                string sql = "SELECT * FROM lineup WHERE lineup_id = " + id + "";
+                DbDataReader reader = Database.GetData(sql);
+                while (reader.Read())
+                {
+                    gevondenLineUp = CreateLineUp(reader);
+                }
+                if (reader != null)
+                    reader.Close();
+                return gevondenLineUp;
             }
-            if (reader != null)
-                reader.Close();
-            return gevondenLineUp;
+            catch (Exception ex)
+            {
+                Console.WriteLine("get line up by id: " + ex.Message);
+                return null;
+            }
         }
 
         public static void AddLineUp(LineUp lineup)
@@ -203,11 +243,9 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("add line up: " + ex.Message);
             }
         }
-    
         #endregion
 
         #region Methods
@@ -219,21 +257,29 @@ namespace FestivalLib.model
         //berekend hoeveel tijd er tussen het begin en einde van een optreden zit, dit wordt oa gebruikt voor de breedte van de stackpanel te bepalen
         public static double calculateTimespan(DateTime dtFrom, DateTime dtUntil)
         {
-            string sFrom = dtFrom.ToString("HH:mm");
-            string sUntil = dtUntil.ToString("HH:mm");
+            try
+            {
+                string sFrom = dtFrom.ToString("HH:mm");
+                string sUntil = dtUntil.ToString("HH:mm");
 
-            string[] arrsSplitFrom = sFrom.Split(':');
-            double dFromHour = Convert.ToDouble(arrsSplitFrom[0]);
-            double dFromMinute = Convert.ToDouble(arrsSplitFrom[1]);
-            double dFrom = dFromHour + (dFromMinute / 60);
+                string[] arrsSplitFrom = sFrom.Split(':');
+                double dFromHour = Convert.ToDouble(arrsSplitFrom[0]);
+                double dFromMinute = Convert.ToDouble(arrsSplitFrom[1]);
+                double dFrom = dFromHour + (dFromMinute / 60);
 
-            string[] arrsSplitUntil = sUntil.Split(':');
-            double dUntilHour = Convert.ToDouble(arrsSplitUntil[0]);
-            double dUntilMinute = Convert.ToDouble(arrsSplitUntil[1]);
-            double dUntil = dUntilHour + (dUntilMinute / 60);
+                string[] arrsSplitUntil = sUntil.Split(':');
+                double dUntilHour = Convert.ToDouble(arrsSplitUntil[0]);
+                double dUntilMinute = Convert.ToDouble(arrsSplitUntil[1]);
+                double dUntil = dUntilHour + (dUntilMinute / 60);
 
-            double dTimespan = (dUntil - dFrom) * 100;
-            return dTimespan;
+                double dTimespan = (dUntil - dFrom) * 100;
+                return dTimespan;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("calculate timespan" + ex.Message);
+                return 150;
+            }
         }
         #endregion
     }

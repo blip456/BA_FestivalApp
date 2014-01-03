@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="350"/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -39,7 +39,6 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </xctk:WatermarkTextBox>
-                <Button Content="Zoek" Style="{StaticResource BaseStyle}" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=txtSearch, Path=Text}"/>
             </WrapPanel>
         </Grid>
 
@@ -47,7 +46,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Naam" DisplayMemberBinding="{Binding Path=Name}"/>
-                    <GridViewColumn Header="Omschrijving" DisplayMemberBinding="{Binding Path=Descr}"/>
+                    <GridViewColumn Header="Omschrijving" DisplayMemberBinding="{Binding Path=Descr}" Width="200"/>
                     <GridViewColumn Header="Facebook" DisplayMemberBinding="{Binding Path=Facebook}"/>
                     <GridViewColumn Header="Twitter" DisplayMemberBinding="{Binding Path=Twitter}"/>
                     <GridViewColumn Header="Genres">
@@ -85,18 +84,22 @@
                 <TextBlock Text="Facebook:" Style="{StaticResource TextBlock}"/>
                 <xctk:WatermarkTextBox Watermark="/FacebookURL" Style="{StaticResource BaseStyle}" Text="{Binding Band.Facebook}" SelectAllOnGotFocus="True"/>
                 <TextBlock Text="Twitter:" Style="{StaticResource TextBlock}"/>
-                <xctk:WatermarkTextBox Watermark="@TwitterName" Style="{StaticResource BaseStyle}" Text="{Binding Band.Twitter}" SelectAllOnGotFocus="True"/>
-                <TextBlock Text="Genres:" Style="{StaticResource TextBlock}"/>
+                <xctk:WatermarkTextBox Watermark="/TwitterURL" Style="{StaticResource BaseStyle}" Text="{Binding Band.Twitter}" SelectAllOnGotFocus="True"/>
+                <TextBlock Text="Genres:" Style="{StaticResource TextBlock}"/>                                              
+                
                 <WrapPanel>
-                    <xctk:WatermarkTextBox Watermark="Voeg genre toe" Width="300" Style="{StaticResource BaseStyle}" Text="{Binding Genre}"/>
-                    <Button Style="{StaticResource BaseStyle}" Content="+" HorizontalAlignment="Right" Width="30" Command="{Binding AddGenreToBandCommand}"/>
+                    <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Band.Genres}" DisplayMemberPath="Name" Width="310" SelectedItem="{Binding SelectedGenre}"/>
+                    <Button Style="{StaticResource BaseStyle}" ToolTip="Verwijder genre van band" Content="-" HorizontalAlignment="Right" Width="30" Name="cboBandGenres" Command="{Binding DeleteGenreFromBandCommand}"/>
                 </WrapPanel>
-
-                <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding Band.Genres}" DisplayMemberPath="Name"/>
+                <TextBlock Style="{StaticResource TextBlock}"/>
+                <WrapPanel>
+                    <xctk:WatermarkTextBox Watermark="Voeg genre toe" Width="310" Style="{StaticResource BaseStyle}" Text="{Binding Genre}"/>
+                    <Button Style="{StaticResource BaseStyle}" ToolTip="Voeg genre toe aan band" Content="+" HorizontalAlignment="Right" Width="30" Command="{Binding AddGenreToBandCommand}"/>
+                </WrapPanel>
                 <!--<xctk:WatermarkTextBox Watermark="Genre1;Genre2;Genre3" Style="{StaticResource BaseStyle}" SelectAllOnGotFocus="True" Text="{Binding Band.Genres, Converter={StaticResource ObsToString}, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}"/>-->
             </StackPanel>
             <StackPanel Grid.Column="1" Style="{StaticResource TwoPaneStackpanel}" Grid.ColumnSpan="2">
-                <Image Source="{Binding ImageSource}" Height="183" Margin="0,21,0,0" x:Name="imgPicture" Style="{StaticResource ImageBox}">
+                <Image Source="{Binding ImageSource}" Height="234" Margin="0,21,0,0" x:Name="imgPicture" Style="{StaticResource ImageBox}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown">
                             <cmd:EventToCommand Command="{Binding SelectImageCommand}"/>

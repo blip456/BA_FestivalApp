@@ -97,7 +97,6 @@ namespace Ypsilon2.viewmodel
             get { return _reservering; }
             set { _reservering = value; OnPropertyChanged("Reservering"); }
         }
-        
         #endregion
         
 

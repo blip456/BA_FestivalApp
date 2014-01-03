@@ -37,12 +37,12 @@
             </TextBlock>
         </StackPanel>
         <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" Rows="4" Margin="0,0,20,0">
-            <TextBlock Text="Kies een dag:" Style="{StaticResource TextBlock}"/>
+            <TextBlock Text="Kies een ticket:" Style="{StaticResource TextBlock}"/>
             <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding TicketTypesNormaal}" DisplayMemberPath="Name" Name="cboDagenNormaal" SelectedItem="{Binding SelectedDagNormaal}" SelectedIndex="0"/>
             <TextBlock Text="Totaal aantal tickets:" Style="{StaticResource TextBlock}"/>
             <TextBox Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.AvailableTickets, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource BaseStyle}"/>
             <TextBlock Text="Kostprijs per ticket:" Style="{StaticResource TextBlock}"/>
-            <xctk:DecimalUpDown Watermark="€ 35,00" Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.Price, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Increment="1" ToolTip="Geef een nummeriek of decimaal bedrag in bv: 35,00" Grid.Column="2" Grid.Row="5" Style="{StaticResource BaseStyle}"/>
+            <xctk:DecimalUpDown Watermark="€ 35,00" Minimum="0" Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.Price, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Increment="1" ToolTip="Geef een nummeriek of decimaal bedrag in bv: 35,00" Grid.Column="2" Grid.Row="5" Style="{StaticResource BaseStyle}"/>
             <!--<TextBox Text="{Binding ElementName=cboDagenNormaal, Path=SelectedItem.Price}" Style="{StaticResource BaseStyle}"/>-->
             <TextBlock Style="{StaticResource TextBlock}"/>
             <Button Name="txtSave" Content="Opslaan" IsDefault="True" Style="{StaticResource BaseStyle}" Command="{Binding SaveTicketTypeNormaalCommand}" CommandParameter="{Binding ElementName=cboDagenNormaal, Path=SelectedItem}" />
@@ -51,12 +51,12 @@
         </UniformGrid>
 
         <UniformGrid Grid.Row="1" Grid.Column="1" Columns="2" Rows="4" Margin="20,0,0,0">
-            <TextBlock Text="Kies een dag:" Style="{StaticResource TextBlock}"/>
+            <TextBlock Text="Kies een ticket:" Style="{StaticResource TextBlock}"/>
             <ComboBox Style="{StaticResource BaseStyle}" ItemsSource="{Binding TicketTypesVip}" DisplayMemberPath="Name" Name="cboDagenVip" SelectedItem="{Binding SelectedDagVip}" SelectedIndex="0"/>
             <TextBlock Text="Totaal aantal tickets:" Style="{StaticResource TextBlock}"/>
             <TextBox Text="{Binding ElementName=cboDagenVip, Path=SelectedItem.AvailableTickets, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Style="{StaticResource BaseStyle}"/>
             <TextBlock Text="Kostprijs per ticket:" Style="{StaticResource TextBlock}"/>
-            <xctk:DecimalUpDown Watermark="€ 45,00" Text="{Binding ElementName=cboDagenVip, Path=SelectedItem.Price, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource BaseStyle}"/>
+            <xctk:DecimalUpDown Watermark="€ 45,00" Minimum="0" Text="{Binding ElementName=cboDagenVip, Path=SelectedItem.Price, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" Style="{StaticResource BaseStyle}"/>
             <TextBlock Style="{StaticResource TextBlock}"/>            
             <Button Name="txtSaveVip" Content="Opslaan" IsDefault="True" Style="{StaticResource BaseStyle}" Command="{Binding SaveTicketTypeVipCommand}" Validation.ErrorTemplate="{StaticResource ErrorTemplate}" CommandParameter="{Binding ElementName=cboDagenVip, Path=SelectedItem}" />
             
@@ -106,7 +106,7 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <xctk:IntegerUpDown Minimum="0" Watermark="Aantal" Maximum="20" Width="100" Style="{StaticResource BaseStyle}" Text="{Binding Reservering.Amount, UpdateSourceTrigger=PropertyChanged}"/>
+                <xctk:IntegerUpDown Minimum="1" Watermark="Aantal" Maximum="20" Width="100" Style="{StaticResource BaseStyle}" Text="{Binding Reservering.Amount, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <TextBlock Text="Gegevens" Style="{StaticResource TextBlock}"/>
             <StackPanel Orientation="Horizontal">

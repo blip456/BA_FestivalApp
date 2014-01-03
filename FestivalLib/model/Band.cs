@@ -11,7 +11,7 @@ namespace FestivalLib.model
 {
     public class Band : IDataErrorInfo
     {
-        #region field en prop
+        #region Field en Prop
         private string _id;
 
         public string ID
@@ -39,7 +39,7 @@ namespace FestivalLib.model
 
         private string _descr;
         [Required(ErrorMessage = "U moet een beschrijving invullen")]
-        [RegularExpression(@"^.{20,255}$")]
+        [StringLength(255, MinimumLength=5, ErrorMessage="Een omschrijving moet tussen de 5 en 255 karakters liggen")]
         public string Descr
         {
             get { return _descr; }
@@ -106,63 +106,93 @@ namespace FestivalLib.model
         }
         #endregion
 
-        public static ObservableCollection<Band> lstAlleBands = GetBands();
-
         #region SQL
         private static Band CreateBand(DbDataReader reader)
         {
-            Band band = new Band();
-            band.ID = Convert.ToString(reader["band_id"]);
-            band.Name = Convert.ToString(reader["band_name"]);
-            band.Picture = (byte[])reader["band_picture"];
-            band.Descr = Convert.ToString(reader["band_description"]);
-            band.Twitter = Convert.ToString(reader["band_twitter"]);
-            band.Facebook = Convert.ToString(reader["band_facebook"]);
-            band.Genres = Genre.GetGenresByBandID(Convert.ToInt32(reader["band_id"]));
-            return band;
+            try
+            {
+                Band band = new Band();
+                band.ID = Convert.ToString(reader["band_id"]);
+                band.Name = Convert.ToString(reader["band_name"]);
+                band.Picture = (byte[])reader["band_picture"];
+                band.Descr = Convert.ToString(reader["band_description"]);
+                band.Twitter = Convert.ToString(reader["band_twitter"]);
+                band.Facebook = Convert.ToString(reader["band_facebook"]);
+                band.Genres = Genre.GetGenresByBandID(Convert.ToInt32(reader["band_id"]));
+                return band;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Create band: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<Band> GetBands()
         {
-            ObservableCollection<Band> lstBands = new ObservableCollection<Band>();
-            DbDataReader reader = Database.GetData("SELECT * FROM band");
-            while (reader.Read())
+            try
             {
-                lstBands.Add(CreateBand(reader));
+                ObservableCollection<Band> lstBands = new ObservableCollection<Band>();
+                DbDataReader reader = Database.GetData("SELECT * FROM band");
+                while (reader.Read())
+                {
+                    lstBands.Add(CreateBand(reader));
+                }
+                if (reader != null)
+                    reader.Close();
+                return lstBands;
             }
-            if (reader != null)
-                reader.Close();
-            return lstBands;
+            catch (Exception ex)
+            {
+                Console.WriteLine("Get Bands: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<Band> GetBandsByString(string search)
         {
-            ObservableCollection<Band> lstGevondenBands = new ObservableCollection<Band>();
-            foreach (Band band in lstAlleBands)
+            try
             {
-                if (band.Name.ToUpper().Contains(search.ToUpper()) || band.Descr.ToUpper().Contains(search.ToUpper()) || band.Facebook.ToUpper().Contains(search.ToUpper()) || band.Twitter.ToUpper().Contains(search.ToUpper()))
+                ObservableCollection<Band> lstGevondenBands = new ObservableCollection<Band>();
+                foreach (Band band in lstAlleBands)
                 {
-                    lstGevondenBands.Add(band);
+                    if (band.Name.ToUpper().Contains(search.ToUpper()) || band.Descr.ToUpper().Contains(search.ToUpper()) || band.Facebook.ToUpper().Contains(search.ToUpper()) || band.Twitter.ToUpper().Contains(search.ToUpper()))
+                    {
+                        lstGevondenBands.Add(band);
+                    }
                 }
+                return lstGevondenBands;
             }
-            return lstGevondenBands;
+            catch (Exception ex)
+            {
+                Console.WriteLine("" + ex.Message);
+                return null;
+            }
         }
 
         public static Band GetBandByID(int id)
         {
-            Band gevondenBand = new Band();
-
-            string sql = "SELECT * FROM band WHERE band_id=@id";
-            DbParameter parID = Database.AddParameter("@id", id);
-            DbDataReader reader = Database.GetData(sql, parID);
-            while (reader.Read())
+            try
             {
-                gevondenBand = CreateBand(reader);
-            }
-            if (reader != null)
-                reader.Close();
+                Band gevondenBand = new Band();
 
-            return gevondenBand;
+                string sql = "SELECT * FROM band WHERE band_id=@id";
+                DbParameter parID = Database.AddParameter("@id", id);
+                DbDataReader reader = Database.GetData(sql, parID);
+                while (reader.Read())
+                {
+                    gevondenBand = CreateBand(reader);
+                }
+                if (reader != null)
+                    reader.Close();
+
+                return gevondenBand;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("" + ex.Message);
+                return null;
+            }
         }
 
         public static void AddBand(Band band)
@@ -186,8 +216,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Add band:" + ex.Message);
             }
 
             lstAlleBands = GetBands();
@@ -216,8 +245,7 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Edit Band: " + ex.Message);
             }
 
             lstAlleBands = GetBands();
@@ -240,11 +268,8 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Delet band" + ex.Message);
             }
-
-
         }
 
         public static void DeleteBandFromLineUp(int lineupID)
@@ -262,125 +287,128 @@ namespace FestivalLib.model
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                throw ex;
+                Console.WriteLine("Delete band from lineup" + ex.Message);
             }
         }
 
         public static bool IsBandDeleteAllowed(int bandID)
         {
-            bool isDeleteAllowed = false;
-            int i = 0;
-            string sql = "SELECT * FROM lineup WHERE lineup_band=@ID;";
-            DbParameter parID = Database.AddParameter("@ID", bandID);
-            DbDataReader reader = Database.GetData(sql, parID);
-            while (reader.Read())
+            try
             {
-                i += 1;
+                bool isDeleteAllowed = false;
+                int i = 0;
+                string sql = "SELECT * FROM lineup WHERE lineup_band=@ID;";
+                DbParameter parID = Database.AddParameter("@ID", bandID);
+                DbDataReader reader = Database.GetData(sql, parID);
+                while (reader.Read())
+                {
+                    i += 1;
+                }
+                if (i >= 1)
+                {
+                    isDeleteAllowed = false;
+                }
+                else if (i == 0)
+                {
+                    isDeleteAllowed = true;
+                }
+                if (reader != null)
+                    reader.Close();
+                return isDeleteAllowed;
             }
-            if (i >= 1)
+            catch (Exception ex)
             {
-                isDeleteAllowed = false;
+                Console.WriteLine("IsBandDeleteAllowed: " + ex.Message);
+                return false;
             }
-            else if (i == 0)
-            {
-                isDeleteAllowed = true;
-            }
-            if (reader != null)
-                reader.Close();
-            return isDeleteAllowed;
+
         }
 
-        public static void AddGenre(Band SelectedBand, string genre)
+        public static void AddGenre(Band selectedBand, string sGenreName)
         {
-            if (SelectedBand.Genres.Count == 0)
+            try
             {
-                if (Genre.Getgenres().Any(item => item.Name == genre))
+                //als de geselecteerde band nog geen genres heeft
+                if (selectedBand.Genres.Count == 0)
                 {
-                    //zoeken van nieuw genre adhv string en dan koppelen aan band
-                    Genre gevondenGenre = Genre.GetGenreByString(genre);
-
-                    //genre koppelen aan de band
-                    //string sql2 = "UPDATE bandgenre SET band_id=@band, genre_id=@genre;";
-                    string sql2 = "INSERT INTO bandgenre (band_id, genre_id) VALUES(@band, @genre);";
-                    DbParameter parBand = Database.AddParameter("@band", SelectedBand.ID);
-                    DbParameter parGenre = Database.AddParameter("@genre", gevondenGenre.ID);
-                    Database.ModifyData(sql2, parBand, parGenre);
-
-
+                    //als het ingevoerde genre voor die band al bestaat in de DB
+                    if (Genre.Getgenres().Any(item => item.Name == sGenreName))
+                    {
+                        //zoeken van nieuw genre adhv string
+                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+                        //genre toevoegen aan een band
+                        Genre.AddGenre(gevondenGenre, selectedBand);
+                    }
+                    //als het ingevoerde genre nog niet bestaat
+                    else
+                    {
+                        // nieuwe genre toevoegen aan db
+                        Genre.AddGenreToDB(sGenreName);
+                        //zoeken van nieuw genre adhv string en dan koppelen aan band
+                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+                        Genre.AddGenre(gevondenGenre, selectedBand);
+                    }
                 }
+                //als de band al genres heeft
                 else
                 {
-                    //toevoegen van nieuw genre aan db
-                    Genre newGenre = new Genre();
-                    newGenre.Name = genre;
-                    string sql = "INSERT INTO genre (genre_name) VALUES (@name);";
-                    DbParameter par1 = Database.AddParameter("@name", genre);
-                    Database.ModifyData(sql, par1);
 
-                    //zoeken van nieuw genre adhv string en dan koppelen aan band
-                    Genre gevondenGenre = Genre.GetGenreByString(genre);
-
-                    //genre koppelen aan de band
-                    //string sql2 = "UPDATE bandgenre SET band_id=@band, genre_id=@genre;";
-                    string sql2 = "INSERT INTO bandgenre (band_id, genre_id) VALUES(@band, @genre);";
-                    DbParameter parBand = Database.AddParameter("@band", SelectedBand.ID);
-                    DbParameter parGenre = Database.AddParameter("@genre", gevondenGenre.ID);
-                    Database.ModifyData(sql2, parBand, parGenre);
-                }
-            }
-
-            else
-            {
-                foreach (Genre oGenre in SelectedBand.Genres)
-                {
-                    if (oGenre.Name != genre)
+                    foreach (Genre oGenre in selectedBand.Genres)
                     {
-                        if (Genre.Getgenres().Any(item => item.Name == genre))
+                        //kijken of het ingevoerde genre nog niet in de band zijn genres zit
+                        if (oGenre.Name != sGenreName)
                         {
-                            //zoeken van nieuw genre adhv string en dan koppelen aan band
-                            Genre gevondenGenre = Genre.GetGenreByString(genre);
+                            if (Genre.Getgenres().Any(item => item.Name == sGenreName))
+                            {
+                                //zoeken van nieuw genre adhv string en dan koppelen aan band
+                                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+                                Genre.AddGenre(gevondenGenre, selectedBand);
 
-                            //genre koppelen aan de band
-                            //string sql2 = "UPDATE bandgenre SET band_id=@band, genre_id=@genre;";
-                            string sql2 = "INSERT INTO bandgenre (band_id, genre_id) VALUES(@band, @genre);";
-                            DbParameter parBand = Database.AddParameter("@band", SelectedBand.ID);
-                            DbParameter parGenre = Database.AddParameter("@genre", gevondenGenre.ID);
-                            Database.ModifyData(sql2, parBand, parGenre);
+                                break;
+                            }
+                            else
+                            {
+                                Genre.AddGenreToDB(sGenreName);
+                                //zoeken van nieuw genre adhv string en dan koppelen aan band
+                                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+                                Genre.AddGenre(gevondenGenre, selectedBand);
 
-                            break;
+                                break;
+                            }
                         }
                         else
                         {
-                            //toevoegen van nieuw genre aan db
-                            Genre newGenre = new Genre();
-                            newGenre.Name = genre;
-                            string sql = "INSERT INTO genre (genre_name) VALUES (@name);";
-                            DbParameter par1 = Database.AddParameter("@name", genre);
-                            Database.ModifyData(sql, par1);
-
-                            //zoeken van nieuw genre adhv string en dan koppelen aan band
-                            Genre gevondenGenre = Genre.GetGenreByString(genre);
-
-                            //genre koppelen aan de band
-                            //string sql2 = "UPDATE bandgenre SET band_id=@band, genre_id=@genre;";
-                            string sql2 = "INSERT INTO bandgenre (band_id, genre_id) VALUES(@band, @genre);";
-                            DbParameter parBand = Database.AddParameter("@band", SelectedBand.ID);
-                            DbParameter parGenre = Database.AddParameter("@genre", gevondenGenre.ID);
-                            Database.ModifyData(sql2, parBand, parGenre);
-
+                            Xceed.Wpf.Toolkit.MessageBox.Show("Dit genre is reeds gekoppeld aan uw band", "Opgelet", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                             break;
                         }
-
                     }
                 }
-
-
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Add genre" + ex.Message);
+            }
+        }
 
+        public static void DeleteGenre(Band selectedBand, Genre selectedGenre)
+        {
+            try
+            {
+                string sql = "DELETE FROM bandgenre WHERE band_id=@bandid AND genre_id=@genreid;";
+                DbParameter par1 = Database.AddParameter("@bandid", selectedBand.ID);
+                DbParameter par2 = Database.AddParameter("@genreid", selectedGenre.ID);
+                int i = Database.ModifyData(sql, par1, par2);
+                Console.WriteLine(i + " rows deleted");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Delete band:" + ex.Message);
+            }
         }
         #endregion
 
-
+        #region Public Vars
+        public static ObservableCollection<Band> lstAlleBands = GetBands();
+        #endregion
     }
 }

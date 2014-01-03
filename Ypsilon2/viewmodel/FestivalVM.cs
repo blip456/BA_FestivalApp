@@ -41,7 +41,9 @@ namespace Ypsilon2.viewmodel
         public void SaveFestival()
         {           
             Festival.EditFestival(Festivals);
+            Festival.ChangeTicketDates();
             Festivals = Festival.GetFestivals();
+            Xceed.Wpf.Toolkit.MessageBox.Show("Controleer de tickets en overschrijf eventueel de standaard waarden", "Opgelet", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
         }
     }
 }

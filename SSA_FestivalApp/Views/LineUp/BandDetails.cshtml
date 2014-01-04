@@ -4,7 +4,7 @@
     ViewBag.Title = Model.Name;
 }
 
-<h2>BandDetails</h2>
+<h2>Band details</h2>
 
 <fieldset>
     <legend>Band</legend>
@@ -24,11 +24,19 @@
     </div>
 
     <div class="display-field">
-        <a href="http://www.twitter.com/@Model.Twitter">Twitter</a>
+        <a href="http://www.twitter.com@(Model.Twitter)">Twitter</a>
     </div>
 
     <div class="display-field">        
-        <a href="http://www.facebook.com/@Model.Facebook">Facebook</a>
+        <a href="http://www.facebook.com@(Model.Facebook)">Facebook</a>
+    </div>
+
+    <div>
+        @{
+            var base64 = Convert.ToBase64String(Model.Picture);
+            var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+        }
+        <img src="@imgSrc" alt="@Model.Name" width="500" />
     </div>
 </fieldset>
 <p>

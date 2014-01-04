@@ -9,46 +9,47 @@
 {
     @Html.DropDownList("SelectedDag", (SelectList)Model.lstDagen)
     @Html.DropDownList("SelectedPod", (SelectList)Model.lstPodia)
-    <input type="submit" value="Toon" />
-    <table>
-    <tr>
-        <th>
-            Dag
-        </th>
-        <th>
-            Begin
-        </th>
-        <th>
-            Eind
-        </th>
-        <th>
-            Band
-        </th>
-        <th>
-            Podium
-        </th>
-    </tr>
+    <input type="submit" value="Toon" class="btn btn-primary btn-sm" />
+    <table class="tables">
+        <tr>
+            <th>
+                Dag
+            </th>
+            <th>
+                Begin
+            </th>
+            <th>
+                Eind
+            </th>
+            <th>
+                Band
+            </th>
+            <th>
+                Podium
+            </th>
+        </tr>
 
-    @foreach (var item in Model.LineUps) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date.Day)/@Html.DisplayFor(modelItem => item.Date.Month)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.From.Hour):@Html.DisplayFor(modelItem => item.From.Minute)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Until.Hour):@Html.DisplayFor(modelItem =>item.Until.Minute)
-        </td>
-        <td>
-            @Html.ActionLink(item.Band.Name, "BandDetails", new { bandID = item.Band.ID })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem=>item.Stage.Name)
-        </td>
-    </tr>
-}
+        @foreach (var item in Model.LineUps)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date.Day)/@Html.DisplayFor(modelItem => item.Date.Month)
+                </td>
+                <td>
+                    @item.From.ToShortTimeString()
+                </td>
+                <td>
+                    @item.Until.ToShortTimeString()
+                </td>
+                <td>
+                    @Html.ActionLink(item.Band.Name, "BandDetails", new { bandID = item.Band.ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stage.Name)
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
 
 }

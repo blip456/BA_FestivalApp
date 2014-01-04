@@ -16,8 +16,6 @@ namespace SSA_FestivalApp.Controllers
         public ActionResult Index()
         {
             Festival festival = HomeRepository.GetFestival();
-            
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             return View(festival);
         }
 

@@ -35,8 +35,8 @@ namespace FestivalLib.model
                 DbDataReader reader = Database.GetData("SELECT * FROM rssfeed;");
 
                 while (reader.Read())
-                {
-                    SyndicationItem item = new SyndicationItem((string)reader["rssfeed_title"], (string)reader["rssfeed_descr"], new Uri((string)reader["rssfeed_link"]), "ID", (DateTime)reader["rssfeed_date"]);
+                {                    
+                    SyndicationItem item = new SyndicationItem((string)reader["rssfeed_title"], (string)reader["rssfeed_descr"], new Uri((string)reader["rssfeed_link"]), Convert.ToString(reader["rssfeed_id"]), (DateTime)reader["rssfeed_date"]);
                     lstFeedItems.Add(item);
                 }
                 if (reader != null)

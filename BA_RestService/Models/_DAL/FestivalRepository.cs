@@ -10,7 +10,7 @@ namespace BA_RestService.Models._DAL
 {
     public class FestivalRepository
     {
-        public static Festival GetFestivals()
+        public static Festival GetFestival()
         {
             Festival festival = new Festival();
             DbDataReader reader = Database.GetData("SELECT * FROM festival");

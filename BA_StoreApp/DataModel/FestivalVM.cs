@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace BA_StoreApp.DataModel
     {
         public FestivalVM()
         {
-            GetFestivalFromAPI();
+           GetFestivalFromAPI();
         }
 
         private Festival _festival;
@@ -49,10 +50,8 @@ namespace BA_StoreApp.DataModel
             return lstDagen;
         }
 
-
         public async void GetFestivalFromAPI()
         {
-
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new
             System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/xml"));
@@ -61,11 +60,7 @@ namespace BA_StoreApp.DataModel
             if (response.IsSuccessStatusCode)
             {
                 Stream stream = await response.Content.ReadAsStreamAsync();
-
-                //DataContractJsonSerializer djs = new
-                //DataContractJsonSerializer(typeof(List<FestivalLibPort.Band>));
-                //Bands = djs.ReadObject(stream) as List<FestivalLibPort.Band>; 
-                DataContractSerializer dxml = new DataContractSerializer(typeof(List<FestivalLibPort.Festival>));
+                DataContractSerializer dxml = new DataContractSerializer(typeof(FestivalLibPort.Festival));
                 Festival = dxml.ReadObject(stream) as FestivalLibPort.Festival;
                 Dagen = GetDagen(Festival);
             }

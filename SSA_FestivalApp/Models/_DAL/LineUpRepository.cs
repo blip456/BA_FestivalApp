@@ -21,9 +21,14 @@ namespace SSA_FestivalApp.Models._DAL
             return lsLineUps;
         }
 
-        public static ObservableCollection<DateTime> GetDagen()
+        public static ObservableCollection<string> GetDagen()
         {
-            ObservableCollection<DateTime> lst = Festival.aantalDagen();
+            ObservableCollection<DateTime> lstDagen = Festival.aantalDagen();
+            ObservableCollection<string> lst = new ObservableCollection<string>();
+            foreach (DateTime date in lstDagen)
+            {
+                lst.Add(date.ToShortDateString());
+            }
             return lst;
         }
 

@@ -14,7 +14,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Log in Form</legend>
+        <legend>Aanmelden</legend>
         <ol>
             <li>
                 <div class="editor-label">
@@ -35,7 +35,7 @@
                 @Html.CheckBoxFor(m => m.RememberMe)
             </li>
         </ol>
-        <input type="submit" value="Log in" />
+        <input type="submit" value="Log in" class="btn btn-primary btn-sm" />
     </fieldset>
     <p>
         @Html.ActionLink("Registreer", "Register") als je nog geen account hebt.

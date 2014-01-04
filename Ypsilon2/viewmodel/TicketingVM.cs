@@ -147,6 +147,8 @@ namespace Ypsilon2.viewmodel
         {
             TicketType.EditTicketType(ticketType);
             TotalTicketTypeNormal = TicketType.CountTotalNormal(TicketTypes);
+
+            Refresh();
         }
 
         public ICommand SaveTicketTypeVipCommand
@@ -158,6 +160,8 @@ namespace Ypsilon2.viewmodel
         {
             TicketType.EditTicketType(ticketType);
             TotalTicketTypeVip = TicketType.CountTotalVip(TicketTypes);
+
+            Refresh();
         }
 
         public ICommand DeleteReserveringCommand
@@ -179,6 +183,8 @@ namespace Ypsilon2.viewmodel
 
             Ticket.DeleteTicket(id);
             Reserveringen = Ticket.GetTickets();
+
+            Refresh();
         }
 
         public ICommand ReserveerCommand
@@ -187,14 +193,15 @@ namespace Ypsilon2.viewmodel
         }
 
         public void Reserveer()
-        {
+        {            
             Ticket.AddTicket(Reservering);
 
             Reserveringen = Ticket.GetTickets();
             SoldTicketNormal = Ticket.SoldTickets(Reserveringen)[1];
             SoldTicketVip = Ticket.SoldTickets(Reserveringen)[0];
-        }
 
+            Refresh();
+        }
 
         public ICommand PrintTicketCommand
         {
@@ -215,7 +222,19 @@ namespace Ypsilon2.viewmodel
         }
         #endregion
 
-       
+        #region Methods
+        public void Refresh()
+        {
+            Reserveringen = Ticket.GetTickets();
+            TicketTypes = TicketType.GetTicketTypes();
+
+            TicketTypesNormaal = TicketType.GetTicketTypeByString("Normaal");
+            TicketTypesVip = TicketType.GetTicketTypeByString("VIP");
+
+            TotalTicketTypeNormal = TicketType.CountTotalNormal(TicketTypes);
+            TotalTicketTypeVip = TicketType.CountTotalVip(TicketTypes);
+        }
+        #endregion
 
     }
 }

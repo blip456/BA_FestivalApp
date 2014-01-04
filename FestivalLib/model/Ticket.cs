@@ -174,7 +174,7 @@ namespace FestivalLib.model
         {
             try
             {
-                if (ticket.TicketType.AvailableTickets - ticket.Amount >= 0)
+                if (ticket.TicketType.AvailableTickets - ticket.Amount - TotalSoldByTicketTypeID(Convert.ToInt32(ticket.TicketType.ID)) >= 0)
                 {
                     string sql = "INSERT INTO ticket(ticket_name, ticket_email, ticket_amount, tickettype_id) VALUES (@name, @email, @amount, @typeid);";
 
@@ -187,9 +187,14 @@ namespace FestivalLib.model
 
                     Console.WriteLine(i + " row(s) are affected ticket");
                 }
-                else
+                else if (ticket.TicketType.AvailableTickets - TotalSoldByTicketTypeID(Convert.ToInt32(ticket.TicketType.ID)) == 0)
                 {
                     MessageBox.Show("Alle tickets voor " + ticket.TicketType.NameCat + " zijn uitverkocht");
+                }
+                else
+                {
+                    int iBeschikbaar = ticket.TicketType.AvailableTickets - TotalSoldByTicketTypeID(Convert.ToInt32(ticket.TicketType.ID));
+                    MessageBox.Show("Er zijn nog slechts " +iBeschikbaar+" tickets beschikbaar voor "+ticket.TicketType.NameCat);
                 }
             }
             catch (Exception ex)
@@ -368,29 +373,52 @@ namespace FestivalLib.model
                 Console.WriteLine("send mail: " + ex.Message);
             }
         }
+
+        public static  int TotalSoldByTicketTypeID(int id)
+        {
+            int iTotal = 0;
+            string sql = "SELECT * FROM ticket WHERE tickettype_id=@id;";
+            DbParameter parID = Database.AddParameter("@id", id);
+            DbDataReader reader = Database.GetData(sql, parID);
+            while (reader.Read())
+            {
+                iTotal += (int)reader["ticket_amount"];
+            }
+            if (reader != null)
+                reader.Close();
+            return iTotal;
+        }
         #endregion
 
         #region Public Vars
         public static int[] SoldTickets(ObservableCollection<Ticket> lst)
         {
-            int iSoldNormal = 0;
-            int iSoldVip = 0;
-            foreach (var item in lst)
+            try
             {
-                if (Convert.ToString(item.TicketType.Categorie) == "VIP")
+                int iSoldNormal = 0;
+                int iSoldVip = 0;
+                foreach (var item in lst)
                 {
-                    iSoldVip += item.Amount;
+                    if (Convert.ToString(item.TicketType.Categorie) == "VIP")
+                    {
+                        iSoldVip += item.Amount;
+                    }
+                    else if (Convert.ToString(item.TicketType.Categorie) == "Normaal")
+                    {
+                        iSoldNormal += item.Amount;
+                    }
                 }
-                else if (Convert.ToString(item.TicketType.Categorie) == "Normaal")
-                {
-                    iSoldNormal += item.Amount;
-                }
-            }
 
-            int[] arrSold = new int[2];
-            arrSold[0] = iSoldVip;
-            arrSold[1] = iSoldNormal;
-            return arrSold;
+                int[] arrSold = new int[2];
+                arrSold[0] = iSoldVip;
+                arrSold[1] = iSoldNormal;
+                return arrSold;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("sold tickets: " + ex.Message);
+                return null;
+            }
         }
 
         public static ObservableCollection<TicketType> lstTicketTypes = TicketType.GetTicketTypes();

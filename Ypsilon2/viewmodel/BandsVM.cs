@@ -24,6 +24,8 @@ namespace Ypsilon2.viewmodel
             _gefilterdeBands = Bands;
             _imageSource = convertStringToByte("../../content/images/blank.jpg");
             _band = new Band();
+            _band.Genres = new ObservableCollection<Genre>();
+            //_selectedBand = new Band();
         }
 
         public string Name
@@ -124,7 +126,6 @@ namespace Ypsilon2.viewmodel
             set { _selectedGenre = value; OnPropertyChanged("SelectedGenre"); }
         }
 
-
         #endregion
 
         #region commands
@@ -166,8 +167,7 @@ namespace Ypsilon2.viewmodel
             //add genre to band oproepen
 
             Band.EditBand(Band);
-            Bands = FestivalLib.model.Band.GetBands();
-            GefilterdeBands = Bands;
+            Refresh();
         }
 
         public ICommand AddBandCommand
@@ -184,13 +184,8 @@ namespace Ypsilon2.viewmodel
             {
                 Band.Picture = ImageSource;
             }
-
             Band.AddBand(Band);
-            Bands = Band.GetBands();
-            GefilterdeBands = Bands;
-
-            //leegmaken van de txtboxen + imagesource op blank zetten lukt nog niet
-            //...
+            Refresh();
         }
 
         public ICommand DeleteBandCommand
@@ -227,10 +222,12 @@ namespace Ypsilon2.viewmodel
         public void DeleteGenreFromBand()
         {
             Band.DeleteGenre(SelectedBand, SelectedGenre);
+            //Band.Genres.Remove(SelectedGenre);
             Bands = FestivalLib.model.Band.GetBands();
             GefilterdeBands = Bands;
             Genre = "";
             ImageSource = convertStringToByte("../../content/images/blank.jpg");
+            Refresh();
         }
 
         public ICommand AddGenreToBandCommand
@@ -241,17 +238,18 @@ namespace Ypsilon2.viewmodel
         {
             if (Genre != "")
             {
-                FestivalLib.model.Band.AddGenre(SelectedBand, Genre);
-                Bands = FestivalLib.model.Band.GetBands();
-                GefilterdeBands = Bands;
+                //FestivalLib.model.Band.AddGenre(SelectedBand, Genre);
+                Band.Genres.Add(FestivalLib.model.Genre.GetGenreByString(Genre));
+
+                //Bands = FestivalLib.model.Band.GetBands();
+                //GefilterdeBands = Bands;
                 Genre = "";
-                ImageSource = convertStringToByte("../../content/images/blank.jpg");
+                //ImageSource = convertStringToByte("../../content/images/blank.jpg");                
             }
             else
             {
                 Xceed.Wpf.Toolkit.MessageBox.Show("U kunt geen leeg genre meegeven", "Opgelet", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
-
         }
 
         #endregion
@@ -266,6 +264,15 @@ namespace Ypsilon2.viewmodel
             BinaryReader brReader = new BinaryReader(fstStream);
             btImage = brReader.ReadBytes((int)fstStream.Length);
             return btImage;
+        }
+
+        public void Refresh()
+        {
+            Bands = Band.GetBands();
+            GefilterdeBands = Bands;
+            ImageSource = convertStringToByte("../../content/images/blank.jpg");
+            Band = new Band();
+            Band.Genres = new ObservableCollection<Genre>();
         }
 
         #endregion

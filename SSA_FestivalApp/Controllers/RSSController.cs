@@ -1,12 +1,12 @@
-﻿using System;
+﻿using FestivalLib.model;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.ServiceModel.Syndication;
-using System.Data.Common;
-using FestivalLib.model;
+using System.Web.Http;
 
 namespace SSA_FestivalApp.Controllers
 {
@@ -27,7 +27,7 @@ namespace SSA_FestivalApp.Controllers
             //items moeten nog uit DB komen
             
 
-            SyndicationItem item1 = new SyndicationItem("Item One", "Content voor eerste item", new Uri("http://localhost/Ticket/Reserveer"), "ID", DateTime.Now);
+            //SyndicationItem item1 = new SyndicationItem("Item One", "Content voor eerste item", new Uri("http://localhost/Ticket/Reserveer"), "ID", DateTime.Now);
 
             List<SyndicationItem> lstItems = new List<SyndicationItem>();
             lstItems = RssItem.GetRssItems();
@@ -54,8 +54,6 @@ namespace SSA_FestivalApp.Controllers
         // DELETE api/rss/5
         public void Delete(int id)
         {
-        }
-
-       
+        }       
     }
 }

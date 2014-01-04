@@ -85,9 +85,10 @@ namespace FestivalLib.model
             {
                 //genre koppelen aan de band
                 string sql2 = "INSERT INTO bandgenre (band_id, genre_id) VALUES(@band, @genre);";
+                string sql = "INSERT INTO bandgenre (band_id, genre_id) SELECT @band, @genre WHERE NOT EXISTS (SELECT 1 FROM bandgenre WHERE genre_id = @genre AND band_id = @band);";
                 DbParameter parBand = Database.AddParameter("@band", band.ID);
                 DbParameter parGenre = Database.AddParameter("@genre", genre.ID);
-                Database.ModifyData(sql2, parBand, parGenre);
+                Database.ModifyData(sql, parGenre, parBand);
             }
             catch (Exception ex)
             {
@@ -111,7 +112,7 @@ namespace FestivalLib.model
         }
 
         public static Genre GetGenreByString(string genre)
-        {
+        {            
             string sql = "SELECT * FROM genre WHERE genre_name=@name;";
             DbParameter par1 = Database.AddParameter("@name", genre);
             DbDataReader reader = Database.GetData(sql, par1);
@@ -121,7 +122,13 @@ namespace FestivalLib.model
                 gevondenGenre.Name = Convert.ToString(reader["genre_name"]);
                 gevondenGenre.ID = Convert.ToString(reader["genre_id"]);
             }
-            return gevondenGenre;
+            
+            if (gevondenGenre.Name == null)
+            {
+                AddGenreToDB(genre);
+                gevondenGenre = GetGenreByString(genre);
+            }
+            return gevondenGenre;            
         }
         #endregion
     }

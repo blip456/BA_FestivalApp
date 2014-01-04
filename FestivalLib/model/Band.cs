@@ -195,6 +195,29 @@ namespace FestivalLib.model
             }
         }
 
+        public static Band GetBandByString(string bandName)
+        {
+            try
+            {
+                Band gevondenBand = new Band();
+                string sql = "SELECT * FROM band WHERE band_name=@name";
+                DbParameter par1 = Database.AddParameter("@name", bandName);
+                DbDataReader reader = Database.GetData(sql, par1);
+                while (reader.Read())
+                {
+                    gevondenBand = CreateBand(reader);
+                }
+                if (reader != null)
+                    reader.Close();
+                return gevondenBand;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("get band by string: " + ex.Message);
+                return null;
+            }
+        }
+
         public static void AddBand(Band band)
         {
             try
@@ -213,6 +236,13 @@ namespace FestivalLib.model
                     MessageBox.Show("Toevoegen mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
                 }
                 Console.WriteLine(i + " row(s) are affected");
+
+                Band newBand = GetBandByString(band.Name);
+                //toevoegen van genre
+                foreach (Genre genre in band.Genres)
+                {
+                    Genre.AddGenre(genre, newBand);
+                }
             }
             catch (Exception ex)
             {
@@ -226,6 +256,7 @@ namespace FestivalLib.model
         {
             try
             {
+                //updaten van gewone band gegevens excl genre
                 string sql = "UPDATE band SET band_name=@name, band_picture=@picture, band_description=@description, band_twitter=@twitter, band_facebook=@facebook WHERE band_id=@ID;";
 
                 DbParameter par1 = Database.AddParameter("@name", band.Name);
@@ -242,6 +273,12 @@ namespace FestivalLib.model
                     MessageBox.Show("Opslaan mislukt", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error, System.Windows.MessageBoxResult.OK);
                 }
                 Console.WriteLine(i + " row(s) are affected");
+
+                //updaten van genre
+                foreach (Genre genre in band.Genres)
+                {
+                    Genre.AddGenre(genre, band);
+                }
             }
             catch (Exception ex)
             {
@@ -324,71 +361,74 @@ namespace FestivalLib.model
 
         }
 
-        public static void AddGenre(Band selectedBand, string sGenreName)
-        {
-            try
-            {
-                //als de geselecteerde band nog geen genres heeft
-                if (selectedBand.Genres.Count == 0)
-                {
-                    //als het ingevoerde genre voor die band al bestaat in de DB
-                    if (Genre.Getgenres().Any(item => item.Name == sGenreName))
-                    {
-                        //zoeken van nieuw genre adhv string
-                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-                        //genre toevoegen aan een band
-                        Genre.AddGenre(gevondenGenre, selectedBand);
-                    }
-                    //als het ingevoerde genre nog niet bestaat
-                    else
-                    {
-                        // nieuwe genre toevoegen aan db
-                        Genre.AddGenreToDB(sGenreName);
-                        //zoeken van nieuw genre adhv string en dan koppelen aan band
-                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-                        Genre.AddGenre(gevondenGenre, selectedBand);
-                    }
-                }
-                //als de band al genres heeft
-                else
-                {
+        
 
-                    foreach (Genre oGenre in selectedBand.Genres)
-                    {
-                        //kijken of het ingevoerde genre nog niet in de band zijn genres zit
-                        if (oGenre.Name != sGenreName)
-                        {
-                            if (Genre.Getgenres().Any(item => item.Name == sGenreName))
-                            {
-                                //zoeken van nieuw genre adhv string en dan koppelen aan band
-                                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-                                Genre.AddGenre(gevondenGenre, selectedBand);
+        //public static void AddGenre(Band selectedBand, string sGenreName)
+        //{
+        //    try
+        //    {
+        //        //als de geselecteerde band nog geen genres heeft
+        //        if (selectedBand.Genres.Count == 0)
+        //        {
+        //            //als het ingevoerde genre voor die band al bestaat in de DB
+        //            if (Genre.Getgenres().Any(item => item.Name == sGenreName))
+        //            {
+        //                //zoeken van nieuw genre adhv string
+        //                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+        //                //genre toevoegen aan een band
+        //                Genre.AddGenre(gevondenGenre, selectedBand);
+        //            }
+        //            //als het ingevoerde genre nog niet bestaat
+        //            else
+        //            {
+        //                // nieuwe genre toevoegen aan db
+        //                Genre.AddGenreToDB(sGenreName);
+        //                //zoeken van nieuw genre adhv string en dan koppelen aan band
+        //                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+        //                Genre.AddGenre(gevondenGenre, selectedBand);
+        //            }
+        //        }
+        //        //als de band al genres heeft
+        //        else
+        //        {
 
-                                break;
-                            }
-                            else
-                            {
-                                Genre.AddGenreToDB(sGenreName);
-                                //zoeken van nieuw genre adhv string en dan koppelen aan band
-                                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-                                Genre.AddGenre(gevondenGenre, selectedBand);
+        //            foreach (Genre oGenre in selectedBand.Genres)
+        //            {
+        //                //kijken of het ingevoerde genre nog niet in de band zijn genres zit
+        //                if (oGenre.Name != sGenreName)
+        //                {
+        //                    if (Genre.Getgenres().Any(item => item.Name == sGenreName))
+        //                    {
+        //                        //zoeken van nieuw genre adhv string en dan koppelen aan band
+        //                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+        //                        Genre.AddGenre(gevondenGenre, selectedBand);
 
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("Dit genre is reeds gekoppeld aan uw band", "Opgelet", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Add genre" + ex.Message);
-            }
-        }
+        //                        break;
+        //                    }
+        //                    else
+        //                    {
+        //                        Genre.AddGenreToDB(sGenreName);
+        //                        //zoeken van nieuw genre adhv string en dan koppelen aan band
+        //                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
+        //                        Genre.AddGenre(gevondenGenre, selectedBand);
+
+        //                        break;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    Xceed.Wpf.Toolkit.MessageBox.Show("Dit genre is reeds gekoppeld aan uw band", "Opgelet", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Add genre" + ex.Message);
+        //    }
+        //}
+
 
         public static void DeleteGenre(Band selectedBand, Genre selectedGenre)
         {

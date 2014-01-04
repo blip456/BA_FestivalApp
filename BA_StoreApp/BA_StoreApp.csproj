@@ -121,8 +121,8 @@
     <Compile Include="LineUp.xaml.cs">
       <DependentUpon>LineUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ItemsPage.xaml.cs">
-      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    <Compile Include="Bands.xaml.cs">
+      <DependentUpon>Bands.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\RelayCommand.cs" />
@@ -132,8 +132,8 @@
     <Compile Include="SearchBandGenre.xaml.cs">
       <DependentUpon>SearchBandGenre.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SplitPage.xaml.cs">
-      <DependentUpon>SplitPage.xaml</DependentUpon>
+    <Compile Include="BandInfo.xaml.cs">
+      <DependentUpon>BandInfo.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +169,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ItemsPage.xaml">
+    <Page Include="Bands.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -177,7 +177,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SplitPage.xaml">
+    <Page Include="BandInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

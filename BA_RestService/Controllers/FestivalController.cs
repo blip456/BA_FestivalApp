@@ -13,7 +13,7 @@ namespace BA_RestService.Controllers
         // GET api/festival
         public Festival Get()
         {
-            return Models._DAL.FestivalRepository.GetFestivals();
+            return Models._DAL.FestivalRepository.GetFestival();
         }
 
         // GET api/festival/5

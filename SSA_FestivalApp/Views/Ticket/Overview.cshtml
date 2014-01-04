@@ -32,8 +32,17 @@
 
     <div class="display-label">
         Prijs per ticket: 
+    </div>    
+    <div class="display-field">
+             @(Model.TicketType.Price.ToString("c")) 
+    </div>
+    <div class="display-label">
+        Totaal prijs:
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.TicketType.Price)
+        @((Model.Amount * Model.TicketType.Price).ToString("c"))
     </div>
+
+    @Html.ActionLink("Bevestig", "Index", "Home", htmlAttributes: new {@class = "btn btn-primary btn-sm" })
+
 </fieldset>

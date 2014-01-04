@@ -44,7 +44,7 @@ namespace Ypsilon2.viewmodel
             get { return new RelayCommand<IPage>(ChangePage); }
         }
 
-        private void ChangePage(IPage page)
+        void ChangePage(IPage page)
         {   
             if (page.Name == "Ticketing")
             {

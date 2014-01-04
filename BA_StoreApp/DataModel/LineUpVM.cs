@@ -46,10 +46,6 @@ namespace BA_StoreApp.DataModel
             if (response.IsSuccessStatusCode)
             {
                 Stream stream = await response.Content.ReadAsStreamAsync();
-
-                //DataContractJsonSerializer djs = new
-                //DataContractJsonSerializer(typeof(List<FestivalLibPort.Band>));
-                //Bands = djs.ReadObject(stream) as List<FestivalLibPort.Band>; 
                 DataContractSerializer dxml = new DataContractSerializer(typeof(List<FestivalLibPort.LineUp>));
                 LineUps = dxml.ReadObject(stream) as List<FestivalLibPort.LineUp>;
             }

@@ -9,7 +9,7 @@
         <!-- Application-specific resources -->
         <x:String x:Key="AppName">Festival App</x:String>
         <DataTemplate x:Key="btnTemplate">
-            <Button Content="{Binding Date}"/>
+            <Button Content="bleiten"/>
         </DataTemplate>
     </Application.Resources>
 

@@ -17,6 +17,15 @@
         <th>
             Aantal
         </th>
+        <th>
+            Dag
+        </th>
+        <th>
+            Type
+        </th>
+        <th>
+            Totaalprijs
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -29,6 +38,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketType.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem=>item.TicketType.Categorie)
+        </td>
+        <td>            
+            @((item.Amount * item.TicketType.Price).ToString("c"))
         </td>
     </tr>
 }

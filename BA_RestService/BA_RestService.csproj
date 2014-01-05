@@ -167,6 +167,7 @@
     <Compile Include="Controllers\FestivalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineUpController.cs" />
+    <Compile Include="Controllers\StageController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -175,6 +176,7 @@
     <Compile Include="Models\_DAL\BandRepository.cs" />
     <Compile Include="Models\_DAL\FestivalRepository.cs" />
     <Compile Include="Models\_DAL\LineUpRepository.cs" />
+    <Compile Include="Models\_DAL\StageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

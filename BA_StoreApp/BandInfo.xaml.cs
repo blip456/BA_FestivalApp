@@ -64,6 +64,7 @@ namespace BA_StoreApp
             // to change from showing two panes to showing a single pane
             Window.Current.SizeChanged += Window_SizeChanged;
             this.InvalidateVisualState();
+
         }
 
         void itemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -243,9 +244,18 @@ namespace BA_StoreApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-            
         }        
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(SplitPage1));
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(GroupedItemsPage1));
+        }
     }
 }

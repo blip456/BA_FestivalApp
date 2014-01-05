@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:datamodel="using:BA_StoreApp.DataModel"
     xmlns:c="using:BA_StoreApp.DataModel"
+    xmlns:festival="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -43,9 +44,14 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid Grid.Row="2">
+            <Image Source="/Assets/welcome.jpg" Stretch="None">
+            </Image>
+        </Grid>
+
 
         <!-- Horizontal scrolling grid -->
-        <GridView
+        <!--<GridView
             x:Name="itemGridView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
@@ -71,10 +77,10 @@
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>
-        </GridView>
+        </GridView>-->
 
         <!-- Back button and page title -->
-        <Grid>
+        <Grid Background="#FF9619" Margin="0,-5,0,5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>

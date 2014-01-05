@@ -8,9 +8,16 @@
     <Application.Resources>
         <!-- Application-specific resources -->
         <x:String x:Key="AppName">Festival App</x:String>
-        <DataTemplate x:Key="btnTemplate">
-            <Button Content="bleiten"/>
+        <DataTemplate x:Key="btn">
+            <Button Content="{Binding DayOfWeek}" Command="{Binding ShowLineUpCommand}"/>
         </DataTemplate>
+        
+        <Style x:Name="cboStyle" TargetType="ComboBox">
+            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="PlaceholderText" Value="--Kies een dag--"/>
+            <Setter Property="Typography.StylisticSet8" Value="True"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="25,5,5,5"/>
+        </Style>
     </Application.Resources>
-
 </Application>

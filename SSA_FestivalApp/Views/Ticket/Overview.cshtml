@@ -10,31 +10,31 @@
     <legend>Gegevens</legend>
 
     <div class="display-label">
-         Naam:
+        Naam:
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.TicketHolder)
     </div>
 
     <div class="display-label">
-         Email: 
+        Email:
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.TicketHolderEmail)
     </div>
 
     <div class="display-label">
-         Aantal: 
+        Aantal:
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Amount)
     </div>
 
     <div class="display-label">
-        Prijs per ticket: 
-    </div>    
+        Prijs per ticket:
+    </div>
     <div class="display-field">
-             @(Model.TicketType.Price.ToString("c")) 
+        @(Model.TicketType.Price.ToString("c"))
     </div>
     <div class="display-label">
         Totaal prijs:
@@ -42,7 +42,5 @@
     <div class="display-field">
         @((Model.Amount * Model.TicketType.Price).ToString("c"))
     </div>
-
-    @Html.ActionLink("Bevestig", "Index", "Home", htmlAttributes: new {@class = "btn btn-primary btn-sm" })
 
 </fieldset>

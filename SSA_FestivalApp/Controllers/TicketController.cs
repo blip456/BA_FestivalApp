@@ -24,6 +24,7 @@ namespace SSA_FestivalApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Insert(TicketTypeVM vm)
         {
             Ticket ticket = vm.Ticket;

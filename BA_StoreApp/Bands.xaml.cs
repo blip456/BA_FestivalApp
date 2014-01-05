@@ -83,7 +83,7 @@ namespace BA_StoreApp
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
             var groupId = ((FestivalLibPort.Band)e.ClickedItem).ID;            
-            this.Frame.Navigate(typeof(SplitPage1),groupId);
+            this.Frame.Navigate(typeof(SplitPage1),e.ClickedItem);
         }
 
         #region NavigationHelper registration
@@ -111,7 +111,7 @@ namespace BA_StoreApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ItemsPage));
+            this.Frame.Navigate(typeof(SplitPage1));
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

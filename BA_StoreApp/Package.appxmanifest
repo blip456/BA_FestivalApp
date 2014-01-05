@@ -15,8 +15,10 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BA_StoreApp.App">
-      <m2:VisualElements DisplayName="BA_StoreApp" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="BA_StoreApp" ForegroundText="light" BackgroundColor="#464646">
-        <m2:SplashScreen Image="Assets\SplashScreen.png" />
+      <m2:VisualElements DisplayName="BA_StoreApp" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="BA_StoreApp" ForegroundText="light" BackgroundColor="#FF9619">
+        <m2:DefaultTile ShortName="Moustache Festival">
+        </m2:DefaultTile>
+        <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#FF9619" />
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.search" />

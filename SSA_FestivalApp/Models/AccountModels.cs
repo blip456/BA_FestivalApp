@@ -30,6 +30,7 @@ namespace SSA_FestivalApp.Models
     public class RegisterExternalLoginModel
     {
         [Required]
+        [DataType(DataType.EmailAddress)]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 

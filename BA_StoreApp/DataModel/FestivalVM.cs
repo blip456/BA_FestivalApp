@@ -31,7 +31,7 @@ namespace BA_StoreApp.DataModel
         public List<DateTime> Dagen
         {
             get { return _dagen; }
-            set { _dagen = value; }
+            set { _dagen = value; OnPropertyChanged("Dagen"); }
         }
 
 
@@ -45,8 +45,8 @@ namespace BA_StoreApp.DataModel
                 TimeSpan ts = TimeSpan.FromDays(i);
                 volgendeDag = fest.StartDate.Add(ts);
 
-                lstDagen.Add(volgendeDag.Date);
-            }
+                lstDagen.Add(volgendeDag);
+            }            
             return lstDagen;
         }
 

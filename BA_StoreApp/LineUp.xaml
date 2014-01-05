@@ -11,9 +11,12 @@
     xmlns:datamodel="using:BA_StoreApp.DataModel"
     xmlns:c="using:BA_StoreApp.DataModel"
     xmlns:festival="using:BA_StoreApp.DataModel"
+    xmlns:stage="using:BA_StoreApp.DataModel"
+    xmlns:stringConverter="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
+                
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <!--
             Collection of grouped items displayed by this page, bound to a subset
@@ -27,9 +30,66 @@
         <datamodel:LineUpVM x:Key="lineInst"/>
         <c:ByteToImageConverter x:Key="byteImageConverter"/>
         <festival:FestivalVM x:Key="festInst"/>
+        <stage:StageVM x:Key="stageInst"/>
+        <stringConverter:StringConverter x:Key="stringConverter"/>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">Line Up</x:String>
+
+        <DataTemplate x:Key="genreTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}"  Margin="15,0,15,5" FontSize="14"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="lineTemplate">
+            <StackPanel Orientation="Vertical" Width="200" Height="200" Margin="0,20,0,0">
+                <Grid HorizontalAlignment="Left" Width="200" Height="200">
+                    <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                        <Image Source="{Binding Band.Picture, Converter={StaticResource byteImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                        <TextBlock Text="{Binding Band.Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Margin="15,0,15,0"/>
+
+                        <TextBlock  Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" Margin="15,0,15,5" FontSize="14">
+                        <Run Text="{Binding From,Converter={StaticResource stringConverter}, ConverterParameter='{}{0:HH mm}'}" />
+                        <Run Text=" - "/>
+                        <Run Text="{Binding Until,Converter={StaticResource stringConverter}, ConverterParameter='{}{0:HH mm}'}" />
+                        </TextBlock>
+                        <ItemsControl ItemTemplate="{StaticResource genreTemplate}" ItemsSource="{Binding Band.Genres}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="gridTemplate">
+            <StackPanel Orientation="Vertical" Margin="20">
+                <TextBlock Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}"/>
+                <ItemsControl ItemsSource="{Binding Bands}" ItemTemplate="{StaticResource lineTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
+
+
+    <Page.TopAppBar>
+        <AppBar>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Bands" Width="140" Click="Button_Click"/>
+                <Button Content="Line Up" Width="140" Click="Button_Click_1"/>
+            </StackPanel>
+        </AppBar>
+    </Page.TopAppBar>
 
     <!--
         This grid acts as a root panel for the page that defines two rows:
@@ -50,60 +110,25 @@
 
         <!-- Horizontal scrolling grid -->
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <ItemsControl ItemsSource="{Binding Source={StaticResource festInst}, Path=Dagen}" ItemTemplate="{StaticResource btnTemplate}"/>
-            <Button Content="Zoek"/>
+            <TextBlock Text="Kies een dag:" Style="{StaticResource SubheaderTextBlockStyle}" Margin="20,0,0,0"/>
+            <ComboBox Style="{StaticResource cboStyle}" ItemsSource="{Binding Source={StaticResource festInst}, Path=Dagen}" SelectedItem="{Binding Source={StaticResource stageInst}, Path=SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="DayOfWeek"/>
         </StackPanel>
-        <GridView
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
-            AutomationProperties.Name="Grouped Items"
-            Grid.RowSpan="3"
-            Padding="116,137,40,46"
-            ItemsSource="{Binding Source={StaticResource lineInst}, Path=LineUps}"
-            SelectionMode="None"
-            IsSwipeEnabled="false"
-            Grid.Row="2">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="2">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Source={StaticResource stageInst}, Path=Stages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource gridTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
 
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="250" Height="250">
-                        <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding Band.Picture, Converter={StaticResource byteImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                        </Border>
-                        <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Band.Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
-                            <TextBlock Text="{Binding Stage.Name}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid GroupPadding="0,0,70,0"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <GridView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,2">
-                                <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
-                                    AutomationProperties.Name="Group Title"
-                                    Style="{StaticResource TextBlockButtonStyle}" >
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Title}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </GridView.GroupStyle>
-        </GridView>
+
 
         <!-- Back button and page title -->
-        <Grid>
+        <Grid Background="#FF9619">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>

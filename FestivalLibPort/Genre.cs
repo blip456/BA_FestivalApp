@@ -25,6 +25,14 @@ namespace FestivalLibPort
             set { _name = value; }
         }
 
+        private List<Band> _bands;
+
+        public List<Band> Bands
+        {
+            get { return _bands; }
+            set { _bands = value; }
+        }
+        
 
         #endregion
 

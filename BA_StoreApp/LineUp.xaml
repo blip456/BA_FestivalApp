@@ -87,6 +87,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Bands" Width="140" Click="Button_Click"/>
                 <Button Content="Line Up" Width="140" Click="Button_Click_1"/>
+                <Button Content="Genres" Width="140" Click="Button_Click_2"/>
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
@@ -109,8 +110,8 @@
         </Grid.RowDefinitions>
 
         <!-- Horizontal scrolling grid -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBlock Text="Kies een dag:" Style="{StaticResource SubheaderTextBlockStyle}" Margin="20,0,0,0"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20,10,0,0">
+            <TextBlock Text="Kies een dag:" Style="{StaticResource SubheaderTextBlockStyle}"/>
             <ComboBox Style="{StaticResource cboStyle}" ItemsSource="{Binding Source={StaticResource festInst}, Path=Dagen}" SelectedItem="{Binding Source={StaticResource stageInst}, Path=SelectedDate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="DayOfWeek"/>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="2">
@@ -139,7 +140,7 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+            <TextBlock x:Name="pageTitle" Text="Line Up" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
     </Grid>

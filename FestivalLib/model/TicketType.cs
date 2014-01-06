@@ -66,6 +66,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //een tickettype object maken
         private static TicketType CreateTicket(DbDataReader reader)
         {
             try
@@ -86,6 +87,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle tickettypes ophalen
         public static ObservableCollection<TicketType> GetTicketTypes()
         {
             try
@@ -111,6 +113,7 @@ namespace FestivalLib.model
 
         }
 
+        //een bepaald tikettype ophalen adhv zijn string name
         public static ObservableCollection<TicketType> GetTicketTypeByString(string search)
         {
             try
@@ -139,6 +142,7 @@ namespace FestivalLib.model
 
         }
 
+        //een tickettype ophalen adhv zijn ID
         public static TicketType GetTicketTypeByID(int id)
         {
             try
@@ -160,6 +164,7 @@ namespace FestivalLib.model
             }
         }
 
+        //tellen hoeveel normale ticketten zijn in totaal
         public static int CountTotalNormal(ObservableCollection<TicketType> lst)
         {
             try
@@ -178,6 +183,7 @@ namespace FestivalLib.model
             }
         }
 
+        //tellen hoeveel vip tickketen er zijn in totaal
         public static int CountTotalVip(ObservableCollection<TicketType> lst)
         {
             try
@@ -197,6 +203,7 @@ namespace FestivalLib.model
 
         }
 
+        //een ticket type aanpassen - hier kun je enkel aantal beschikbaar en de prijs aanpassen
         public static void EditTicketType(TicketType ticket)
         {
             try

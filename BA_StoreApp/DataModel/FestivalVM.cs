@@ -40,7 +40,7 @@ namespace BA_StoreApp.DataModel
             List<DateTime> lstDagen = new List<DateTime>();
             TimeSpan timespan = fest.EndDate - fest.StartDate;
             DateTime volgendeDag = fest.StartDate;
-            for (int i = 0; i <= timespan.Days + 1; i++)
+            for (int i = 0; i <= timespan.Days ; i++)
             {
                 TimeSpan ts = TimeSpan.FromDays(i);
                 volgendeDag = fest.StartDate.Add(ts);

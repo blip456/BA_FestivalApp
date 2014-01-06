@@ -24,7 +24,7 @@ namespace BA_StoreApp
     /// A page that displays a group title, a list of items within the group, and details for
     /// the currently selected item.
     /// </summary>
-    public sealed partial class SplitPage1 : Page
+    public sealed partial class Genres : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -46,7 +46,7 @@ namespace BA_StoreApp
             get { return this.navigationHelper; }
         }
 
-        public SplitPage1()
+        public Genres()
         {
             this.InitializeComponent();
 
@@ -64,7 +64,6 @@ namespace BA_StoreApp
             // to change from showing two panes to showing a single pane
             Window.Current.SizeChanged += Window_SizeChanged;
             this.InvalidateVisualState();
-
         }
 
         void itemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -244,7 +243,12 @@ namespace BA_StoreApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-        }        
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            navigationHelper.OnNavigatedFrom(e);
+        }
 
         #endregion
 

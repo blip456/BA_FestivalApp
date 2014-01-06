@@ -83,6 +83,7 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region commands
+        //line up opslaan
         public ICommand SaveLineUpCommand
         {
             get { return new RelayCommand(SaveLineUp, LineUp.IsValid); }
@@ -93,6 +94,7 @@ namespace Ypsilon2.viewmodel
             {
                 FestivalLib.model.LineUp.AddLineUp(LineUp);
                 StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+                Bands = FestivalLib.model.Band.GetBands();
             }
             else
             {
@@ -100,11 +102,11 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        //een stage zijn nieuwe podium name aanpassen
         public ICommand SaveStageCommand
         {
             get { return new RelayCommand<string>(SaveStage); }
         }
-
         public void SaveStage(string NewPodiumName)
         {
             if (SelectedStageEdit != null)
@@ -126,6 +128,7 @@ namespace Ypsilon2.viewmodel
                 
         }
 
+        //een nieuwe stage toevoegen adhv zijn nieuw ingevoerd podium name
         public ICommand AddStageCommand
         {
             get { return new RelayCommand<string>(AddStage); }
@@ -135,7 +138,7 @@ namespace Ypsilon2.viewmodel
             if (NewPodiumName != "")
             {
                 FestivalLib.model.Stage.AddStage(NewPodiumName);
-                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);
+                StagesPerDag = FestivalLib.model.Stage.GetStagesByDay(SelectedDag);                
             }
             else
             {
@@ -143,6 +146,7 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        //een stage verwijderen - dit zal enkel lukken als er nog geen lineups op staan
         public ICommand DeleteStageCommand
         {
             get { return new RelayCommand<int>(DeleteStage); }
@@ -169,6 +173,7 @@ namespace Ypsilon2.viewmodel
 
         }
 
+        //een band uit een line up verwijderen
         public ICommand DeleteBandFromLineUpCommand
         {
             get { return new RelayCommand<int>(DeleteBandFromLineUp); }

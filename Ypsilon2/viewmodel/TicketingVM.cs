@@ -99,7 +99,6 @@ namespace Ypsilon2.viewmodel
         }
         #endregion
         
-
         //Hier zitten de totaal aantal verkochte tickets in voor zowel normaal als VIP.
         //Alsook zit hier het totaal aantal beschikbare tickets in
         #region TicketValues
@@ -138,11 +137,11 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region Commands
+        // ticket type normaal opslaan - je kan enkel de prijs en hoeveelheid aanpassen
         public ICommand SaveTicketTypeNormaalCommand
         {
             get { return new RelayCommand<TicketType>(SaveTicketTypeNormaal); }
         }
-
         private void SaveTicketTypeNormaal(TicketType ticketType)
         {
             TicketType.EditTicketType(ticketType);
@@ -151,11 +150,11 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //tickettype vip opslaan - je kan enkel de prijs en hoeveelheid aanpassen
         public ICommand SaveTicketTypeVipCommand
         {
             get { return new RelayCommand<TicketType>(SaveTicketTypeVip); }
         }
-
         private void SaveTicketTypeVip(TicketType ticketType)
         {
             TicketType.EditTicketType(ticketType);
@@ -164,17 +163,18 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //een gereserveerd ticket verwijderen
         public ICommand DeleteReserveringCommand
         {
             get { return new RelayCommand<int>(DeleteReservering); }
         }
-
         private void DeleteReservering(int id)
         {
             var result = Xceed.Wpf.Toolkit.MessageBox.Show("U staat op het punt om " + Ticket.GetTicketByID(id).TicketHolder + " zijn reservering te verwijderen", "Opgelet", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             if (result == MessageBoxResult.OK)
             {
                 Ticket.DeleteTicket(id);
+                Refresh();
             }
             else
             {
@@ -187,11 +187,11 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //een nieuw tiket reserveren
         public ICommand ReserveerCommand
         {
             get { return new RelayCommand(Reserveer, Reservering.IsValid); }
         }
-
         public void Reserveer()
         {            
             Ticket.AddTicket(Reservering);
@@ -199,15 +199,15 @@ namespace Ypsilon2.viewmodel
             Reserveringen = Ticket.GetTickets();
             SoldTicketNormal = Ticket.SoldTickets(Reserveringen)[1];
             SoldTicketVip = Ticket.SoldTickets(Reserveringen)[0];
-
+            
             Refresh();
         }
 
+        //een ticket van een bepaalde user afdrukken naar Word
         public ICommand PrintTicketCommand
         {
             get { return new RelayCommand<int>(PrintTicket); }
         }
-
         private void PrintTicket(int id)
         {
             Ticket ticket = Ticket.GetTicketByID(id);
@@ -223,8 +223,11 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region Methods
+        //VM refreshen
         public void Refresh()
         {
+            Reservering = new Ticket();
+
             Reserveringen = Ticket.GetTickets();
             TicketTypes = TicketType.GetTicketTypes();
 
@@ -233,6 +236,9 @@ namespace Ypsilon2.viewmodel
 
             TotalTicketTypeNormal = TicketType.CountTotalNormal(TicketTypes);
             TotalTicketTypeVip = TicketType.CountTotalVip(TicketTypes);
+
+            SoldTicketNormal = Ticket.SoldTickets(Reserveringen)[1];
+            SoldTicketVip = Ticket.SoldTickets(Reserveringen)[0];
         }
         #endregion
 

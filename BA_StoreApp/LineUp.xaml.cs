@@ -101,5 +101,10 @@ namespace BA_StoreApp
         {
             this.Frame.Navigate(typeof(GroupedItemsPage1));
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Genres));
+        }
     }
 }

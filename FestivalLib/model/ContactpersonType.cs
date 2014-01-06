@@ -29,6 +29,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        // een concact type object maken
         private static ContactpersonType CreateContactType(DbDataReader reader)
         {
             try
@@ -45,6 +46,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle contacttpes ophalen
         public static ObservableCollection<ContactpersonType> GetContactTypes()
         {
             try
@@ -66,6 +68,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 contacttype ophalen adhv en ID
         public static ContactpersonType GetContactTypeByID(int id)
         {
             try
@@ -81,6 +84,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een contacttype toevoegen aan de DB - wordt niet gebruikt maar is beschikbaar
         public static void AddContactType(ContactpersonType contactType)
         {
             try
@@ -102,6 +106,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een contacttype aanpassen in de DB - wordt niet gebruikt maar is beschikbaar
         public static void EditContactType(ContactpersonType contactType)
         {
             try

@@ -130,6 +130,7 @@ namespace Ypsilon2.viewmodel
 
         #region commands
 
+        //bij iedere keyboard tick zal er gezocht worden op het ingegeven woord/letter
         public ICommand SearchCommand
         {
             get { return new RelayCommand<string>(Search); }
@@ -140,6 +141,7 @@ namespace Ypsilon2.viewmodel
             GefilterdeBands = FestivalLib.model.Band.GetBandsByString(str);
         }
 
+        //een geselecteerde image toevoegen aan de GUI
         public ICommand SelectImageCommand
         {
             get { return new RelayCommand(SelectImage); }
@@ -157,6 +159,7 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        //de band opslaan
         public ICommand SaveBandCommand
         {
             get { return new RelayCommand(SaveBand, Band.IsValid); }
@@ -170,6 +173,7 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //een nieuwe band toevoegen 
         public ICommand AddBandCommand
         {
             get { return new RelayCommand(AddBand, Band.IsValid); }
@@ -188,6 +192,7 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //een band verwijderen
         public ICommand DeleteBandCommand
         {
             get { return new RelayCommand<int>(DeleteBand); }
@@ -214,6 +219,7 @@ namespace Ypsilon2.viewmodel
             }
         }
 
+        //een genre verwijderen - wordt meteen uit de DB verwijderd
         public ICommand DeleteGenreFromBandCommand
         {
             get { return new RelayCommand(DeleteGenreFromBand); }
@@ -230,6 +236,7 @@ namespace Ypsilon2.viewmodel
             Refresh();
         }
 
+        //een genre toevoegen aan de observable collection (nog niet meteen in de DB) - enkel als definitief op add/edit button gedrukt is
         public ICommand AddGenreToBandCommand
         {
             get { return new RelayCommand(AddGenreToBand); }
@@ -255,7 +262,7 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region Methods
-
+        //een image url omztten naar een image
         private static byte[] convertStringToByte(string sPad)
         {
             //volgende 4 lijnen code = om geselecteerde image om te zetten naar BLOB capable formaat
@@ -266,6 +273,7 @@ namespace Ypsilon2.viewmodel
             return btImage;
         }
 
+        //VM refreshen 
         public void Refresh()
         {
             Bands = Band.GetBands();

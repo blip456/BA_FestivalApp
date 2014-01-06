@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace FestivalLib.converter
 {
+    //deze converter is om alles genres uit een observable collection om te zetten naar een string
     [ValueConversion(typeof(Observablecollection<Genre>), typeof(string))]
     public class ObservablecollectionToStringConverter : IValueConverter
     {

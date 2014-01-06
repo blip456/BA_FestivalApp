@@ -71,13 +71,13 @@ namespace FestivalLib.model
             null, true);
         }
         #endregion
-
+        
         private static ObservableCollection<Stage> lstAlleStages = GetAlleStages();
 
         private static ObservableCollection<LineUp> lstAlleLineUps = LineUp.GetLineUps();
 
         #region SQL
-
+        //een stage object maken
         private static Stage CreateStage(DbDataReader reader)
         {
             try
@@ -95,6 +95,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een stage objec maken adhv van zijn datum
         private static Stage CreateStageWithDate(DbDataReader reader, DateTime date)
         {
             try
@@ -112,6 +113,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle stages ophalen
         public static ObservableCollection<Stage> GetAlleStages()
         {
             try
@@ -133,6 +135,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alles stages ophalen adhv een geselecteerde dag
         public static ObservableCollection<Stage> GetStagesByDay(DateTime date)
         {
             try
@@ -154,6 +157,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 stage ophalen adhv een ID
         public static Stage GetStageByID(int id)
         {
             try
@@ -175,6 +179,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een stage toevoegen
         public static void AddStage(string NewPodiumName)
         {
             try
@@ -194,6 +199,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een stage aanpassen
         public static void EditStage(string NewPodiumName, Stage SelectedStageEdit)
         {
             try
@@ -215,6 +221,7 @@ namespace FestivalLib.model
 
         }
 
+        //een stage verwijderen 
         public static void DeleteStage(int id)
         {
             try
@@ -236,6 +243,7 @@ namespace FestivalLib.model
             }
         }
 
+        //kijken of een stage nog bands bevat - indien ja mag deze stage nog niet verwijderd worden
         public static bool IsStageDeleteAllowed(int stageID)
         {
             try

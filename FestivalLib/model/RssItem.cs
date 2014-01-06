@@ -27,6 +27,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //dez haalt aale rss feed items op uit de DB
         public static List<SyndicationItem> GetRssItems()
         {
             try
@@ -50,6 +51,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een nieuw rss post toevoegen aan de DB
         public static void AddRssItem(RssItem item)
         {
             try

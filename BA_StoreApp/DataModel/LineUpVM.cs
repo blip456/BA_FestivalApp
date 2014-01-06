@@ -17,7 +17,6 @@ namespace BA_StoreApp.DataModel
             GetLineUpsFromAPI();
         }
         
-
         private List<LineUp> _lineUps;
 
         public List<LineUp> LineUps
@@ -54,9 +53,7 @@ namespace BA_StoreApp.DataModel
                 GetLineUpsByDateFromAPI(_selectedDate);
             }
         }
-        
-        
-
+               
         public async void GetLineUpsFromAPI()
         {
 

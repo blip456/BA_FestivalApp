@@ -96,6 +96,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //alle festivallen ophalen uit de DB (aanmaken van festival object zit hier al in)
         public static Festival GetFestivals()
         {
             try
@@ -121,6 +122,7 @@ namespace FestivalLib.model
             }
         }
 
+        //festival aanpassen
         public static void EditFestival(Festival festival)
         {
             try
@@ -147,6 +149,9 @@ namespace FestivalLib.model
             }
         }
 
+        //deze methode zal tickettypes toevoegen aan de DB indien de datum van het festival verlengd wordt
+        //er wordt telkens gekenen of het tickettype (vip en normal) voor de dag al bestaat, indien deze niet bestaat zal DAGx VIP of DAGx Normaal toegevoegd worden
+        //er zullen standaardwaarden ingevuld worden
         public static void ChangeTicketDates()
         {
             try
@@ -186,6 +191,7 @@ namespace FestivalLib.model
         #endregion
 
         #region Public Vars
+        //deze berekend hoeveel dagen er tussen de begintijd en den eindtijd zit en returned een lijst met date times
         public static ObservableCollection<DateTime> aantalDagen()
         {
             try

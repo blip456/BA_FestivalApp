@@ -165,6 +165,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\BandController.cs" />
     <Compile Include="Controllers\FestivalController.cs" />
+    <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LineUpController.cs" />
     <Compile Include="Controllers\StageController.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Models\Database.cs" />
     <Compile Include="Models\_DAL\BandRepository.cs" />
     <Compile Include="Models\_DAL\FestivalRepository.cs" />
+    <Compile Include="Models\_DAL\GenreRepository.cs" />
     <Compile Include="Models\_DAL\LineUpRepository.cs" />
     <Compile Include="Models\_DAL\StageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

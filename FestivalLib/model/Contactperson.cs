@@ -119,6 +119,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //een contact object maken
         private static Contactperson CreateContact(DbDataReader reader)
         {
             try
@@ -141,6 +142,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle contactpersonen ophalen uit de DB
         public static ObservableCollection<Contactperson> GetContacts()
         {
             try
@@ -162,6 +164,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 contact ophalen adhv zijn ID
         public static Contactperson GetContactByID(int id)
         {
             try
@@ -185,6 +188,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle contactpersonen ophalen die aan een bepaalde string voldoen - deze methode wordt enkel in de search gebruikt om te zoeken op alle velden
         public static ObservableCollection<Contactperson> GetContactsByString(ObservableCollection<Contactperson> lst, string search)
         {
             try
@@ -207,6 +211,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een contact toevoegen aan de DB
         public static void AddContact(Contactperson contact)
         {
             try
@@ -233,7 +238,8 @@ namespace FestivalLib.model
                 Console.WriteLine("Add contact: " + ex.Message);
             }
         }
-
+        
+        //een contact aanpassen in de DB
         public static void EditContact(Contactperson contact)
         {
             try
@@ -262,7 +268,8 @@ namespace FestivalLib.model
                 Console.WriteLine("edit contact" + ex.Message);
             }
         }
-
+        
+        //een contact verwijderen uit de DB
         public static void DeleteContact(int id)
         {
             try

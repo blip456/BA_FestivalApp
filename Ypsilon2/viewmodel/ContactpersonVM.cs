@@ -62,7 +62,6 @@ namespace Ypsilon2.viewmodel
             set { _selectedContactType = value; OnPropertyChanged("SelectedContactType"); }
         }
 
-
         private FestivalLib.model.Contactperson _selectedContact;
 
         public FestivalLib.model.Contactperson SelectedContact
@@ -76,6 +75,12 @@ namespace Ypsilon2.viewmodel
                 {
                     Contact = SelectedContact;
                     //selected contact type moet nog aangepast worden zodat het type van de selected contact getoond wordt
+                    SelectedContactType = SelectedContact.JobRole;
+                }
+                else
+                {
+                    SelectedContact = new FestivalLib.model.Contactperson();
+                    Contact = SelectedContact;
                     SelectedContactType = SelectedContact.JobRole;
                 }
                 
@@ -102,7 +107,7 @@ namespace Ypsilon2.viewmodel
         #endregion
 
         #region Commands
-
+        //contact opslaan
         public ICommand SaveContactCommand
         {
             get { return new RelayCommand(SaveContact, Contact.IsValid); }
@@ -123,6 +128,7 @@ namespace Ypsilon2.viewmodel
             }              
         }
 
+        //nieuw contact toevoegen aan db
         public ICommand AddContactCommand
         {
             get { return new RelayCommand(AddContact, Contact.IsValid); }
@@ -150,6 +156,7 @@ namespace Ypsilon2.viewmodel
             }               
         }       
 
+        //contact verwijderen uit db
         public ICommand DeleteContactCommand
         {
             get { return new RelayCommand<int>(DeleteContact); }
@@ -171,6 +178,7 @@ namespace Ypsilon2.viewmodel
             }            
         }
            
+        //zoeken per keyboard tick op het ingegeven karakter/woord
         public ICommand SearchCommand  
         {
             //Een gebruiker heeft de mogelijkheid om adhv een zoekbox te zoeken naar contactpersonen.

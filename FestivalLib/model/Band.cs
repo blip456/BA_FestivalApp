@@ -107,6 +107,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //aanmaken van een band object
         private static Band CreateBand(DbDataReader reader)
         {
             try
@@ -128,6 +129,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle bands ophalen uit de db
         public static ObservableCollection<Band> GetBands()
         {
             try
@@ -149,6 +151,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle bands oophalen die aan een bepaalde string voldoen in hun band name
         public static ObservableCollection<Band> GetBandsByString(string search)
         {
             try
@@ -170,6 +173,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 band ophalen adhv een band id
         public static Band GetBandByID(int id)
         {
             try
@@ -195,6 +199,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 band ophalen adhv een bepaalde string die moet voldoen in hun band name
         public static Band GetBandByString(string bandName)
         {
             try
@@ -218,6 +223,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 band toevoegen aan de DB
         public static void AddBand(Band band)
         {
             try
@@ -252,6 +258,7 @@ namespace FestivalLib.model
             lstAlleBands = GetBands();
         }
 
+        //1 band aanpassen in de DB
         public static void EditBand(Band band)
         {
             try
@@ -288,6 +295,7 @@ namespace FestivalLib.model
             lstAlleBands = GetBands();
         }
 
+        //1 band verwijderen in de DB
         public static void DeleteBand(int id)
         {
             try
@@ -309,6 +317,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 band verwijderen uit een specifieke line up
         public static void DeleteBandFromLineUp(int lineupID)
         {
             try
@@ -328,6 +337,7 @@ namespace FestivalLib.model
             }
         }
 
+        //kijken of een band nog in een bepaalde line up zit indien ja kun je de band niet verwijderen
         public static bool IsBandDeleteAllowed(int bandID)
         {
             try
@@ -361,75 +371,7 @@ namespace FestivalLib.model
 
         }
 
-        
-
-        //public static void AddGenre(Band selectedBand, string sGenreName)
-        //{
-        //    try
-        //    {
-        //        //als de geselecteerde band nog geen genres heeft
-        //        if (selectedBand.Genres.Count == 0)
-        //        {
-        //            //als het ingevoerde genre voor die band al bestaat in de DB
-        //            if (Genre.Getgenres().Any(item => item.Name == sGenreName))
-        //            {
-        //                //zoeken van nieuw genre adhv string
-        //                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-        //                //genre toevoegen aan een band
-        //                Genre.AddGenre(gevondenGenre, selectedBand);
-        //            }
-        //            //als het ingevoerde genre nog niet bestaat
-        //            else
-        //            {
-        //                // nieuwe genre toevoegen aan db
-        //                Genre.AddGenreToDB(sGenreName);
-        //                //zoeken van nieuw genre adhv string en dan koppelen aan band
-        //                Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-        //                Genre.AddGenre(gevondenGenre, selectedBand);
-        //            }
-        //        }
-        //        //als de band al genres heeft
-        //        else
-        //        {
-
-        //            foreach (Genre oGenre in selectedBand.Genres)
-        //            {
-        //                //kijken of het ingevoerde genre nog niet in de band zijn genres zit
-        //                if (oGenre.Name != sGenreName)
-        //                {
-        //                    if (Genre.Getgenres().Any(item => item.Name == sGenreName))
-        //                    {
-        //                        //zoeken van nieuw genre adhv string en dan koppelen aan band
-        //                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-        //                        Genre.AddGenre(gevondenGenre, selectedBand);
-
-        //                        break;
-        //                    }
-        //                    else
-        //                    {
-        //                        Genre.AddGenreToDB(sGenreName);
-        //                        //zoeken van nieuw genre adhv string en dan koppelen aan band
-        //                        Genre gevondenGenre = Genre.GetGenreByString(sGenreName);
-        //                        Genre.AddGenre(gevondenGenre, selectedBand);
-
-        //                        break;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    Xceed.Wpf.Toolkit.MessageBox.Show("Dit genre is reeds gekoppeld aan uw band", "Opgelet", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Add genre" + ex.Message);
-        //    }
-        //}
-
-
+        //1 band verwijderen uit de DB
         public static void DeleteGenre(Band selectedBand, Genre selectedGenre)
         {
             try

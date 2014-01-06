@@ -33,11 +33,11 @@ namespace Ypsilon2.viewmodel
         }
         #endregion
 
+        //festival opslaan
         public ICommand SaveFestivalCommand
         {
             get { return new RelayCommand(SaveFestival, Festivals.IsValid); }
         }
-
         public void SaveFestival()
         {           
             Festival.EditFestival(Festivals);

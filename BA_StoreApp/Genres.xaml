@@ -1,6 +1,6 @@
 ﻿<Page
     x:Name="pageRoot"
-    x:Class="BA_StoreApp.SplitPage1"
+    x:Class="BA_StoreApp.Genres"
     DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,8 +8,8 @@
     xmlns:common="using:BA_StoreApp.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:datamodel="using:BA_StoreApp.DataModel"
-    xmlns:converter="using:BA_StoreApp.DataModel"
+    xmlns:genre="using:BA_StoreApp.DataModel"
+    xmlns:c="using:BA_StoreApp.DataModel"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -17,10 +17,9 @@
         <CollectionViewSource
         x:Name="itemsViewSource"
         Source="{Binding Items}"/>
-        <datamodel:BandVM x:Key="instance"/>
-        <converter:ByteToImageConverter x:Key="converter"/>
+        <genre:GenreVM x:Key="genreIns"/>
+        <c:ByteToImageConverter x:Key="byteImageConverter"/>
     </Page.Resources>
-
 
     <Page.TopAppBar>
         <AppBar>
@@ -31,6 +30,7 @@
             </StackPanel>
         </AppBar>
     </Page.TopAppBar>
+
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title
@@ -59,7 +59,7 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:Name="pageTitle" Text="Bands" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+            <TextBlock x:Name="pageTitle" Text="Genres" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40"/>
         </Grid>
 
@@ -78,8 +78,8 @@
             Grid.Row="1"
             Margin="10,10,0,0"
             Padding="120,0,0,60"
-            ItemsSource="{Binding Source={StaticResource instance}, Path=Bands}"
-            SelectedItem="{Binding Source={StaticResource instance}, Path=SelectedBand}"
+            ItemsSource="{Binding Source={StaticResource genreIns}, Path=Genres}"
+            SelectedItem="{Binding Source={StaticResource genreIns}, Path=SelectedGenre}"
             IsSwipeEnabled="False"
             SelectionChanged="itemListView_SelectionChanged" Grid.Column="0">
                 <ListView.ItemTemplate>
@@ -89,12 +89,8 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="60" Height="60">
-                                <Image Source="{Binding Picture, Converter={StaticResource converter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                            </Border>
                             <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                 <TextBlock Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" MaxHeight="40"/>
-                                <TextBlock Text="{Binding Descr}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -118,27 +114,40 @@
 
                 <Grid x:Name="itemDetailGrid" Margin="80,60,0,50">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="300"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="500"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="0" Grid.Column="0">
+                        <TextBlock x:Name="itemTitle" Margin="0,10,0,0" Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}"/>                      
+                        <!-- Horizontal scrolling grid -->
+                        <GridView
+                         x:Name="itemGridView"
+                         AutomationProperties.AutomationId="ItemsGridView"
+                         AutomationProperties.Name="Items"
+                         TabIndex="1"
+                         Padding="0,0,0,0"
+                         ItemsSource="{Binding Bands}"
+                         SelectionMode="None"
+                         IsSwipeEnabled="false"
+                         IsItemClickEnabled="True">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                                        <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                            <Image Source="{Binding Picture, Converter={StaticResource byteImageConverter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                                        </Border>
+                                        <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                                            <TextBlock Text="{Binding Name}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}"  Margin="15,0,15,0" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Descr}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,5" FontSize="12"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
 
-                    <Image Grid.Row="0" Margin="0,0,20,0" Width="auto" Height="auto" Source="{Binding Picture, Converter={StaticResource converter}}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                    <StackPanel x:Name="itemDetailTitlePanel" Grid.Row="1" Grid.Column="0">
-                        <TextBlock x:Name="itemTitle" Margin="0,10,0,0" Text="{Binding Name}" Style="{StaticResource SubheaderTextBlockStyle}"/>
-                        <TextBlock x:Name="itemSubtitle" Margin="0,0,0,20" Text="{Binding Descr}" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                        <TextBlock Margin="0,0,0,20"  Style="{StaticResource SubtitleTextBlockStyle}" ToolTipService.ToolTip="Facebook">
-                            <Run Text="{Binding Facebook}"/>
-                        </TextBlock>
-                        <TextBlock Margin="0,0,0,20" Style="{StaticResource SubtitleTextBlockStyle}" ToolTipService.ToolTip="Twitter">
-                            <Run Text="{Binding Twitter}"/>
-                        </TextBlock>
-                        <!--converter schrijven zodat ik /blabla als url zie-->
-                        <!--<HyperlinkButton NavigateUri="{Binding Facebook}">Facebook</HyperlinkButton>-->
-                        <ListView ItemsSource="{Binding Genres}" DisplayMemberPath="Name" Width="200" Height="auto" ToolTipService.ToolTip="Genres"/>
+                        <ListView ItemsSource="{Binding Bands}" DisplayMemberPath="ID" Width="200" Height="auto"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

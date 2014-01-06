@@ -30,6 +30,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //alle genres ophalen die bij een bepaalde band horen
         public static ObservableCollection<Genre> GetGenresByBandID(int id)
         {
             try
@@ -56,6 +57,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle genres ophalen
         public static ObservableCollection<Genre> Getgenres()
         {
             try
@@ -79,6 +81,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een genre toevoegen aan een band - deze wordt enkel toegevoegd aan de band als deze nog niet bestaat
         public static void AddGenre(Genre genre, Band band)
         {
             try
@@ -96,6 +99,7 @@ namespace FestivalLib.model
             }
         }
 
+        //deze methode voegt een nog niet bestaande genre toe aan de DB
         public static void AddGenreToDB(string genreName)
         {
             try
@@ -111,6 +115,7 @@ namespace FestivalLib.model
             }
         }
 
+        //deze methode haalt een genre op adhv zijn genre name
         public static Genre GetGenreByString(string genre)
         {            
             string sql = "SELECT * FROM genre WHERE genre_name=@name;";

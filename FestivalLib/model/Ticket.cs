@@ -102,6 +102,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //een ticket object maken
         private static Ticket CreateTicket(DbDataReader reader)
         {
             try
@@ -124,6 +125,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle tickets ophalen
         public static ObservableCollection<Ticket> GetTickets()
         {
             try
@@ -146,6 +148,7 @@ namespace FestivalLib.model
 
         }
 
+        //een ticket ophalen adhv zijn ID
         public static Ticket GetTicketByID(int id)
         {
             try
@@ -170,6 +173,7 @@ namespace FestivalLib.model
 
         }
 
+        //een ticket toevoegen aan DB
         public static void AddTicket(Ticket ticket)
         {
             try
@@ -204,6 +208,7 @@ namespace FestivalLib.model
 
         }
 
+        //een ticket aanpassen
         public static void EditTicket(Ticket ticket)
         {
             try
@@ -230,6 +235,7 @@ namespace FestivalLib.model
 
         }
 
+        //een ticket verwijderen uit de DB
         public static void DeleteTicket(int id)
         {
             try
@@ -246,6 +252,7 @@ namespace FestivalLib.model
         #endregion
 
         #region Methodes
+        //het ticket afdrukken naar Office Word
         public static void PrintWord(Ticket ticket, Festival festival, string sPad)
         {
             try
@@ -317,6 +324,7 @@ namespace FestivalLib.model
 
         }
 
+        //een unieke 'barcode' genereren - deze wordt gegenereerd adhv de huidige time tick
         public static string GenerateUnique(string sEmail)
         {
             try
@@ -333,6 +341,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een email versturen naar de user met als bijlage zijn ticket
         public static void SendMail(Ticket ticket, Festival fest, string spad)
         {
             try
@@ -374,6 +383,7 @@ namespace FestivalLib.model
             }
         }
 
+        //berekenen hoeveel tickets er al verkocht zijn
         public static  int TotalSoldByTicketTypeID(int id)
         {
             int iTotal = 0;
@@ -391,6 +401,7 @@ namespace FestivalLib.model
         #endregion
 
         #region Public Vars
+        //een variabele die het totaal aantal tickets van een bepaalde cat bijhoud
         public static int[] SoldTickets(ObservableCollection<Ticket> lst)
         {
             try
@@ -421,8 +432,10 @@ namespace FestivalLib.model
             }
         }
 
+        //een lijst van alle types bijhouden
         public static ObservableCollection<TicketType> lstTicketTypes = TicketType.GetTicketTypes();
 
+        //een lijst van alle tickets bijhouden
         public static ObservableCollection<Ticket> lstAlleTickets = Ticket.GetTickets();
         #endregion
     }

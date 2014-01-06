@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ypsilon2", "Ypsilon2\Ypsilon2.csproj", "{2F5DBA2B-CFD5-4321-AB87-EC1A7FA8189F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BA_App", "Ypsilon2\BA_App.csproj", "{2F5DBA2B-CFD5-4321-AB87-EC1A7FA8189F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FestivalLib", "FestivalLib\FestivalLib.csproj", "{32B96C09-99FF-4184-B08D-86327BDA4D9B}"
 EndProject

@@ -110,6 +110,7 @@ namespace FestivalLib.model
         #endregion
 
         #region SQL
+        //een line up object maken
         private static LineUp CreateLineUp(DbDataReader reader)
         {
             try
@@ -131,6 +132,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle bands ophalen adhv zijn LineUp ID en de line up datum
         public static ObservableCollection<LineUp> GetBandsByLineUpIDAndDate(int id, DateTime date)
         {
             try
@@ -157,6 +159,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle bands ophalen adhv zijn line up id
         public static ObservableCollection<LineUp> GetBandsByLineUpID(int id)
         {
             try
@@ -178,6 +181,7 @@ namespace FestivalLib.model
             }
         }
 
+        //alle line ups ophalen
         public static ObservableCollection<LineUp> GetLineUps()
         {
             try
@@ -200,6 +204,7 @@ namespace FestivalLib.model
             }
         }
 
+        //1 lineup ophalen adhv zijn ID
         public static LineUp GetLineUpByID(int id)
         {
             try
@@ -222,6 +227,7 @@ namespace FestivalLib.model
             }
         }
 
+        //een lineup toevoegen aan de DB
         public static void AddLineUp(LineUp lineup)
         {
             try
